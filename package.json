@@ -12,12 +12,15 @@
     "react-scripts": "^3.4.1"
   },
   "scripts": {
-    "start": "concurrently --kill-others \"react-scripts start\" \"npm run prettier-watch\"",
+    "start": "npm run pretty && npm run eslint && npm run start-watch",
+    "start-watch": "concurrently --kill-others \"npm run prettier-watch\" \"npm run eslint-watch\" \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "pretty": "prettier --write \"src/**/*.js\"",
-    "prettier-watch": "onchange \"src/**/*.js\" -- ./node_modules/.bin/prettier --write {{changed}}"
+    "prettier-watch": "onchange \"src/**/*.js\" -- npx prettier --write {{changed}}",
+    "eslint": "npx eslint src",
+    "eslint-watch": "onchange \"src/**/*.js\" -- npx eslint src"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -40,6 +43,7 @@
     "eslint-config-prettier": "^6.10.1",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jest": "^23.8.2",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-promise": "^4.2.1",

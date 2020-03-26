@@ -1,5 +1,5 @@
-import UsersPage from './UsersPage';
+import UsersPage from './UsersPage'
 
 export default {
-    UsersPage
-};
+	UsersPage,
+}
