@@ -1,24 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import './UserList.css';
+import React, { useEffect, useState } from "react";
+import "./UserList.css";
+import { Link } from "react-router-dom";
 
 const intialUsers = [];
 
-export default function UserList() {
+function useUsers() {
   const [users, setUsers] = useState(intialUsers);
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => response.json())
-      .then(json => setUsers(json));
+    console.log("before ======");
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json())
+      .then((json) => setUsers(json));
   }, [setUsers]);
 
-  return (
-  <ul className="user-list">
-    {users.map(user => <UserItem key={user.id} user={user}/>)}
-  </ul>);
+  return { users, setUsers };
 }
 
-function UserItem({user}) {
+export default function UserList() {
+  const { users } = useUsers();
+
   return (
-    <li className="user"><a href="#">{user.name}</a></li>
-  )
+    <ul className="user-list">
+      {users.map((user) => (
+        <UserItem key={user.id} user={user} />
+      ))}
+    </ul>
+  );
+}
+
+function UserItem({ user }) {
+  const to = `/users/${user.id}`;
+
+  return (
+    <li className="user">
+      <Link to={to}>{user.name}</Link>
+    </li>
+  );
 }
