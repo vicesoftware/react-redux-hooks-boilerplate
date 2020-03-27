@@ -6,10 +6,13 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "classnames": "^2.2.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.4.1"
+    "react-scripts": "^3.4.1",
+    "redux": "^4.0.5"
   },
   "scripts": {
     "start": "npm run pretty && npm run eslint && npm run start-watch",
@@ -17,8 +20,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "pretty": "prettier --write \"src/**/*.js\"",
-    "prettier-watch": "onchange \"src/**/*.js\" -- npx prettier --write {{changed}}",
+    "pretty": "prettier --write \"src/**/*.js\" \"src/**/*.css\"",
+    "prettier-watch": "onchange \"src/**/*.js\" \"src/**/*.css\" -- npx prettier --write {{changed}}",
     "eslint": "npx eslint src",
     "eslint-watch": "onchange \"src/**/*.js\" -- npx eslint src"
   },

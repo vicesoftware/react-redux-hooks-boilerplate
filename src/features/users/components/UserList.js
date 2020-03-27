@@ -1,35 +1,45 @@
 import React, { useEffect, useState } from 'react'
 import './UserList.css'
-import { Link } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 
 const intialUsers = []
 
-function useUsers() {
+export default function UserList() {
+	const [filter, setFilter] = useState('')
 	const [users, setUsers] = useState(intialUsers)
+
 	useEffect(() => {
-		console.log('before ======')
 		fetch('https://jsonplaceholder.typicode.com/users')
 			.then((response) => response.json())
 			.then((json) => setUsers(json))
 	}, [setUsers])
 
-	return { users, setUsers }
-}
-
-export default function UserList() {
-	const { users } = useUsers()
+	console.log(users)
 
 	return (
-		<ul className='user-list'>
-			{users.map((user) => (
-				<UserItem key={user.id} user={user} />
-			))}
-		</ul>
+		<React.Fragment>
+			<input
+				type='text'
+				onChange={(e) => setFilter(e.target.value)}
+				placeholder='Search...'
+			/>
+
+			<ul className='user-list'>
+				{users
+					.filter((user) =>
+						user.name.toLowerCase().includes(filter.toLowerCase())
+					)
+					.map((user) => (
+						<UserItem key={user.id} user={user} />
+					))}
+			</ul>
+		</React.Fragment>
 	)
 }
 
 function UserItem({ user }) {
-	const to = `/users/${user.id}`
+	const { url } = useRouteMatch()
+	const to = `${url}/${user.id}`
 
 	return (
 		<li className='user'>

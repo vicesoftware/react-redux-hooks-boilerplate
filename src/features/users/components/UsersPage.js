@@ -1,14 +1,23 @@
 import React from 'react'
-import './App.css'
+import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import UserList from './UserList'
+import UserDetailsPage from './UserDetailsPage'
 
 function UsersPage() {
+	const { path } = useRouteMatch()
+
 	return (
-		<div className='App'>
-			<header className='App-header'>
-				<UserList />
-			</header>
-		</div>
+		<React.Fragment>
+			<h1>Users</h1>
+			<Switch>
+				<Route path={path}>
+					<UserList />
+				</Route>
+				<Route path={`${path}/:id`}>
+					<UserDetailsPage />
+				</Route>
+			</Switch>
+		</React.Fragment>
 	)
 }
 

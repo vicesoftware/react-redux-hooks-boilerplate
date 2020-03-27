@@ -1,20 +1,47 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
+import classnames from 'classnames'
+import './navBar.css'
 
 export default function NavBar() {
 	return (
 		<nav>
 			<ul>
 				<li>
-					<Link to='/'>Home</Link>
+					<NavItem to='/'>Home</NavItem>
 				</li>
 				<li>
-					<Link to='/about'>About</Link>
+					<NavItem to='/about'>About</NavItem>
 				</li>
 				<li>
-					<Link to='/users'>Users</Link>
+					<NavItem to='/users' activeOnlyWhenExact={false}>
+						Users
+					</NavItem>
 				</li>
 			</ul>
 		</nav>
+	)
+}
+
+function NavItem({
+	to,
+	children,
+	activeOnlyWhenExact = true,
+	className,
+	...rest
+}) {
+	const match = useRouteMatch({
+		path: to,
+		exact: activeOnlyWhenExact,
+	})
+
+	return (
+		<Link
+			to={to}
+			{...rest}
+			className={classnames(className, { active: match })}
+		>
+			{children}
+		</Link>
 	)
 }
