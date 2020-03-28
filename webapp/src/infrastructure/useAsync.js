@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
-import buildDispatchAsync from './buildDispatchAsync'
+import dispatchAsync from './dispatchAsync'
 
 export default function useAsync({
 	url,
@@ -28,9 +28,7 @@ export default function useAsync({
 		})}`
 	)
 
-	const dispatchAsync = buildDispatchAsync(dispatch)
-
 	useEffect(() => {
-		dispatchAsync({ url, actionType, dummyResponse, dummyError })
-	}, [url, actionType, dummyResponse, dummyError, ...dependencies])
+		dispatchAsync({ url, actionType, dispatch, dummyResponse, dummyError })
+	}, [url, actionType, dispatch, dummyResponse, dummyError, ...dependencies])
 }
