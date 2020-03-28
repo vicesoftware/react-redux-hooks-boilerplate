@@ -20,7 +20,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "pretty": "prettier --write \"src/**/*.js\" \"src/**/*.css\"",
+    "pretty": "npx prettier --write \"src/**/*.js\" \"src/**/*.css\"",
     "prettier-watch": "onchange \"src/**/*.js\" \"src/**/*.css\" -- npx prettier --write {{changed}}",
     "eslint": "npx eslint src",
     "eslint-watch": "onchange \"src/**/*.js\" -- npx eslint src"
@@ -54,5 +54,6 @@
     "eslint-plugin-standard": "^4.0.1",
     "onchange": "^6.1.0",
     "prettier": "^2.0.2"
-  }
+  },
+  "proxy": "https://jsonplaceholder.typicode.com"
 }
