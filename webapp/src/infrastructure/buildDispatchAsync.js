@@ -29,18 +29,17 @@ const buildDispatchAsync = (dispatch) => {
 			)
 		}
 
-		console.log({ type: actionType.REQUESTED })
+		dispatch({ type: actionType.REQUESTED })
 
 		if (dummyResponse) {
 			setTimeout(
-				() =>
-					console.log({ type: actionType.RECEIVED, payload: dummyResponse }),
+				() => dispatch({ type: actionType.RECEIVED, payload: dummyResponse }),
 				DUMMY_ASYNC_DELAY
 			)
 			return
 		} else if (dummyError) {
 			setTimeout(
-				() => console.log({ type: actionType.ERROR, dummyError }),
+				() => dispatch({ type: actionType.ERROR, dummyError }),
 				DUMMY_ASYNC_DELAY
 			)
 		}

@@ -1,11 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import buildDispatchAsync from './buildDispatchAsync'
 
 export default function useAsync({
 	url,
 	actionType,
-	selector,
 	dummyResponse,
 	dummyError,
 	dependencies = [],
@@ -23,7 +22,6 @@ export default function useAsync({
 		`useAsync called for ${url} with depedencies ${JSON.stringify({
 			url,
 			actionType,
-			selector,
 			dummyResponse,
 			dummyError,
 			dependencies,
@@ -34,7 +32,5 @@ export default function useAsync({
 
 	useEffect(() => {
 		dispatchAsync({ url, actionType, dummyResponse, dummyError })
-	}, [url, actionType, selector, dummyResponse, dummyError, ...dependencies])
-
-	return useSelector(selector)
+	}, [url, actionType, dummyResponse, dummyError, ...dependencies])
 }
