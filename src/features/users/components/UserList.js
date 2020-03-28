@@ -1,20 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import './UserList.css'
+import React, { useState } from 'react'
 import { Link, useRouteMatch } from 'react-router-dom'
-
-const intialUsers = []
+import { useGetUsers } from '../user.effects'
+import './UserList.css'
 
 export default function UserList() {
 	const [filter, setFilter] = useState('')
-	const [users, setUsers] = useState(intialUsers)
 
-	useEffect(() => {
-		fetch('https://jsonplaceholder.typicode.com/users')
-			.then((response) => response.json())
-			.then((json) => setUsers(json))
-	}, [setUsers])
-
-	console.log(users)
+	const users = useGetUsers()
 
 	return (
 		<React.Fragment>
