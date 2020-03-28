@@ -30,5 +30,15 @@ export default function useAsync({
 
 	useEffect(() => {
 		dispatchAsync({ url, actionType, dispatch, dummyResponse, dummyError })
-	}, [url, actionType, dispatch, dummyResponse, dummyError, ...dependencies])
+
+		// This was added because the of two issues
+		// 1) including dummyResponse and dummyError below makes
+		// using those from calling code really awkward as you
+		// have to make sure that their pointers doing change or
+		// you get endless loops. I lost have a day chasing that down.
+		// 2) it complains when you spred out dependencies but there's really
+		// no other way I can think to pass the dependencies in in a way that
+		// doesn't cause some kind of warning
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [url, actionType, dispatch, ...dependencies])
 }

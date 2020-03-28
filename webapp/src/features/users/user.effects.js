@@ -3,7 +3,7 @@ import useAsync from '../../infrastructure/useAsync'
 
 export function useGetUsers(dependencies) {
 	useAsync({
-		url: '/users',
+		url: 'https://jsonplaceholder.typicode.com/users',
 		actionType: userActions.GET_ALL_ASYNC,
 		dummyResponse: [
 			{
@@ -19,7 +19,6 @@ export function useGetUsers(dependencies) {
 				name: 'Noah Vice',
 			},
 		],
-		dependencies: dependencies,
 	})
 }
 

@@ -1,33 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Link, useRouteMatch } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-// import { useGetUsers } from '../user.effects'
-import * as userActions from '../user.actionsTypes'
+import { useSelector } from 'react-redux'
 import * as userSelectors from '../user.selectors'
-import dispatchAsync from '../../../infrastructure/dispatchAsync'
+import { useGetUsers } from '../user.effects'
 import './UserList.css'
-
-function useGetUsers() {
-	const dispatch = useDispatch()
-
-	useEffect(() => {
-		dispatchAsync({
-			url: 'https://jsonplaceholder.typicode.com/users',
-			actionType: userActions.GET_ALL_ASYNC,
-			dispatch,
-		})
-		// dispatch({ type: userActions.GET_ALL_ASYNC.REQUESTED })
-
-		// fetch('https://jsonplaceholder.typicode.com/users')
-		// 	.then((response) => response.json())
-		// 	.then((json) =>
-		// 		dispatch({ type: userActions.GET_ALL_ASYNC.RECEIVED, payload: json })
-		// 	)
-		// 	.catch((e) =>
-		// 		console.log({ type: userActions.GET_ALL_ASYNC.ERROR, payload: e })
-		// 	)
-	}, [dispatch])
-}
 
 export default function UserList() {
 	const [filter, setFilter] = useState('')
