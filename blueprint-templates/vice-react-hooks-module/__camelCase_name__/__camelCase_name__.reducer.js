@@ -10,12 +10,12 @@ const intitialState = {
 
 export default function reducer(state = intitialState, action) {
 	switch (action.type) {
-		case GET_ALL_{{upperSnakeCase name}}_ASYNC.RECEIVED:
+		case GET_ALL_{{upperSnakeCase name}}.RECEIVED:
 			return {
 				...state,
 				all{{pascalCase name}}: action.payload,
 			}
-		case GET_{{upperSnakeCase name}}_BY_ID_ASYNC.RECEIVED:
+		case GET_{{upperSnakeCase name}}_BY_ID.RECEIVED:
 			return {
 				...state,
 				all{{pascalCase name}}: mergeCollections(state.allUsers, action.payload),
