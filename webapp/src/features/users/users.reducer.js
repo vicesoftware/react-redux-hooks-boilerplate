@@ -22,7 +22,7 @@ export default function reducer(state = intitialState, action) {
 				...state,
 				allUsers: mergeCollections(state.allUsers, action.payload),
 			}
-		case GET_SCREEN_TIME_REPORTS_ASYNC: {
+		case GET_SCREEN_TIME_REPORTS_ASYNC.RECEIVED: {
 			return {
 				...state,
 				screenTimeReports: mergeCollections(

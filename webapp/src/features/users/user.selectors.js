@@ -10,5 +10,10 @@ export const getUser = (userId) => {
 	}
 }
 
-export const getScreenTimeReports = (userId) => (state) =>
-	state.users.screenTimeReports.filter((report) => report.userId === userId)
+export const getScreenTimeReports = (userId) => (state) => {
+	console.log(userId)
+	console.log(state.users.screenTimeReports)
+	return state.users.screenTimeReports.filter(
+		(report) => report.userId === userId
+	)
+}

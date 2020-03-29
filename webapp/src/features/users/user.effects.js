@@ -51,7 +51,8 @@ export function useGetScreenTimeReports(userId) {
 		dependencies: [userId],
 		dummyResponse: [
 			{
-				userid: 'faad5fff-01d8-46e2-8370-15f8946a0381',
+				id: '666f827f-bd02-432a-981f-0fa5a75ed39d',
+				userId: 'faad5fff-01d8-46e2-8370-15f8946a0381',
 				date: '3/27/2020',
 				activeMinutes: {
 					bikeWithHills: 20,
@@ -68,7 +69,8 @@ export function useGetScreenTimeReports(userId) {
 				},
 			},
 			{
-				userid: 'df363826-4488-4f52-bfbb-2f5496d81e03',
+				id: '607f31a7-cfb4-4fee-b93b-a8835fae7151',
+				userId: 'df363826-4488-4f52-bfbb-2f5496d81e03',
 				date: '3/28/2020',
 				activeMinutes: {
 					bikeWithHills: 20,
@@ -85,7 +87,8 @@ export function useGetScreenTimeReports(userId) {
 				},
 			},
 			{
-				userid: '051a1ab5-c5f8-400f-968f-41585cfce4ae',
+				id: '2bb22811-2990-4927-9f2d-364ce4097e3a',
+				userId: '051a1ab5-c5f8-400f-968f-41585cfce4ae',
 				date: '3/28/2020',
 				activeMinutes: {
 					bikeWithHills: 20,
@@ -101,6 +104,6 @@ export function useGetScreenTimeReports(userId) {
 					chores: true,
 				},
 			},
-		],
+		].filter((report) => report.userId === userId),
 	})
 }
