@@ -2,6 +2,8 @@ import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import users from './features/users'
 import Page from './widgets/Page/Page'
+import { About } from './features/About'
+import { Home } from './features/Home'
 
 const {
 	components: { UsersPage, UserDetailsPage },
@@ -32,13 +34,4 @@ function PageRoute({ children, ...rest }) {
 			<Page>{children}</Page>
 		</Route>
 	)
-}
-
-// Left these here because they are simple and this is just to provide example for routing
-function About() {
-	return <h2>About</h2>
-}
-
-function Home() {
-	return <h2>Home</h2>
 }
