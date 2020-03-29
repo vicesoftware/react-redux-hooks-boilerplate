@@ -6,7 +6,7 @@ export default function dispatchAsync({
 	dispatch,
 	dummyResponse,
 	dummyError,
-}) {
+} = {}) {
 	if (!url) {
 		throw new Error('url is required!')
 	}

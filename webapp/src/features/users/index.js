@@ -1,11 +1,15 @@
 import components from './components'
 import * as constants from './user.constants'
-import * as actions from './user.actionsTypes'
+import * as actionTypes from './user.actionsTypes'
+import * as effects from './user.effects'
+import * as selectors from './user.selectors'
 import reducer from './users.reducer'
 
 export default {
 	components,
 	constants,
-	actions,
+	actionTypes,
+	effects,
+	selectors,
 	reducer,
 }

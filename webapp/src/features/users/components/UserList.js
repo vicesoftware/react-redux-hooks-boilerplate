@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import { Link, useRouteMatch } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import * as userSelectors from '../user.selectors'
 import { useGetUsers } from '../user.effects'
 import './UserList.css'
 
 export default function UserList() {
 	const [filter, setFilter] = useState('')
 
-	const users = useGetUsers()
+	const users = useSelector(userSelectors.getAllUsers)
+
+	useGetUsers()
 
 	return (
 		<React.Fragment>
