@@ -18,16 +18,6 @@ export default function useAsync({
 
 	const dispatch = useDispatch()
 
-	console.log(
-		`useAsync called for ${url} with depedencies ${JSON.stringify({
-			url,
-			actionType,
-			dummyResponse,
-			dummyError,
-			dependencies,
-		})}`
-	)
-
 	useEffect(() => {
 		dispatchAsync({ url, actionType, dispatch, dummyResponse, dummyError })
 

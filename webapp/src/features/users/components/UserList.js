@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import * as userSelectors from '../user.selectors'
 import { useGetUsers } from '../user.effects'
 import './UserList.css'
+import { BusyIndicator } from '../../../widgets/busyIndicator/'
 
 export default function UserList() {
 	const [filter, setFilter] = useState('')
@@ -21,13 +22,15 @@ export default function UserList() {
 			/>
 
 			<ul className='user-list'>
-				{users
-					.filter((user) =>
-						user.name.toLowerCase().includes(filter.toLowerCase())
-					)
-					.map((user) => (
-						<UserItem key={user.id} user={user} />
-					))}
+				<BusyIndicator>
+					{users
+						.filter((user) =>
+							user.name.toLowerCase().includes(filter.toLowerCase())
+						)
+						.map((user) => (
+							<UserItem key={user.id} user={user} />
+						))}
+				</BusyIndicator>
 			</ul>
 		</React.Fragment>
 	)
