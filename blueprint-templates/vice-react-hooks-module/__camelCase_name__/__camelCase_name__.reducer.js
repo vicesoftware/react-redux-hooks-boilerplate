@@ -1,6 +1,6 @@
 import {
-	GET_ALL_{{upperSnakeCase name}}_ASYNC,
-	GET_{{upperSnakeCase name}}_BY_ID_ASYNC,
+	GET_ALL_{{upperSnakeCase name}},
+	GET_{{upperSnakeCase name}}_BY_ID,
 } from './{{camelCase name}}.actionsTypes'
 import { mergeCollections } from '../../infrastructure/reduxHelpers'
 
