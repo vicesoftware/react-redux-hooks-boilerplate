@@ -8,7 +8,6 @@ export default function {{pascalCase name}}() {
 
 	useGetAll{{pascalCase name}}()
 
-	// return <div>{ {{camelCase name}}.lenght }</div>
 	return (
 		<div>
 			<h1>{{pascalCase name}}</h1>

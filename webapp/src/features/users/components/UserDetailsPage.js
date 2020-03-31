@@ -1,9 +1,18 @@
 import React from 'react'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { useGetUser, useGetScreenTimeReports } from '../user.effects'
+import { LinkContainer } from 'react-router-bootstrap'
+import Button from 'react-bootstrap/Button'
+import { useGetUser } from '../user.effects'
+import screenTimeReports from '../../screenTimeReports'
 import * as userSelectors from '../user.selectors'
 import './UserList.css'
+import { BusyIndicator } from '../../../widgets/busyIndicator'
+
+const {
+	effects: { useGetScreenTimeReportByUserId },
+	selectors: { getScreenTimeReportsByUserId },
+} = screenTimeReports
 
 export default function UserDetailsPage() {
 	const { id } = useParams()
@@ -12,21 +21,26 @@ export default function UserDetailsPage() {
 
 	useGetUser(id)
 
-	const reports = useSelector(userSelectors.getScreenTimeReports(id))
+	const reports = useSelector(getScreenTimeReportsByUserId(id))
 
 	console.log(reports)
 
-	useGetScreenTimeReports(id)
+	useGetScreenTimeReportByUserId(id)
 
 	return (
 		<React.Fragment>
 			<h1>Screen Time Reports for {user.name}</h1>
-			<ul className='user-list'>
-				{reports.map((report) => (
-					<ReportItem key={report.id} report={report} />
-				))}
-			</ul>
-			<Link to='/users'>Back</Link>
+			<BusyIndicator>
+				<ul className='user-list'>
+					{reports &&
+						reports.map((report) => (
+							<ReportItem key={report.id} report={report} />
+						))}
+				</ul>
+			</BusyIndicator>
+			<LinkContainer to='/users'>
+				<Button>Back</Button>
+			</LinkContainer>
 		</React.Fragment>
 	)
 }

@@ -1,47 +1,23 @@
 import React from 'react'
-import { Link, useRouteMatch } from 'react-router-dom'
-import classnames from 'classnames'
-import './navBar.css'
+import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
+import { LinkContainer } from 'react-router-bootstrap'
 
 export default function NavBar() {
 	return (
-		<nav>
-			<ul>
-				<li>
-					<NavItem to='/'>Home</NavItem>
-				</li>
-				<li>
-					<NavItem to='/about'>About</NavItem>
-				</li>
-				<li>
-					<NavItem to='/users' activeOnlyWhenExact={false}>
-						Users
-					</NavItem>
-				</li>
-			</ul>
-		</nav>
-	)
-}
-
-function NavItem({
-	to,
-	children,
-	activeOnlyWhenExact = true,
-	className,
-	...rest
-}) {
-	const match = useRouteMatch({
-		path: to,
-		exact: activeOnlyWhenExact,
-	})
-
-	return (
-		<Link
-			to={to}
-			{...rest}
-			className={classnames(className, { active: match })}
-		>
-			{children}
-		</Link>
+		<Navbar bg='dark' variant='dark'>
+			<Navbar.Brand>Vice Software</Navbar.Brand>
+			<Nav className='mr-auto'>
+				<LinkContainer exact to='/'>
+					<Nav.Link href='home'>Home</Nav.Link>
+				</LinkContainer>
+				<LinkContainer to='/users'>
+					<Nav.Link href='users'>Users</Nav.Link>
+				</LinkContainer>
+				<LinkContainer to='/about'>
+					<Nav.Link href='about'>About</Nav.Link>
+				</LinkContainer>
+			</Nav>
+		</Navbar>
 	)
 }
