@@ -9,7 +9,7 @@ export function useGetAll{{pascalCase name}}(dependencies) {
 	})
 }
 
-export function useGetUser({{camelCase name}}Id) {
+export function useGet{{pascalCase name}}ById({{camelCase name}}Id) {
 	useAsync({
 		url: '/{{kebabCase name}}/' + {{camelCase name}}Id,  // We have to do a string conncat for now because I can't figure out how to escape a string template properly. Issue: https://github.com/reesemclean/blueprint/issues/69#issuecomment-605670252
 		actionType: {{camelCase name}}Actions.GET_{{upperSnakeCase name}}_BY_ID,
