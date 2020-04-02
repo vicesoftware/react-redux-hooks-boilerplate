@@ -1,4 +1,4 @@
-import { buildAsyncActionType } from '../../infrastructure/reduxHelpers'
+import { buildActionType } from '../../infrastructure/reduxHelpers'
 
-export const SHOW = buildAsyncActionType('modal', 'SHOW')
-export const HIDE = buildAsyncActionType('modal', 'HIDE')
+export const SHOW = buildActionType('modal', 'SHOW')
+export const HIDE = buildActionType('modal', 'HIDE')

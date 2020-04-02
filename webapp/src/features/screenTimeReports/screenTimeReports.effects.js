@@ -1,5 +1,8 @@
 import * as screenTimeReportsActions from './screenTimeReports.actionsTypes'
 import useAsync from '../../infrastructure/useAsync'
+import { v4 as uuidv4 } from 'uuid'
+import dispatchAsync from '../../infrastructure/dispatchAsync'
+import { useDispatch } from 'react-redux'
 
 export function useGetAllScreenTimeReports() {
 	useAsync({
@@ -93,6 +96,24 @@ export function useGetScreenTimeReportsConfig() {
 	})
 }
 
+export function useCreateActivity() {
+	const dispatch = useDispatch()
+
+	return (activity, userId) =>
+		dispatchAsync({
+			url: '/activities',
+			method: 'post',
+			body: { ...activity, userId },
+			actionType: screenTimeReportsActions.CREATE_ACTIVITY,
+			dispatch,
+			dummyResponse: {
+				id: uuidv4(),
+				userId,
+				...activity,
+			},
+		})
+}
+
 function getDummyScreenTimeReports() {
 	return [
 		{
@@ -100,15 +121,15 @@ function getDummyScreenTimeReports() {
 			userId: 'faad5fff-01d8-46e2-8370-15f8946a0381',
 			date: '3/27/2020',
 			activeMinutes: [
-				{ type: 'bikeWithHills', duration: 20 },
-				{ type: 'trampoline', duration: 30 },
-				{ type: 'poolTime', duration: 20 },
-				{ type: 'bikeOnflat', duration: 0 },
-				{ type: 'trails', duration: 45 },
-				{ type: 'basketball', duration: 20 },
-				{ type: 'walking', duration: 20 },
-				{ type: 'outsidePlaytime', duration: 20 },
-				{ type: 'toys', duration: 30 },
+				{ id: uuidv4(), type: 'bikeWithHills', duration: 20 },
+				{ id: uuidv4(), type: 'trampoline', duration: 30 },
+				{ id: uuidv4(), type: 'poolTime', duration: 20 },
+				{ id: uuidv4(), type: 'bikeOnflat', duration: 0 },
+				{ id: uuidv4(), type: 'trails', duration: 45 },
+				{ id: uuidv4(), type: 'basketball', duration: 20 },
+				{ id: uuidv4(), type: 'walking', duration: 20 },
+				{ id: uuidv4(), type: 'outsidePlaytime', duration: 20 },
+				{ id: uuidv4(), type: 'toys', duration: 30 },
 			],
 			requiredActivites: {
 				reading: true,
@@ -120,15 +141,15 @@ function getDummyScreenTimeReports() {
 			userId: 'df363826-4488-4f52-bfbb-2f5496d81e03',
 			date: '3/28/2020',
 			activeMinutes: [
-				{ type: 'bikeWithHills', duration: 20 },
-				{ type: 'trampoline', duration: 30 },
-				{ type: 'poolTime', duration: 20 },
-				{ type: 'bikeOnflat', duration: 0 },
-				{ type: 'trails', duration: 45 },
-				{ type: 'basketball', duration: 20 },
-				{ type: 'walking', duration: 20 },
-				{ type: 'outsidePlaytime', duration: 20 },
-				{ type: 'toys', duration: 30 },
+				{ id: uuidv4(), type: 'bikeWithHills', duration: 20 },
+				{ id: uuidv4(), type: 'trampoline', duration: 30 },
+				{ id: uuidv4(), type: 'poolTime', duration: 20 },
+				{ id: uuidv4(), type: 'bikeOnflat', duration: 0 },
+				{ id: uuidv4(), type: 'trails', duration: 45 },
+				{ id: uuidv4(), type: 'basketball', duration: 20 },
+				{ id: uuidv4(), type: 'walking', duration: 20 },
+				{ id: uuidv4(), type: 'outsidePlaytime', duration: 20 },
+				{ id: uuidv4(), type: 'toys', duration: 30 },
 			],
 			requiredActivites: {
 				reading: true,
@@ -140,15 +161,15 @@ function getDummyScreenTimeReports() {
 			userId: '051a1ab5-c5f8-400f-968f-41585cfce4ae',
 			date: '3/28/2020',
 			activeMinutes: [
-				{ type: 'bikeWithHills', duration: 20 },
-				{ type: 'trampoline', duration: 30 },
-				{ type: 'poolTime', duration: 20 },
-				{ type: 'bikeOnflat', duration: 0 },
-				{ type: 'trails', duration: 45 },
-				{ type: 'basketball', duration: 20 },
-				{ type: 'walking', duration: 20 },
-				{ type: 'outsidePlaytime', duration: 20 },
-				{ type: 'toys', duration: 30 },
+				{ id: uuidv4(), type: 'bikeWithHills', duration: 20 },
+				{ id: uuidv4(), type: 'trampoline', duration: 30 },
+				{ id: uuidv4(), type: 'poolTime', duration: 20 },
+				{ id: uuidv4(), type: 'bikeOnflat', duration: 0 },
+				{ id: uuidv4(), type: 'trails', duration: 45 },
+				{ id: uuidv4(), type: 'basketball', duration: 20 },
+				{ id: uuidv4(), type: 'walking', duration: 20 },
+				{ id: uuidv4(), type: 'outsidePlaytime', duration: 20 },
+				{ id: uuidv4(), type: 'toys', duration: 30 },
 			],
 			requiredActivites: {
 				reading: true,

@@ -3,11 +3,13 @@ import {
 	GET_SCREEN_TIME_REPORTS_BY_ID,
 	GET_SCREEN_TIME_REPORTS_BY_USER_ID,
 	GET_SCREEN_TIME_REPORTS_CONFIG,
+	CREATE_ACTIVITY,
 } from './screenTimeReports.actionsTypes'
 import { mergeCollections } from '../../infrastructure/reduxHelpers'
 
 const intitialState = {
 	allScreenTimeReports: [],
+	activities: [],
 	config: {},
 }
 
@@ -21,9 +23,10 @@ export default function reducer(state = intitialState, action) {
 		case GET_SCREEN_TIME_REPORTS_BY_ID.RECEIVED:
 			return {
 				...state,
-				allScreenTimeReports: mergeCollections(state.allScreenTimeReports, [
-					action.payload,
-				]),
+				allScreenTimeReports: mergeCollections(
+					state.allScreenTimeReports,
+					action.payload
+				),
 			}
 		case GET_SCREEN_TIME_REPORTS_BY_USER_ID.RECEIVED:
 			return {
@@ -37,6 +40,11 @@ export default function reducer(state = intitialState, action) {
 			return {
 				...state,
 				config: action.payload,
+			}
+		case CREATE_ACTIVITY.RECEIVED:
+			return {
+				...state,
+				activities: mergeCollections(state.activities, action.payload),
 			}
 		default: {
 			return state

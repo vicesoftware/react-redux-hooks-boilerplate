@@ -16,3 +16,7 @@ export const GET_SCREEN_TIME_REPORTS_CONFIG = buildAsyncActionType(
 	'screenTimeReports',
 	'GET_SCREEN_TIME_REPORTS_CONFIG'
 )
+export const CREATE_ACTIVITY = buildAsyncActionType(
+	'screenTimeReports',
+	'CREATE_ACTIVITY'
+)

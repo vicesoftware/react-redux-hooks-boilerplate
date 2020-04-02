@@ -6,10 +6,10 @@ import { useHideModal } from '../modal.actions'
 
 export default function ViceModal({ children }) {
 	const show = useSelector(getShowModal)
-	console.log('modal')
+	const hideModal = useHideModal()
 
 	return (
-		<Modal show={show} onHide={useHideModal}>
+		<Modal show={show} onHide={hideModal}>
 			{children}
 		</Modal>
 	)
