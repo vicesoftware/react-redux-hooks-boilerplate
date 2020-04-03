@@ -33,7 +33,7 @@ export default function ScreenTimeReports() {
 
 	useGetScreenTimeReportsConfig()
 
-	const screenTimeReport = useSelector(getScreenTimeReportById(id))
+	const screenTimeReport = useSelector(getScreenTimeReportById(Date.now()))
 
 	const config = useSelector(getScreenTimeReportsConfig)
 

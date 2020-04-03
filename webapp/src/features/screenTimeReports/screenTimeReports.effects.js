@@ -110,6 +110,7 @@ export function useCreateActivity() {
 				id: uuidv4(),
 				userId,
 				...activity,
+				date: Date.now(),
 			},
 		})
 }
