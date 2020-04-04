@@ -1,0 +1,64 @@
+{
+  "name": "vice-react-hooks-boilerplate",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "bootstrap": "^4.4.1",
+    "classnames": "^2.2.6",
+    "formik": "^2.1.4",
+    "react": "^16.13.1",
+    "react-bootstrap": "^1.0.0",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "react-router-bootstrap": "^0.25.0",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^3.4.1",
+    "redux": "^4.0.5",
+    "uuid": "^7.0.3"
+  },
+  "scripts": {
+    "start": "npm run pretty && npm run eslint && npm run start-watch",
+    "start-watch": "concurrently --kill-others \"npm run prettier-watch\" \"npm run eslint-watch\" \"react-scripts start\"",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "pretty": "npx prettier --write \"src/**/*.js\" \"src/**/*.css\"",
+    "prettier-watch": "onchange \"src/**/*.js\" \"src/**/*.css\" -- npx prettier --write {{changed}}",
+    "eslint": "npx eslint src",
+    "eslint-watch": "onchange \"src/**/*.js\" -- npx eslint src"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "onchange": "^6.1.0",
+    "prettier": "^2.0.2"
+  },
+  "proxy": "https://jsonplaceholder.typicode.com"
+}
