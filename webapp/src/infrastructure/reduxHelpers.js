@@ -22,13 +22,18 @@ export const mergeCollections = (
 	newElements,
 	idProperty = 'id',
 	mergeType = mergeTypes.INTERSECT
-) =>
-	mergeType === mergeTypes.INTERSECT
+) => {
+	newElements = wrapInArrayIfNeeded(newElements)
+
+	return mergeType === mergeTypes.INTERSECT
 		? intersectCollections(elements, newElements, idProperty)
 		: unionCollections(elements, newElements, idProperty)
+}
 
-const unionCollections = (elements, newElements, idProperty) =>
-	[...elements, ...newElements].reduce((acc, cur) => {
+const unionCollections = (elements, newElements, idProperty) => {
+	newElements = wrapInArrayIfNeeded(newElements)
+
+	return [...elements, ...newElements].reduce((acc, cur) => {
 		const foundIndex = acc.findIndex((a) => a[idProperty] === cur[idProperty])
 
 		const NOT_FOUND = -1
@@ -42,9 +47,12 @@ const unionCollections = (elements, newElements, idProperty) =>
 
 		return acc
 	}, [])
+}
 
-const intersectCollections = (elements, newElements, idProperty) =>
-	[...elements, ...newElements].reduce((acc, cur) => {
+const intersectCollections = (elements, newElements, idProperty) => {
+	newElements = wrapInArrayIfNeeded(newElements)
+
+	return [...elements, ...newElements].reduce((acc, cur) => {
 		const foundIndex = acc.findIndex((a) => a[idProperty] === cur[idProperty])
 
 		const NOT_FOUND = -1
@@ -62,3 +70,12 @@ const intersectCollections = (elements, newElements, idProperty) =>
 
 		return acc
 	}, [])
+}
+
+function wrapInArrayIfNeeded(elements) {
+	if (elements && !elements.length) {
+		return [elements]
+	}
+
+	return elements
+}

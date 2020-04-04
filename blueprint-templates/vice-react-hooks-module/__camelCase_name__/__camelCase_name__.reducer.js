@@ -18,7 +18,7 @@ export default function reducer(state = intitialState, action) {
 		case GET_{{upperSnakeCase name}}_BY_ID.RECEIVED:
 			return {
 				...state,
-				all{{pascalCase name}}: mergeCollections(state.allUsers, action.payload),
+				all{{pascalCase name}}: mergeCollections(state.all{{pascalCase name}}, action.payload),
 			}
 		default: {
 			return state

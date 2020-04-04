@@ -4,10 +4,15 @@ import users from './features/users'
 import Page from './widgets/Page/Page'
 import { About } from './features/About'
 import { Home } from './features/Home'
+import screenTimeReports from './features/screenTimeReports'
 
 const {
 	components: { UsersPage, UserDetailsPage },
 } = users
+
+const {
+	components: { ScreenTimeReports },
+} = screenTimeReports
 
 export default function Routes() {
 	return (
@@ -20,6 +25,9 @@ export default function Routes() {
 			</PageRoute>
 			<PageRoute path='/users'>
 				<UsersPage />
+			</PageRoute>
+			<PageRoute path='/reports/:id'>
+				<ScreenTimeReports />
 			</PageRoute>
 			<PageRoute path='/'>
 				<Home />
