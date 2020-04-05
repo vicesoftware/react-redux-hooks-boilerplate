@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "npm run pretty && npm run eslint && npm run start-watch",
-    "start-watch": "concurrently --kill-others \"npm run prettier-watch\" \"npm run eslint-watch\" \"react-scripts start\"",
+    "start-watch": "concurrently --kill-others \"npm run prettier-watch\" \"npm run eslint-watch\" \"react-scripts start --no-cache\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

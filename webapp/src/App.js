@@ -6,10 +6,8 @@ import Routes from './Routes'
 function App() {
 	return (
 		<Router>
-			<div>
-				<NavBar />
-				<Routes />
-			</div>
+			<NavBar />
+			<Routes />
 		</Router>
 	)
 }

@@ -6,14 +6,10 @@ import { LinkContainer } from 'react-router-bootstrap'
 export default function NavBar() {
 	return (
 		<Navbar bg='dark' variant='dark'>
-			<Navbar.Brand>Vice Software</Navbar.Brand>
+			<LinkContainer to='/'>
+				<Navbar.Brand>Yowza</Navbar.Brand>
+			</LinkContainer>
 			<Nav className='mr-auto'>
-				<LinkContainer exact to='/'>
-					<Nav.Link href='home'>Home</Nav.Link>
-				</LinkContainer>
-				<LinkContainer to='/users'>
-					<Nav.Link href='users'>Users</Nav.Link>
-				</LinkContainer>
 				<LinkContainer to='/about'>
 					<Nav.Link href='about'>About</Nav.Link>
 				</LinkContainer>

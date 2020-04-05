@@ -4,8 +4,8 @@ import './page.css'
 
 export default function Page({ children }) {
 	return (
-		<div className='App'>
-			<Container>{children}</Container>
+		<div>
+			<Container style={{ marginTop: '20px' }}>{children}</Container>
 		</div>
 	)
 }

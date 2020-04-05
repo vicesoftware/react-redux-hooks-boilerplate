@@ -7,3 +7,9 @@
 	padding: 0;
 	margin: 0;
 }
+
+.active-timer-image {
+	opacity: 0.4;
+	filter: alpha(opacity=40); /* msie */
+	background-color: #000;
+}
