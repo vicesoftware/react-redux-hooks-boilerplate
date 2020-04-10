@@ -51,5 +51,5 @@ export function useTimer({ children, isTimerOn }) {
 				(seconds > 9 ? seconds : '0' + seconds)
 		  }`
 		: children
-	return content
+	return { content, hours, minutes, seconds }
 }

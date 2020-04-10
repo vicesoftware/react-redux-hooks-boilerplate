@@ -27,7 +27,7 @@ export default function Routes() {
 				<PageRoute path='/users'>
 					<UsersPage />
 				</PageRoute>
-				<PageRoute path='/reports/:id'>
+				<PageRoute path='/reports/:userId'>
 					<ScreenTimeReports />
 				</PageRoute>
 				<PageRoute path='/'>

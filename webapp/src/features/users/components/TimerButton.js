@@ -7,7 +7,7 @@ import { useToggleTimer } from './useToggleTimer'
 export function TimerButton({ children, ...rest }) {
 	const { isTimerOn, toggleTimer } = useToggleTimer()
 
-	const content = useTimer({ isTimerOn, children })
+	const { content } = useTimer({ isTimerOn, children })
 
 	return (
 		<Button onClick={toggleTimer} {...rest}>
@@ -18,7 +18,7 @@ export function TimerButton({ children, ...rest }) {
 
 export function TimerDropDownButton({ toggle, children, ...rest }) {
 	const { isTimerOn, toggleTimer } = useToggleTimer()
-	const content = useTimer({ isTimerOn, children: toggle })
+	const { content } = useTimer({ isTimerOn, children: toggle })
 
 	function tryTurnOffTimer() {
 		if (isTimerOn) {
