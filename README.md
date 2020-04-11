@@ -50,6 +50,15 @@ In the project directory, you can run:
 - Launches the test runner in the interactive watch mode.
 - See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
+---
+**NOTE**
+
+Note that you must place `node-module` mocks in the `webapp/src/__mocks__` director because `create-react-app` reset Jest's `roots` config for performance reasons. I lost half a day on figuring this out so figured I'd share. The PR is below.
+
+https://github.com/facebook/create-react-app/pull/7480/files
+
+---
+
 ### `npm run build`
 
 - Builds the app for production to the `build` folder.

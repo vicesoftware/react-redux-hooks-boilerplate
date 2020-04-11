@@ -5,7 +5,7 @@ export function useGetUsers(dependencies) {
 	useAsync({
 		url: '/users',
 		actionType: userActions.GET_ALL_ASYNC,
-		dummyResponse: [
+		stubSuccess: [
 			{
 				id: 'faad5fff-01d8-46e2-8370-15f8946a0381',
 				name: 'Dylan Vice',
@@ -33,7 +33,7 @@ export function useGetUser(userId) {
 		url: `/users/${userId}`,
 		actionType: userActions.GET_USER_ASYNC,
 		dependencies: [userId],
-		dummyResponse: [
+		stubSuccess: [
 			{
 				id: 'faad5fff-01d8-46e2-8370-15f8946a0381',
 				name: 'Dylan Vice',

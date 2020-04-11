@@ -34,13 +34,15 @@ export function UserItem({ user, activities }) {
 			<Card style={{ width: '18rem' }}>
 				<Card.Header>{user.name}</Card.Header>
 				<Card.Img variant='top' src={user.imageUrl} />
-				<Card.ImgOverlay
-					className={classnames({ 'active-timer-image': isTimerOn })}
-					style={{ color: 'white' }}
-				>
-					<h1 style={{ marginTop: '30px' }}>{content}</h1>
-					<h2>{currentActivity}</h2>
-				</Card.ImgOverlay>
+				{isTimerOn && (
+					<Card.ImgOverlay
+						className={classnames({ 'active-timer-image': isTimerOn })}
+						style={{ color: 'white' }}
+					>
+						<h1 style={{ marginTop: '30px' }}>{content}</h1>
+						<h2>{currentActivity}</h2>
+					</Card.ImgOverlay>
+				)}
 				<Card.Body>
 					<Card.Title>Points: 30</Card.Title>
 					<Card.Subtitle>
