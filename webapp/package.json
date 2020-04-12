@@ -9,6 +9,7 @@
     "bootstrap": "^4.4.1",
     "classnames": "^2.2.6",
     "formik": "^2.1.4",
+    "localStorage": "^1.0.4",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.0",
     "react-dom": "^16.13.1",

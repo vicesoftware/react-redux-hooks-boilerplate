@@ -1,12 +1,22 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useStore } from 'react-redux'
 import { useEffect } from 'react'
-import dispatchAsync from './dispatchAsync'
+import doAsync from './doAsync'
+
+const defaultHttpMethod = 'get'
 
 export default function useAsync({
-	url,
 	actionType,
-	dummyResponse,
-	dummyError,
+	url,
+	httpMethod = defaultHttpMethod,
+	mapResponseToPayload,
+	errorMessage,
+	httpConfig,
+	onError,
+	successMessage,
+	noBusySpinner,
+	useCaching = false,
+	stubSuccess,
+	stubError,
 	dependencies = [],
 } = {}) {
 	if (
@@ -17,9 +27,25 @@ export default function useAsync({
 	}
 
 	const dispatch = useDispatch()
+	const { getState } = useStore()
 
 	useEffect(() => {
-		dispatchAsync({ url, actionType, dispatch, dummyResponse, dummyError })
+		doAsync({
+			dispatch,
+			getState,
+			actionType,
+			url,
+			httpMethod,
+			mapResponseToPayload,
+			errorMessage,
+			httpConfig,
+			onError,
+			successMessage,
+			noBusySpinner,
+			useCaching,
+			stubSuccess,
+			stubError,
+		})
 
 		// This was added because the of two issues
 		// 1) including dummyResponse and dummyError below makes
@@ -30,5 +56,26 @@ export default function useAsync({
 		// no other way I can think to pass the dependencies in in a way that
 		// doesn't cause some kind of warning
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [url, actionType, dispatch, ...dependencies])
+	}, [
+		dispatch,
+		getState,
+		actionType,
+		url,
+		httpMethod,
+		mapResponseToPayload,
+		errorMessage,
+		httpConfig,
+		onError,
+		successMessage,
+		noBusySpinner,
+		useCaching,
+		// NOTE: These were left here so that we would know not to add these back.
+		// If we add these to the depedency list then they have to be the same pointers passed
+		// in each time which makes the useEffect api awkward for developers to work with. Leaving these
+		// breaks the idiomatic rules of Redux a bit but in a valuable and safe way Please don't remove
+		// this comment or change the commented out stubSucces and stubError without discussing with Ryan first
+		// stubSuccess,
+		// stubError,
+		...dependencies,
+	])
 }

@@ -8,7 +8,7 @@ export function useGetAllScreenTimeReports() {
 	useAsync({
 		url: '/screen-time-reports',
 		actionType: screenTimeReportsActions.GET_ALL_SCREEN_TIME_REPORTS,
-		dummyResponse: ['Dummy Result 1', 'Dummy Result 2'], // Delete dummyResponse to have live api called or update it to have dummy data you want to fake
+		stubSuccess: ['Dummy Result 1', 'Dummy Result 2'], // Delete dummyResponse to have live api called or update it to have dummy data you want to fake
 	})
 }
 
@@ -17,7 +17,7 @@ export function useGetScreenTimeReportByUserId(userId) {
 		url: `/ScreenTimeReports/${userId}`,
 		actionType: screenTimeReportsActions.GET_SCREEN_TIME_REPORTS_BY_USER_ID,
 		dependencies: [userId],
-		dummyResponse: getDummyScreenTimeReports().filter(
+		stubSuccess: getDummyScreenTimeReports().filter(
 			(report) => report.userId === userId
 		),
 	})
@@ -28,7 +28,7 @@ export function useGetScreenTimeReportById(reportId) {
 		url: `/ScreenTimeReports/${reportId}`,
 		actionType: screenTimeReportsActions.GET_SCREEN_TIME_REPORTS_BY_ID,
 		dependencies: [reportId],
-		dummyResponse: getDummyScreenTimeReports().find(
+		stubSuccess: getDummyScreenTimeReports().find(
 			(report) => report.id === reportId
 		),
 	})
@@ -38,7 +38,7 @@ export function useGetScreenTimeReportsConfig() {
 	useAsync({
 		url: '/screen-time-reports-config',
 		actionType: screenTimeReportsActions.GET_SCREEN_TIME_REPORTS_CONFIG,
-		dummyResponse: {
+		stubSuccess: {
 			activities: [
 				{
 					type: 'bikeWithHills',
@@ -106,7 +106,7 @@ export function useCreateActivity() {
 			body: { ...activity, userId },
 			actionType: screenTimeReportsActions.CREATE_ACTIVITY,
 			dispatch,
-			dummyResponse: {
+			stubSuccess: {
 				id: uuidv4(),
 				userId,
 				...activity,
