@@ -11,7 +11,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 // import Container from 'react-bootstrap/Container'
 import {
-	getScreenTimeReportById,
+	getScreenTimeReportsByUserId,
 	getScreenTimeReportsConfig,
 } from '../screenTimeReports.selectors'
 import {
@@ -27,23 +27,26 @@ const {
 } = modal
 
 export default function ScreenTimeReports() {
-	const { id } = useParams()
+	const { userId } = useParams()
 
-	useGetScreenTimeReportById(id)
+	useGetScreenTimeReportById(userId)
 
 	useGetScreenTimeReportsConfig()
 
-	const screenTimeReport = useSelector(getScreenTimeReportById(id))
+	const activities = useSelector(getScreenTimeReportsByUserId(userId))
 
 	const config = useSelector(getScreenTimeReportsConfig)
 
 	const showModal = useShowModal()
 
-	const hasReportDataToDisplay =
-		screenTimeReport &&
+	const hasReportDataToDisplay = !!(
+		activities &&
 		config &&
 		config.activities &&
-		screenTimeReport.activeMinutes
+		activities.length
+	)
+
+	console.log(JSON.stringify(activities))
 
 	return (
 		<Container>
@@ -66,7 +69,7 @@ export default function ScreenTimeReports() {
 							</thead>
 							<tbody>
 								{hasReportDataToDisplay &&
-									screenTimeReport.activeMinutes.map((activity) => (
+									activities.map((activity) => (
 										<tr key={activity.type + activity.duration}>
 											<td>
 												{getConfigActivity(activity.type, config).description}
@@ -75,7 +78,12 @@ export default function ScreenTimeReports() {
 												{getConfigActivity(activity.type, config).conversion}
 											</td>
 											<td>{activity.duration}</td>
-											<td>120</td>
+											<td>
+												{(+activity.duration *
+													+getConfigActivity(activity.type, config)
+														.conversion) /
+													100}
+											</td>
 										</tr>
 									))}
 							</tbody>
@@ -88,10 +96,7 @@ export default function ScreenTimeReports() {
 					<Button onClick={showModal}>Add New Activity</Button>
 				</Col>
 			</Row>
-			<AddActivityModal
-				activities={config.activities}
-				userId={screenTimeReport && screenTimeReport.userId}
-			/>
+			<AddActivityModal activities={config.activities} userId={userId} />
 		</Container>
 	)
 }
@@ -99,6 +104,7 @@ export default function ScreenTimeReports() {
 function AddActivityModal({ activities, userId }) {
 	const hideModal = useHideModal()
 	const createActivity = useCreateActivity()
+
 	return (
 		<modal.components.Modal>
 			<Formik
@@ -108,7 +114,6 @@ function AddActivityModal({ activities, userId }) {
 				}}
 				onSubmit={(values, { setSubmitting }) => {
 					setTimeout(() => {
-						alert(JSON.stringify(values, null, 2))
 						createActivity(
 							{
 								type: values.activityType,
