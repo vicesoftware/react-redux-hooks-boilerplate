@@ -1,8 +1,8 @@
 import components from './components'
-import * as constants from './user.constants'
-import * as actionTypes from './user.actionsTypes'
-import * as effects from './user.effects'
-import * as selectors from './user.selectors'
+import * as constants from './users.constants'
+import * as actionTypes from './users.actionsTypes'
+import * as effects from './users.effects'
+import * as selectors from './users.selectors'
 import reducer from './users.reducer'
 
 export default {

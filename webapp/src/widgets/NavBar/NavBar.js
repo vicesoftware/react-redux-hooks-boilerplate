@@ -7,8 +7,13 @@ export default function NavBar() {
 	return (
 		<Navbar bg='dark' variant='dark'>
 			<LinkContainer to='/'>
-				<Navbar.Brand>Yowza</Navbar.Brand>
+				<Navbar.Brand>Vice Software</Navbar.Brand>
 			</LinkContainer>
+			<Nav>
+				<LinkContainer to='/users'>
+					<Nav.Link href='users'>Users</Nav.Link>
+				</LinkContainer>
+			</Nav>
 			<Nav className='mr-auto'>
 				<LinkContainer to='/about'>
 					<Nav.Link href='about'>About</Nav.Link>

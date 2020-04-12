@@ -1,7 +1,5 @@
-import UsersPage from './UsersPage'
-import UserDetailsPage from './UserDetailsPage'
+import Users from './Users'
 
 export default {
-	UsersPage,
-	UserDetailsPage,
+	Users,
 }

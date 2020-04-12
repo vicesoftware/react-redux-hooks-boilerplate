@@ -4,15 +4,11 @@ import Container from 'react-bootstrap/Container'
 import users from './features/users'
 import Page from './widgets/Page/Page'
 import { About } from './features/About'
-import screenTimeReports from './features/screenTimeReports'
+import { Home } from './features/Home'
 
 const {
-	components: { UsersPage, UserDetailsPage },
+	components: { Users },
 } = users
-
-const {
-	components: { ScreenTimeReports },
-} = screenTimeReports
 
 export default function Routes() {
 	return (
@@ -21,17 +17,11 @@ export default function Routes() {
 				<PageRoute path='/about'>
 					<About />
 				</PageRoute>
-				<PageRoute path='/users/:id'>
-					<UserDetailsPage />
-				</PageRoute>
 				<PageRoute path='/users'>
-					<UsersPage />
-				</PageRoute>
-				<PageRoute path='/reports/:userid'>
-					<ScreenTimeReports />
+					<Users />
 				</PageRoute>
 				<PageRoute path='/'>
-					<UsersPage />
+					<Home />
 				</PageRoute>
 			</Switch>
 		</Container>

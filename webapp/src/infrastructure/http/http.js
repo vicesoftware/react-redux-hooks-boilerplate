@@ -1,5 +1,5 @@
 import localStorage from 'localStorage'
-import { API_URL } from './http.constants'
+import { API_URL_PREFIX } from './http.constants'
 // import { getJwtToken } from "../../modules/userContext/userContext.selectors";
 // import { getState } from "../store";
 // import * as actionTypes from "../userContext/userContext.actionTypes";
@@ -92,7 +92,11 @@ function doFetch(url, config, { stubSuccess, stubError } = {}) {
 		}
 
 		if (response.ok) {
-			if (response.headers.map['content-type'].includes('stream')) {
+			if (
+				response.headers &&
+				response.headers.map &&
+				response.headers.map['content-type'].includes('stream')
+			) {
 				return response
 			}
 			return response.json()
@@ -110,7 +114,7 @@ function doFetch(url, config, { stubSuccess, stubError } = {}) {
 }
 
 function buildUrl(url) {
-	return `${API_URL}/${url}`
+	return API_URL_PREFIX ? `${API_URL_PREFIX}/${url}` : url
 }
 
 function addJwtToken(config) {
