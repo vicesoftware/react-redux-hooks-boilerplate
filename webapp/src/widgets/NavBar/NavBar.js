@@ -11,12 +11,17 @@ export default function NavBar() {
 			</LinkContainer>
 			<Nav>
 				<LinkContainer to='/users'>
-					<Nav.Link href='users'>Users</Nav.Link>
+					<Nav.Link>Users</Nav.Link>
+				</LinkContainer>
+			</Nav>
+			<Nav>
+				<LinkContainer to='/settings'>
+					<Nav.Link>Settings</Nav.Link>
 				</LinkContainer>
 			</Nav>
 			<Nav className='mr-auto'>
 				<LinkContainer to='/about'>
-					<Nav.Link href='about'>About</Nav.Link>
+					<Nav.Link>About</Nav.Link>
 				</LinkContainer>
 			</Nav>
 		</Navbar>

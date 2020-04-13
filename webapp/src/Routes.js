@@ -1,14 +1,18 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
-import users from './features/users'
 import Page from './widgets/Page/Page'
 import { About } from './features/About'
 import { Home } from './features/Home'
+import users from './features/users'
+import settings from './features/settings'
 
 const {
 	components: { Users },
 } = users
+const {
+	components: { Settings },
+} = settings
 
 export default function Routes() {
 	return (
@@ -19,6 +23,9 @@ export default function Routes() {
 				</PageRoute>
 				<PageRoute path='/users'>
 					<Users />
+				</PageRoute>
+				<PageRoute path='/settings'>
+					<Settings />
 				</PageRoute>
 				<PageRoute path='/'>
 					<Home />

@@ -6,6 +6,8 @@ import './busyIndicator.css'
 export default function BusyIndicator({ children }) {
 	const show = useSelector(getGlobalBusyIndicator)
 
+	console.log(show)
+
 	const hasContentToDisplay =
 		!show && children && (children.length === undefined || children.length > 0)
 

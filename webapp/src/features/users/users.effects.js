@@ -1,11 +1,17 @@
 import * as usersActions from './users.actionsTypes'
 import useAsync from '../../infrastructure/useAsync'
 
-export function useGetAllUsers(dependencies) {
+export function useGetAllUsers({
+	useCaching,
+	noBusySpinner,
+	dependencies,
+} = {}) {
 	useAsync({
-		url: 'users',
+		url: 'users?page=1&per_page=1000',
 		actionType: usersActions.GET_ALL_USERS,
-		useCaching: true,
+		useCaching,
+		noBusySpinner,
+		dependencies,
 	})
 }
 
