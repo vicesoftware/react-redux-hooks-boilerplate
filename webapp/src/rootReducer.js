@@ -5,7 +5,7 @@ import pendingRequest from './infrastructure/pendingRequest'
 import httpCache from './infrastructure/httpCache'
 import notificationPopup from './infrastructure/notificationPopup'
 import users from './features/users'
-import { name, reducer } from './features/settings'
+import * as settings from './features/settings'
 
 export default combineReducers({
 	[busyIndicator.constants.STATE_NAME]: busyIndicator.reducer,
@@ -14,5 +14,5 @@ export default combineReducers({
 	[httpCache.constants.STATE_NAME]: httpCache.reducer,
 	[notificationPopup.constants.STATE_NAME]: notificationPopup.reducer,
 	[users.constants.STATE_NAME]: users.reducer,
-	[name]: reducer,
+	[settings.name]: settings.reducer,
 })
