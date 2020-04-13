@@ -1,20 +1,20 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import { getAllUsers } from '../users.selectors'
 import { useGetAllUsers } from '../users.effects'
 import { BusyIndicator } from '../../../widgets/busyIndicator'
-import settings from '../../settings'
+import { selectors, actions } from '../../settings'
 
-const {
-	selectors: { getAllSettings },
-	effects: { useUpdateSettings },
-} = settings
+const { getAllSettings } = selectors
+const { setNoBusySpinner } = actions
 
 export default function Users() {
 	const users = useSelector(getAllUsers)
+
+	const dispatch = useDispatch()
 
 	const settings = useSelector(getAllSettings)
 
@@ -23,8 +23,6 @@ export default function Users() {
 		noBusySpinner: settings.noBusySpinner,
 		dependecies: [settings.noBusySpinner],
 	})
-
-	const updateSettings = useUpdateSettings()
 
 	return (
 		<div>
@@ -47,7 +45,7 @@ export default function Users() {
 				<Col>
 					<Row>
 						<Button
-							onClick={() => updateSettings({ noBusySpinner: true })}
+							onClick={() => dispatch(setNoBusySpinner(true))}
 							variant='info'
 						>
 							Reload with Busy Spinnner

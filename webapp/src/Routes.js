@@ -5,14 +5,11 @@ import Page from './widgets/Page/Page'
 import { About } from './features/About'
 import { Home } from './features/Home'
 import users from './features/users'
-import settings from './features/settings'
+import Settings from './features/settings'
 
 const {
 	components: { Users },
 } = users
-const {
-	components: { Settings },
-} = settings
 
 export default function Routes() {
 	return (

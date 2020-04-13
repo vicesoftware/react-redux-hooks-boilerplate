@@ -1,15 +1,8 @@
-import components from './components'
-import * as constants from './settings.constants'
-import * as actionTypes from './settings.actionsTypes'
-import * as effects from './settings.effects'
-import * as selectors from './settings.selectors'
-import reducer from './settings.reducer'
+import Settings from './Settings'
+import * as settingsSelectors from './settings.selectors'
+import slice from './settings.slice'
 
-export default {
-	components,
-	constants,
-	actionTypes,
-	effects,
-	selectors,
-	reducer,
-}
+export const { name, actions, reducer } = slice
+export const selectors = settingsSelectors
+
+export default Settings

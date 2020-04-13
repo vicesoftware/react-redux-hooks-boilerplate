@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reduxjs/toolkit": "^1.3.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -61,6 +62,6 @@
     "onchange": "^6.1.0",
     "prettier": "^2.0.2"
   },
-  "//":  "proxy COMMENT: Note that slowwly allows for adding a delay to an api. We are calling github with a 2.5 second delay",
+  "//": "proxy COMMENT: Note that slowwly allows for adding a delay to an api. We are calling github with a 2.5 second delay",
   "proxy": "http://slowwly.robertomurray.co.uk/delay/2500/url/https://api.github.com/"
 }

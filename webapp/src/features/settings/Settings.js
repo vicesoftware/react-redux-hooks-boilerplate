@@ -1,20 +1,24 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import Form from 'react-bootstrap/Form'
-import { getAllSettings } from '../settings.selectors'
-import { useUpdateSettings } from '../settings.effects'
+import { getAllSettings } from './settings.selectors'
+import slice from './settings.slice'
+
+const { actions } = slice
+
+const { setUseCaching, setNoBusySpinner } = actions
 
 export default function Settings() {
 	const settings = useSelector(getAllSettings)
 
-	const updateSettings = useUpdateSettings()
+	const dispatch = useDispatch()
 
 	return (
 		<div>
 			<h1>Settings</h1>
 			<Form.Group controlId='useCaching'>
 				<Form.Check
-					onChange={() => updateSettings({ useCaching: !settings.useCaching })}
+					onChange={() => dispatch(setUseCaching(!settings.useCaching))}
 					checked={settings.useCaching}
 					type='checkbox'
 					label='useCaching'
@@ -22,9 +26,7 @@ export default function Settings() {
 			</Form.Group>
 			<Form.Group controlId='noBusySpinner'>
 				<Form.Check
-					onChange={() =>
-						updateSettings({ noBusySpinner: !settings.noBusySpinner })
-					}
+					onChange={() => dispatch(setNoBusySpinner(!settings.noBusySpinner))}
 					checked={settings.noBusySpinner}
 					type='checkbox'
 					label='noBusySpinner'
