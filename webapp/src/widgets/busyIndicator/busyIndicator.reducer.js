@@ -3,7 +3,10 @@ const intitialState = {
 }
 
 export default function reducer(state = intitialState, action) {
-	if (action.type.endsWith('_REQUESTED_ASYNC')) {
+	if (
+		action.type.endsWith('_REQUESTED_ASYNC') &&
+		(!action.payload || !action.payload.noBusySpinner)
+	) {
 		if (action.payload && action.payload.name) {
 			if (!state.name) {
 				return {

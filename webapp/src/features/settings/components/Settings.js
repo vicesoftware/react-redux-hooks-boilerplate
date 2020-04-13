@@ -12,12 +12,22 @@ export default function Settings() {
 	return (
 		<div>
 			<h1>Settings</h1>
-			<Form.Group controlId='formBasicCheckbox'>
+			<Form.Group controlId='useCaching'>
 				<Form.Check
 					onChange={() => updateSettings({ useCaching: !settings.useCaching })}
 					checked={settings.useCaching}
 					type='checkbox'
 					label='useCaching'
+				/>
+			</Form.Group>
+			<Form.Group controlId='noBusySpinner'>
+				<Form.Check
+					onChange={() =>
+						updateSettings({ noBusySpinner: !settings.noBusySpinner })
+					}
+					checked={settings.noBusySpinner}
+					type='checkbox'
+					label='noBusySpinner'
 				/>
 			</Form.Group>
 		</div>

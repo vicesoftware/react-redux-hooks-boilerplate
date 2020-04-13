@@ -2,6 +2,7 @@ import { UPDATE_SETTINGS } from './settings.actionsTypes'
 
 const intitialState = {
 	useCaching: false,
+	noBusySpinner: false,
 }
 
 export default function reducer(state = intitialState, action) {
