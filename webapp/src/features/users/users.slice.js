@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import http from '../../infrastructure/http'
 import * as actions from './user.actions'
 
 const initialState = {

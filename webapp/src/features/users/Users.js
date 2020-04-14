@@ -26,7 +26,9 @@ export default function Users() {
 	// 	dependecies: [settings.noBusySpinner],
 	// })
 
-	useEffect(() => dispatch(fetchAllUsers()), [fetchAllUsers])
+	useEffect(() => {
+		dispatch(fetchAllUsers())
+	}, [fetchAllUsers])
 
 	return (
 		<div>
