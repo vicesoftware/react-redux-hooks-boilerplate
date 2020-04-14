@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import { getAllUsers } from '../users.selectors'
-import { useGetAllUsers } from '../users.effects'
-import { BusyIndicator } from '../../../widgets/busyIndicator'
-import * as settings from '../../settings'
+import { getAllUsers } from './users.selectors'
+import { fetchAllUsers } from './user.actions'
+import { BusyIndicator } from '../../widgets/busyIndicator'
+import * as settings from '../settings'
 
 const {
 	selectors: { getAllSettings },
@@ -20,11 +20,13 @@ export default function Users() {
 
 	const settings = useSelector(getAllSettings)
 
-	useGetAllUsers({
-		useCaching: settings.useCaching,
-		noBusySpinner: settings.noBusySpinner,
-		dependecies: [settings.noBusySpinner],
-	})
+	// useGetAllUsers({
+	// 	useCaching: settings.useCaching,
+	// 	noBusySpinner: settings.noBusySpinner,
+	// 	dependecies: [settings.noBusySpinner],
+	// })
+
+	useEffect(() => dispatch(fetchAllUsers()), [fetchAllUsers])
 
 	return (
 		<div>

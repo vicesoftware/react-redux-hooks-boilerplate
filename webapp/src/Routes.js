@@ -4,12 +4,8 @@ import Container from 'react-bootstrap/Container'
 import Page from './widgets/Page/Page'
 import { About } from './features/About'
 import { Home } from './features/Home'
-import users from './features/users'
+import Users from './features/users'
 import Settings from './features/settings'
-
-const {
-	components: { Users },
-} = users
 
 export default function Routes() {
 	return (

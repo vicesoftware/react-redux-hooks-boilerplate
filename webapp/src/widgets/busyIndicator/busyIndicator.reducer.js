@@ -4,7 +4,7 @@ const intitialState = {
 
 export default function reducer(state = intitialState, action) {
 	if (
-		action.type.endsWith('_REQUESTED_ASYNC') &&
+		action.type.endsWith('/pending') &&
 		(!action.payload || !action.payload.noBusySpinner)
 	) {
 		if (action.payload && action.payload.name) {
@@ -21,10 +21,7 @@ export default function reducer(state = intitialState, action) {
 		}
 	}
 
-	if (
-		action.type.endsWith('_RECEIVED_ASYNC') ||
-		action.type.endsWith('_ERROR_ASYNC')
-	) {
+	if (action.type.endsWith('/fulfilled') || action.type.endsWith('/error')) {
 		if (action.payload && action.payload.name) {
 			if (!state.name) {
 				console.warn(

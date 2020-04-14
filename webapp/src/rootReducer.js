@@ -4,7 +4,7 @@ import modal from './widgets/modal'
 import pendingRequest from './infrastructure/pendingRequest'
 import httpCache from './infrastructure/httpCache'
 import notificationPopup from './infrastructure/notificationPopup'
-import users from './features/users'
+import * as users from './features/users'
 import * as settings from './features/settings'
 
 export default combineReducers({
@@ -13,6 +13,6 @@ export default combineReducers({
 	[pendingRequest.constants.STATE_NAME]: pendingRequest.reducer,
 	[httpCache.constants.STATE_NAME]: httpCache.reducer,
 	[notificationPopup.constants.STATE_NAME]: notificationPopup.reducer,
-	[users.constants.STATE_NAME]: users.reducer,
+	[users.name]: users.reducer,
 	[settings.name]: settings.reducer,
 })

@@ -7,7 +7,7 @@ export function useGetAllUsers({
 	dependencies,
 } = {}) {
 	useAsync({
-		url: 'users?page=1&per_page=1000',
+		url: 'users?page=1&per_page=100',
 		actionType: usersActions.GET_ALL_USERS,
 		useCaching,
 		noBusySpinner,
