@@ -6,10 +6,12 @@ import Button from 'react-bootstrap/Button'
 import { getAllUsers } from '../users.selectors'
 import { useGetAllUsers } from '../users.effects'
 import { BusyIndicator } from '../../../widgets/busyIndicator'
-import { selectors, actions } from '../../settings'
+import * as settings from '../../settings'
 
-const { getAllSettings } = selectors
-const { setNoBusySpinner } = actions
+const {
+	selectors: { getAllSettings },
+	actions: { setNoBusySpinner },
+} = settings
 
 export default function Users() {
 	const users = useSelector(getAllUsers)
