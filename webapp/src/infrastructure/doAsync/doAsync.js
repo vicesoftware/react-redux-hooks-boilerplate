@@ -6,34 +6,42 @@ import {
 	cleanUpPendingRequests,
 	handleError,
 	logError,
-	processHttpResult,
+	// processHttpResult,
 	requestIsAlreadyPending,
 	validateInput,
 } from './doAsyncLogic'
+import { actions as busyIndicatorActions } from '../../widgets/busyIndicator'
+import notificationPopup from '../../infrastructure/notificationPopup'
 
 const {
 	actions: { addRequestToCache },
 	selectors: { tryToFindRequestInCache },
 } = httpCache
 
-export const cacheHit = (cachedReceivedAction, noBusySpinner) => ({
+const {
+	actions: { notifySuccess },
+} = notificationPopup
+
+export const cacheHit = (url, method, noBusySpinner) => ({
 	type: REDUX_CACHE_HIT_RECEIVED_ASYNC,
 	payload: {
-		cachedReceivedAction,
+		url,
+		method,
 		noBusySpinner,
 	},
 })
 
 const doAsync = ({
-	actionType,
+	// actionType,
 	url,
 	httpMethod = 'get',
-	mapResponseToPayload,
+	// mapResponseToPayload,
 	errorMessage = 'Unable to process request. Please try again later.',
 	httpConfig,
 	onError,
 	successMessage,
 	noBusySpinner,
+	busyIndicatorName,
 	useCaching = false,
 	stubSuccess,
 	stubError,
@@ -51,16 +59,18 @@ const doAsync = ({
 	}
 
 	try {
-		validateInput(actionType, url, httpMethod)
+		// actionType,
 
-		dispatch({
-			type: actionType.REQUESTED,
-			payload: { noBusySpinner, useCaching },
-		})
+		validateInput(url, httpMethod)
 
+		// dispatch({
+		// 	type: actionType.REQUESTED,
+		// 	payload: { noBusySpinner, useCaching },
+		// })
+
+		// actionType,
 		if (
 			requestIsAlreadyPending({
-				actionType,
 				noBusySpinner,
 				url,
 				httpMethod,
@@ -81,8 +91,10 @@ const doAsync = ({
 					httpConfig && httpConfig.body
 				)
 			) {
-				dispatch(cacheHit(actionType.RECEIVED, noBusySpinner))
-				cleanUpPendingRequests(actionType, dispatch, getState)
+				// actionType.RECEIVED,
+				dispatch(cacheHit(url, httpMethod, noBusySpinner))
+				// actionType,
+				cleanUpPendingRequests(dispatch, getState)
 				return Promise.resolve()
 			}
 
@@ -98,44 +110,64 @@ const doAsync = ({
 			dispatch(addRequestToCache({ url, httpMethod, config: requestConfig }))
 		}
 
+		if (!noBusySpinner) {
+			dispatch(busyIndicatorActions.incrementBusyIndicator(busyIndicatorName))
+		}
+
 		httpConfig = {
 			...httpConfig,
 			...buildHeaders(url, httpConfig),
 		}
 
 		return http[httpMethod](url, httpConfig, { stubSuccess, stubError })
-			.then((body) =>
-				processHttpResult({
-					body,
-					dispatch,
-					mapResponseToPayload,
-					successMessage,
-					noBusySpinner,
-					actionType,
-					httpMethod,
-					url,
-					httpConfig,
-					errorMessage,
-					getState,
-				})
-			)
+			.then((body) => {
+				// processHttpResult({
+				// 	body,
+				// 	dispatch,
+				// 	// mapResponseToPayload,
+				// 	successMessage,
+				// 	// noBusySpinner,
+				// 	// actionType,
+				// 	httpMethod,
+				// 	url,
+				// 	// httpConfig,
+				// 	// errorMessage,
+				// 	getState,
+				// })
+
+				if (successMessage) {
+					dispatch(notifySuccess(successMessage))
+				}
+
+				return Promise.resolve(body)
+			})
 			.catch((exception) => {
 				handleError(
 					exception,
 					onError,
 					dispatch,
-					actionType,
+					// actionType,
 					httpMethod,
 					url,
 					httpConfig,
 					errorMessage
 				)
 			})
-			.then(() => {
-				cleanUpPendingRequests(actionType, dispatch, getState)
+			.then((response) => {
+				// actionType,
+				cleanUpPendingRequests(url, httpMethod, dispatch, getState)
+				if (!noBusySpinner) {
+					dispatch(
+						busyIndicatorActions.decrementBusyIndicator(busyIndicatorName)
+					)
+				}
+				return response
 			})
 	} catch (exception) {
-		logError(dispatch, actionType, httpMethod, url, httpConfig, { exception })
+		// actionType,
+		logError(dispatch, httpMethod, url, httpConfig, {
+			exception,
+		})
 		throw exception
 	}
 }

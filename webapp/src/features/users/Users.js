@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import { getAllUsers } from './users.selectors'
 import { fetchAllUsers } from './user.actions'
-import { BusyIndicator } from '../../widgets/busyIndicator'
+import BusyIndicator from '../../widgets/busyIndicator'
 import * as settings from '../settings'
 
 const {
@@ -28,7 +28,7 @@ export default function Users() {
 
 	useEffect(() => {
 		dispatch(fetchAllUsers())
-	}, [fetchAllUsers])
+	}, [dispatch])
 
 	return (
 		<div>

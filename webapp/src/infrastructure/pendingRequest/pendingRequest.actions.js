@@ -1,31 +1,34 @@
 import {
-	CANCEL,
+	// CANCEL,
 	ADD,
 	DELETE,
 	SET_BUSY_SPINNER,
 } from './pendingRequest.actionTypes'
 
-export const cancelPendingRequest = () => ({
-	type: CANCEL,
-})
+// export const cancelPendingRequest = () => ({
+// 	type: CANCEL,
+// })
 
-export const addPendingRequest = (requestedActionType) => ({
+export const addPendingRequest = (url, method) => ({
 	type: ADD,
 	payload: {
-		requestedActionType,
+		url,
+		method,
 	},
 })
 
-export const setBusySpinner = (requestedActionType, turnSpinnerOff) => ({
+export const setBusySpinner = (url, method, turnSpinnerOff) => ({
 	type: SET_BUSY_SPINNER,
 	payload: {
-		requestedActionType,
+		url,
+		method,
 		turnSpinnerOff,
 	},
 })
-export const deletePendingRequest = (requestedActionType) => ({
+export const deletePendingRequest = (url, method) => ({
 	type: DELETE,
 	payload: {
-		requestedActionType,
+		url,
+		method,
 	},
 })

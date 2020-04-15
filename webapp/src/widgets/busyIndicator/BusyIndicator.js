@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { getGlobalBusyIndicator } from '../busyIndicator.selectors'
+import { getGlobalBusyIndicator } from './busyIndicator.selectors'
 import './busyIndicator.css'
 
 export default function BusyIndicator({ children }) {

@@ -9,36 +9,40 @@ export default function reducer(state = intialState, action) {
 				...state,
 			}
 
-			newState[action.payload.requestedActionType] = {
+			const { url, method } = action.payload
+
+			newState[`${method}|${url}`] = {
 				turnSpinnerOff: false,
 			}
 
 			return newState
 		}
 
-		case types.CANCEL: {
-			const newState = {
-				...state,
-			}
+		// case types.CANCEL: {
+		// 	const newState = {
+		// 		...state,
+		// 	}
 
-			for (const name in newState) {
-				if (Object.prototype.hasOwnProperty.call(newState, name)) {
-					newState[name] = {
-						...newState[name],
-						cancelled: true,
-					}
-				}
-			}
+		// 	for (const name in newState) {
+		// 		if (Object.prototype.hasOwnProperty.call(newState, name)) {
+		// 			newState[name] = {
+		// 				...newState[name],
+		// 				cancelled: true,
+		// 			}
+		// 		}
+		// 	}
 
-			return newState
-		}
+		// 	return newState
+		// }
 
 		case types.DELETE: {
 			const newState = {
 				...state,
 			}
 
-			delete newState[action.payload.requestedActionType]
+			const { url, method } = action.payload
+
+			delete newState[`${method}|${url}`]
 
 			return newState
 		}
@@ -49,8 +53,10 @@ export default function reducer(state = intialState, action) {
 				...state,
 			}
 
-			newState[action.payload.requestedActionType] = {
-				...newState[action.payload.requestedActionType],
+			const { url, method } = action.payload
+
+			newState[`${method}|${url}`] = {
+				...newState[`${method}|${url}`],
 				turnSpinnerOff,
 			}
 
