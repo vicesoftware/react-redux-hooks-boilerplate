@@ -10,16 +10,12 @@ import {
 	validateInput,
 } from './doAsyncLogic'
 import { actions as busyIndicatorActions } from '../../widgets/busyIndicator'
-import notificationPopup from '../../infrastructure/notificationPopup'
+import { notifySuccess } from '../../infrastructure/notificationPopup/notificationPopup.actions'
 
 const {
 	actions: { addRequestToCache },
 	selectors: { tryToFindRequestInCache },
 } = httpCache
-
-const {
-	actions: { notifySuccess },
-} = notificationPopup
 
 export const cacheHit = (url, method, noBusySpinner) => ({
 	type: REDUX_CACHE_HIT_RECEIVED_ASYNC,

@@ -97,7 +97,7 @@ export function requestIsAlreadyPending({
 		}
 
 		dispatch(
-			setBusySpinner(url, httpMethod, currentRequestRequiresABusySpinner)
+			setBusySpinner({ url, httpMethod }, currentRequestRequiresABusySpinner)
 		)
 
 		dispatch({
@@ -117,7 +117,7 @@ export function requestIsAlreadyPending({
 	// need to add it to the list of pending requests so
 	// future request will know this request is pending
 	if (noBusySpinner) {
-		dispatch(addPendingRequest(url, httpMethod))
+		dispatch(addPendingRequest({ url, httpMethod }))
 	}
 
 	return false

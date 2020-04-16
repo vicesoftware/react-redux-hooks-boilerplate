@@ -5,11 +5,7 @@ import {
 	SET_BUSY_SPINNER,
 } from './pendingRequest.actionTypes'
 
-// export const cancelPendingRequest = () => ({
-// 	type: CANCEL,
-// })
-
-export const addPendingRequest = (url, httpMethod) => ({
+export const addPendingRequest = ({ url, httpMethod }) => ({
 	type: ADD,
 	payload: {
 		url,
@@ -17,7 +13,7 @@ export const addPendingRequest = (url, httpMethod) => ({
 	},
 })
 
-export const setBusySpinner = (url, httpMethod, turnSpinnerOff) => ({
+export const setBusySpinner = ({ url, httpMethod }, turnSpinnerOff) => ({
 	type: SET_BUSY_SPINNER,
 	payload: {
 		url,

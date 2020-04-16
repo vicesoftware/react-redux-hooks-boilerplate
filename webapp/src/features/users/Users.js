@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import { getAllUsers } from './users.selectors'
+import { selectAllUsers } from './users.selectors'
 import { fetchAllUsers } from './user.actions'
 import BusyIndicator from '../../widgets/busyIndicator'
 import * as settings from '../settings'
@@ -14,7 +14,7 @@ const {
 } = settings
 
 export default function Users() {
-	const users = useSelector(getAllUsers)
+	const users = useSelector(selectAllUsers)
 
 	const dispatch = useDispatch()
 
