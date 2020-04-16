@@ -20,15 +20,14 @@ export default function Users() {
 
 	const settings = useSelector(getAllSettings)
 
-	// useGetAllUsers({
-	// 	useCaching: settings.useCaching,
-	// 	noBusySpinner: settings.noBusySpinner,
-	// 	dependecies: [settings.noBusySpinner],
-	// })
-
 	useEffect(() => {
-		dispatch(fetchAllUsers())
-	}, [dispatch])
+		dispatch(
+			fetchAllUsers({
+				useCaching: settings.useCaching,
+				noBusySpinner: settings.noBusySpinner,
+			})
+		)
+	}, [dispatch, settings.useCaching, settings.noBusySpinner])
 
 	return (
 		<div>
@@ -51,7 +50,7 @@ export default function Users() {
 				<Col>
 					<Row>
 						<Button
-							onClick={() => dispatch(setNoBusySpinner(true))}
+							onClick={() => dispatch(setNoBusySpinner(false))}
 							variant='info'
 						>
 							Reload with Busy Spinnner

@@ -9,26 +9,26 @@ import {
 // 	type: CANCEL,
 // })
 
-export const addPendingRequest = (url, method) => ({
+export const addPendingRequest = (url, httpMethod) => ({
 	type: ADD,
 	payload: {
 		url,
-		method,
+		httpMethod,
 	},
 })
 
-export const setBusySpinner = (url, method, turnSpinnerOff) => ({
+export const setBusySpinner = (url, httpMethod, turnSpinnerOff) => ({
 	type: SET_BUSY_SPINNER,
 	payload: {
 		url,
-		method,
+		httpMethod,
 		turnSpinnerOff,
 	},
 })
-export const deletePendingRequest = (url, method) => ({
+export const deletePendingRequest = ({ url, httpMethod }) => ({
 	type: DELETE,
 	payload: {
 		url,
-		method,
+		httpMethod,
 	},
 })

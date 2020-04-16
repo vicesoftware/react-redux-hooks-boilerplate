@@ -1,5 +1,5 @@
 import * as types from './httpCache.actionTypes'
-import { getCacheKey } from './httpCache.common'
+import buildCacheKey from '../buildCacheKey'
 
 const intialState = {}
 
@@ -10,7 +10,7 @@ export default function reducer(state = intialState, action) {
 				...state,
 			}
 
-			newState[getCacheKey(action.payload)] = {
+			newState[buildCacheKey(action.payload)] = {
 				...action.payload.config,
 				createdAt: action.payload.createdAt,
 			}
@@ -32,7 +32,7 @@ export default function reducer(state = intialState, action) {
 				action.payload.httpMethod &&
 				!action.payload.patterns
 			) {
-				delete newState[getCacheKey(action.payload)]
+				delete newState[buildCacheKey(action.payload)]
 			} else if (
 				!(action.payload.url && action.payload.httpMethod) &&
 				action.payload.patterns

@@ -6,7 +6,6 @@ import {
 	cleanUpPendingRequests,
 	handleError,
 	logError,
-	// processHttpResult,
 	requestIsAlreadyPending,
 	validateInput,
 } from './doAsyncLogic'
@@ -32,10 +31,8 @@ export const cacheHit = (url, method, noBusySpinner) => ({
 })
 
 const doAsync = ({
-	// actionType,
 	url,
 	httpMethod = 'get',
-	// mapResponseToPayload,
 	errorMessage = 'Unable to process request. Please try again later.',
 	httpConfig,
 	onError,
@@ -48,6 +45,12 @@ const doAsync = ({
 	dispatch,
 	getState,
 } = {}) => {
+	const abort = () => {
+		throw new Error(
+			'Aysnc operation aborted. This is not an error condition but reported as one due to limitations of redux-toolkit'
+		)
+	}
+
 	if (!getState || typeof getState !== 'function') {
 		throw new Error(
 			'getState is required and must have a getState method defined on it'
@@ -59,27 +62,20 @@ const doAsync = ({
 	}
 
 	try {
-		// actionType,
-
 		validateInput(url, httpMethod)
 
-		// dispatch({
-		// 	type: actionType.REQUESTED,
-		// 	payload: { noBusySpinner, useCaching },
-		// })
-
-		// actionType,
 		if (
 			requestIsAlreadyPending({
 				noBusySpinner,
 				url,
 				httpMethod,
 				httpConfig,
+				busyIndicatorName,
 				dispatch,
 				getState,
 			})
 		) {
-			return Promise.resolve()
+			abort()
 		}
 
 		if (useCaching) {
@@ -91,11 +87,15 @@ const doAsync = ({
 					httpConfig && httpConfig.body
 				)
 			) {
-				// actionType.RECEIVED,
 				dispatch(cacheHit(url, httpMethod, noBusySpinner))
-				// actionType,
-				cleanUpPendingRequests(dispatch, getState)
-				return Promise.resolve()
+				cleanUpPendingRequests({
+					url,
+					httpMethod,
+					busyIndicatorName,
+					dispatch,
+					getState,
+				})
+				abort()
 			}
 
 			const requestConfig = {}
@@ -121,20 +121,6 @@ const doAsync = ({
 
 		return http[httpMethod](url, httpConfig, { stubSuccess, stubError })
 			.then((body) => {
-				// processHttpResult({
-				// 	body,
-				// 	dispatch,
-				// 	// mapResponseToPayload,
-				// 	successMessage,
-				// 	// noBusySpinner,
-				// 	// actionType,
-				// 	httpMethod,
-				// 	url,
-				// 	// httpConfig,
-				// 	// errorMessage,
-				// 	getState,
-				// })
-
 				if (successMessage) {
 					dispatch(notifySuccess(successMessage))
 				}
@@ -146,7 +132,6 @@ const doAsync = ({
 					exception,
 					onError,
 					dispatch,
-					// actionType,
 					httpMethod,
 					url,
 					httpConfig,
@@ -154,8 +139,13 @@ const doAsync = ({
 				)
 			})
 			.then((response) => {
-				// actionType,
-				cleanUpPendingRequests(url, httpMethod, dispatch, getState)
+				cleanUpPendingRequests({
+					url,
+					httpMethod,
+					busyIndicatorName,
+					dispatch,
+					getState,
+				})
 				if (!noBusySpinner) {
 					dispatch(
 						busyIndicatorActions.decrementBusyIndicator(busyIndicatorName)
@@ -164,7 +154,6 @@ const doAsync = ({
 				return response
 			})
 	} catch (exception) {
-		// actionType,
 		logError(dispatch, httpMethod, url, httpConfig, {
 			exception,
 		})

@@ -6,6 +6,11 @@ import { About } from './features/About'
 import { Home } from './features/Home'
 import Users from './features/users'
 import Settings from './features/settings'
+import demo from './features/demo'
+
+const {
+	components: { Demo },
+} = demo
 
 export default function Routes() {
 	return (
@@ -19,6 +24,9 @@ export default function Routes() {
 				</PageRoute>
 				<PageRoute path='/settings'>
 					<Settings />
+				</PageRoute>
+				<PageRoute path='/demo'>
+					<Demo />
 				</PageRoute>
 				<PageRoute path='/'>
 					<Home />

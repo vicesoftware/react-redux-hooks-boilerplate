@@ -9,7 +9,6 @@ export default createSlice({
 	initialState,
 	reducers: {
 		incrementBusyIndicator(state, action) {
-			console.log('incrementBusyIndicator', state, action)
 			if (action.payload) {
 				if (!action.payload) {
 					state[action.payload] = 1

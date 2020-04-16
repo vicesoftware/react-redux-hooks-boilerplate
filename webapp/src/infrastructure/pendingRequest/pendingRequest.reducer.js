@@ -1,4 +1,5 @@
 import * as types from './pendingRequest.actionTypes'
+import buildCacheKey from '../buildCacheKey'
 
 const intialState = {}
 
@@ -9,9 +10,7 @@ export default function reducer(state = intialState, action) {
 				...state,
 			}
 
-			const { url, method } = action.payload
-
-			newState[`${method}|${url}`] = {
+			newState[buildCacheKey(action.payload)] = {
 				turnSpinnerOff: false,
 			}
 
@@ -40,9 +39,7 @@ export default function reducer(state = intialState, action) {
 				...state,
 			}
 
-			const { url, method } = action.payload
-
-			delete newState[`${method}|${url}`]
+			delete newState[buildCacheKey(action.payload)]
 
 			return newState
 		}
@@ -53,10 +50,8 @@ export default function reducer(state = intialState, action) {
 				...state,
 			}
 
-			const { url, method } = action.payload
-
-			newState[`${method}|${url}`] = {
-				...newState[`${method}|${url}`],
+			newState[buildCacheKey(action.payload)] = {
+				...newState[buildCacheKey(action.payload)],
 				turnSpinnerOff,
 			}
 
