@@ -1,14 +1,13 @@
-import pendingRequest from '../../../infrastructure/pendingRequest'
+import {
+	reducer,
+	selectPendingRequest,
+	addPendingRequest,
+	deletePendingRequest,
+	name,
+} from '../../../infrastructure/pendingRequest'
 import buildCacheKey from '../../../infrastructure/buildCacheKey'
 
-const {
-	reducer,
-	actions,
-	selectors: { selectPendingRequest },
-	constants: { STATE_NAME },
-} = pendingRequest
-
-const buildDummnyCacheKey = (name) => {
+const buildDummnyCacheKey = (name = '') => {
 	const url = `expectedUrl${name}`
 	const httpMethod = `expectedMethod${name}`
 	return {
@@ -21,7 +20,7 @@ const buildDummnyCacheKey = (name) => {
 describe('Given we have no pending request', () => {
 	it('When we add a new pending request Then its added to new state', () => {
 		const cacheKey = buildDummnyCacheKey()
-		expect(reducer(null, actions.addPendingRequest(cacheKey))).toEqual({
+		expect(reducer({}, addPendingRequest(cacheKey))).toEqual({
 			[cacheKey.key]: {
 				turnSpinnerOff: false,
 			},
@@ -41,7 +40,7 @@ describe('Given we have pending request', () => {
 						turnSpinnerOff: false,
 					},
 				},
-				actions.addPendingRequest(expected)
+				addPendingRequest(expected)
 			)
 		).toEqual({
 			[existing.key]: {
@@ -63,7 +62,7 @@ describe('Given we have pending request', () => {
 						turnSpinnerOff: false,
 					},
 				},
-				actions.deletePendingRequest(existing)
+				deletePendingRequest(existing)
 			)
 		).toEqual({})
 	})
@@ -83,11 +82,11 @@ describe('Given we have pending requested ', () => {
 			},
 		}
 
-		expect(
-			selectPendingRequest({ [STATE_NAME]: pendingRequest }, existing1)
-		).toEqual({
-			turnSpinnerOff: true,
-		})
+		expect(selectPendingRequest({ [name]: pendingRequest }, existing1)).toEqual(
+			{
+				turnSpinnerOff: true,
+			}
+		)
 	})
 	it('Then calling getRequest with an actionType that is not pending returns undefined', () => {
 		const existing1 = buildDummnyCacheKey('1')
@@ -103,10 +102,7 @@ describe('Given we have pending requested ', () => {
 		}
 
 		expect(
-			selectPendingRequest(
-				{ [STATE_NAME]: pendingRequest },
-				'notPendingActionType'
-			)
+			selectPendingRequest({ [name]: pendingRequest }, 'notPendingActionType')
 		).toBe(undefined)
 	})
 })

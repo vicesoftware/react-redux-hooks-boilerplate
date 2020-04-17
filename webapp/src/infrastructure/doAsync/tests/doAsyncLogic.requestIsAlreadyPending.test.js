@@ -2,13 +2,8 @@ import { requestIsAlreadyPending } from '../doAsyncLogic'
 import * as pendingRequestSelectors from '../../pendingRequest/pendingRequest.selectors'
 import * as reactReduxMock from 'react-redux'
 import { REQUEST_ALREADY_PENDING_ASYNC } from '../doAsync.actionTypes'
-import { actions as busyIndicatorActions } from '../../../widgets/busyIndicator'
-import {
-	addPendingRequest,
-	setBusySpinner,
-} from '../../pendingRequest/pendingRequest.actions'
-
-const { incrementBusyIndicator } = busyIndicatorActions
+import { incrementBusyIndicator } from '../../../widgets/busyIndicator'
+import { addPendingRequest, setBusySpinner } from '../../pendingRequest'
 
 jest.mock('react-redux')
 jest.mock('../../pendingRequest/pendingRequest.selectors')
@@ -81,7 +76,7 @@ describe('Given we call requestIsAlreadyPending ', () => {
 					expect(dispatch.mock.calls.length).toBe(3)
 					expect(dispatch.mock.calls[0][0]).toEqual(incrementBusyIndicator())
 					expect(dispatch.mock.calls[1][0]).toEqual(
-						setBusySpinner({ url, httpMethod }, !noBusySpinner)
+						setBusySpinner({ url, httpMethod, turnSpinnerOff: !noBusySpinner })
 					)
 					expect(dispatch.mock.calls[2][0]).toEqual({
 						type: REQUEST_ALREADY_PENDING_ASYNC,
@@ -104,7 +99,7 @@ describe('Given we call requestIsAlreadyPending ', () => {
 				({ actionType, noBusySpinner, url, httpMethod, httpConfig }) => {
 					expect(dispatch.mock.calls.length).toBe(2)
 					expect(dispatch.mock.calls[0][0]).toEqual(
-						setBusySpinner({ url, httpMethod }, !noBusySpinner)
+						setBusySpinner({ url, httpMethod, turnSpinnerOff: !noBusySpinner })
 					)
 					expect(dispatch.mock.calls[1][0]).toEqual({
 						type: REQUEST_ALREADY_PENDING_ASYNC,

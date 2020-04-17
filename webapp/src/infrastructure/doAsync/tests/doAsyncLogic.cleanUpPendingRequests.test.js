@@ -2,10 +2,8 @@ import { cleanUpPendingRequests } from '../doAsyncLogic'
 import * as reactReduxMock from 'react-redux'
 import * as pendingRequests from '../../pendingRequest/pendingRequest.selectors'
 import { TURN_OFF_BUSY_INDICATOR_FOR_PENDING_ASYNC } from '../doAsync.actionTypes'
-import { deletePendingRequest } from '../../pendingRequest/pendingRequest.actions'
-import { actions as busyIndicatorActions } from '../../../widgets/busyIndicator'
-
-const { decrementBusyIndicator } = busyIndicatorActions
+import { deletePendingRequest } from '../../pendingRequest'
+import { decrementBusyIndicator } from '../../../widgets/busyIndicator'
 
 jest.mock('react-redux')
 jest.mock('../../pendingRequest/pendingRequest.selectors')
