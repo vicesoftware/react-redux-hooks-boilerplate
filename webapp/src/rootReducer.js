@@ -6,7 +6,6 @@ import httpCache from './infrastructure/httpCache'
 import notificationPopup from './infrastructure/notificationPopup'
 import * as users from './features/users'
 import * as settings from './features/settings'
-import demo from './features/demo'
 
 export default combineReducers({
 	[busyIndicator.name]: busyIndicator.reducer,
@@ -16,5 +15,4 @@ export default combineReducers({
 	[notificationPopup.constants.STATE_NAME]: notificationPopup.reducer,
 	[users.name]: users.reducer,
 	[settings.name]: settings.reducer,
-	[demo.constants.STATE_NAME]: demo.reducer,
 })
