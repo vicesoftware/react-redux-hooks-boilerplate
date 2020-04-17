@@ -69,7 +69,7 @@ describe('Given we call doAsync ', () => {
 	})
 
 	describe('When a request is pending ', () => {
-		it('Then actionType.REQUESTED is dispatched and nothing else is dispatched ', async () => {
+		it('Then actionType.REQUESTED is dispatched and nothing else is dispatched and we return rejectWithValue to caller ', async () => {
 			expect(doAsync).toBeTruthy()
 
 			const url = 'url'
@@ -79,34 +79,36 @@ describe('Given we call doAsync ', () => {
 			const httpConfig = 'httpConfig'
 			const useCaching = 'useCaching'
 
+			const rejectWithValue = jest.fn()
+
 			doAsyncLogic.requestIsAlreadyPending.mockReturnValue(true)
 
-			try {
-				return doAsync({
-					noBusySpinner,
-					url,
-					httpMethod,
-					httpConfig,
-					errorMessage,
-					useCaching,
-					dispatch,
-					getState,
-				})
-			} catch (r) {
-				expect(r.toString()).toBe(
-					'Error: Aysnc operation aborted. This is not an error condition but reported as one due to limitations of redux-toolkit'
-				)
+			const result = await doAsync({
+				noBusySpinner,
+				url,
+				httpMethod,
+				httpConfig,
+				errorMessage,
+				useCaching,
+				dispatch,
+				getState,
+				rejectWithValue,
+			})
 
-				expect(doAsyncLogic.requestIsAlreadyPending.mock.calls.length).toBe(1)
-				expect(doAsyncLogic.requestIsAlreadyPending.mock.calls[0][0]).toEqual({
-					noBusySpinner,
-					url,
-					httpMethod,
-					dispatch,
-					httpConfig,
-					getState,
-				})
-			}
+			expect(rejectWithValue.mock.calls.length).toBe(1)
+			expect(rejectWithValue.mock.calls[0][0]).toEqual(
+				'Request is already pending.'
+			)
+
+			expect(doAsyncLogic.requestIsAlreadyPending.mock.calls.length).toBe(1)
+			expect(doAsyncLogic.requestIsAlreadyPending.mock.calls[0][0]).toEqual({
+				noBusySpinner,
+				url,
+				httpMethod,
+				dispatch,
+				httpConfig,
+				getState,
+			})
 		})
 	})
 
@@ -313,34 +315,14 @@ function testUseCachingWithRequestNotInCache({
 			getState,
 		})
 
-		expect(dispatch.mock.calls.length).toBe(2)
+		expect(dispatch.mock.calls.length).toBe(1)
 
-		expect(dispatch.mock.calls[0][0]).toEqual({
-			type: actionType.REQUESTED,
-			payload: {
-				noBusySpinner,
-				useCaching,
-			},
-		})
-
-		expect(dispatch.mock.calls[1][0]).toEqual(expectedAddRequestToCacheResult)
+		expect(dispatch.mock.calls[0][0]).toEqual('expectedAddRequestToCacheResult')
 
 		const tempHttpConfig = {
 			...httpConfig,
 			...buildHeaders(url, httpConfig),
 		}
-
-		expect(doAsyncLogic.processHttpResult.mock.calls.length).toBe(1)
-		expect(doAsyncLogic.processHttpResult.mock.calls[0][0]).toEqual({
-			body: expectedBody,
-			dispatch,
-			noBusySpinner,
-			httpMethod,
-			url,
-			httpConfig: tempHttpConfig,
-			errorMessage,
-			getState,
-		})
 
 		return {
 			url,
@@ -349,7 +331,7 @@ function testUseCachingWithRequestNotInCache({
 	})
 }
 
-function testUseCachingWithRequestInCache({ httpMethod = 'get' } = {}) {
+async function testUseCachingWithRequestInCache({ httpMethod = 'get' } = {}) {
 	expect(doAsync).toBeTruthy()
 	expect(httpCacheActions.addRequestToCache.mock).toBeTruthy()
 
@@ -361,6 +343,8 @@ function testUseCachingWithRequestInCache({ httpMethod = 'get' } = {}) {
 	const expectedBody = 'expectedBody'
 	const expectedAddRequestToCacheResult = 'expectedAddRequestToCacheResult'
 
+	const rejectWithValue = jest.fn()
+
 	http.get.mockReturnValue(Promise.resolve(expectedBody))
 
 	httpCacheSelectors.tryToFindRequestInCache.mockReturnValue(true)
@@ -369,7 +353,7 @@ function testUseCachingWithRequestInCache({ httpMethod = 'get' } = {}) {
 		expectedAddRequestToCacheResult
 	)
 
-	return doAsync({
+	const result = await doAsync({
 		noBusySpinner,
 		url,
 		httpMethod,
@@ -378,39 +362,32 @@ function testUseCachingWithRequestInCache({ httpMethod = 'get' } = {}) {
 		useCaching,
 		dispatch,
 		getState,
-	}).then((r) => {
-		expect(doAsyncLogic.requestIsAlreadyPending.mock.calls.length).toBe(1)
-
-		expect(doAsyncLogic.requestIsAlreadyPending.mock.calls[0][0]).toEqual({
-			noBusySpinner,
-			url,
-			httpMethod,
-			dispatch,
-			httpConfig,
-			getState,
-		})
-
-		expect(dispatch.mock.calls.length).toBe(2)
-
-		expect(dispatch.mock.calls[0][0]).toEqual({
-			type: actionType.REQUESTED,
-			payload: {
-				noBusySpinner,
-				useCaching,
-			},
-		})
-
-		expect(dispatch.mock.calls[1][0]).toEqual(
-			cacheHit(url, httpMethod, noBusySpinner)
-		)
+		rejectWithValue,
 	})
+	expect(rejectWithValue.mock.calls.length).toBe(1)
+	expect(rejectWithValue.mock.calls[0][0]).toBe('Request found in cache.')
+
+	expect(doAsyncLogic.requestIsAlreadyPending.mock.calls.length).toBe(1)
+
+	expect(doAsyncLogic.requestIsAlreadyPending.mock.calls[0][0]).toEqual({
+		noBusySpinner,
+		url,
+		httpMethod,
+		dispatch,
+		httpConfig,
+		getState,
+	})
+
+	expect(dispatch.mock.calls.length).toBe(1)
+
+	expect(dispatch.mock.calls[0][0]).toEqual(
+		cacheHit(url, httpMethod, noBusySpinner)
+	)
+
+	return result
 }
 
-function testDoAsync({
-	expectedBody,
-	httpMethod = 'get',
-	expectProcessResult = true,
-} = {}) {
+function testDoAsync({ expectedBody, httpMethod = 'get' } = {}) {
 	expect(doAsync).toBeTruthy()
 
 	const url = 'url'
@@ -442,20 +419,6 @@ function testDoAsync({
 		const tempHttpConfig = {
 			...httpConfig,
 			...buildHeaders(url, httpConfig),
-		}
-
-		if (expectProcessResult) {
-			expect(doAsyncLogic.processHttpResult.mock.calls.length).toBe(1)
-			expect(doAsyncLogic.processHttpResult.mock.calls[0][0]).toEqual({
-				body: expectedBody,
-				dispatch,
-				noBusySpinner,
-				httpMethod,
-				url,
-				httpConfig: tempHttpConfig,
-				errorMessage,
-				getState,
-			})
 		}
 
 		return {

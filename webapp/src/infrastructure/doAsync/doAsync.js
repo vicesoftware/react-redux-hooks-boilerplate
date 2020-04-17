@@ -40,13 +40,8 @@ const doAsync = ({
 	stubError,
 	dispatch,
 	getState,
+	rejectWithValue,
 } = {}) => {
-	const abort = () => {
-		throw new Error(
-			'Aysnc operation aborted. This is not an error condition but reported as one due to limitations of redux-toolkit'
-		)
-	}
-
 	if (!getState || typeof getState !== 'function') {
 		throw new Error(
 			'getState is required and must have a getState method defined on it'
@@ -71,7 +66,7 @@ const doAsync = ({
 				getState,
 			})
 		) {
-			abort()
+			return rejectWithValue('Request is already pending.')
 		}
 
 		if (useCaching) {
@@ -91,7 +86,7 @@ const doAsync = ({
 					dispatch,
 					getState,
 				})
-				abort()
+				return rejectWithValue('Request found in cache.')
 			}
 
 			const requestConfig = {}

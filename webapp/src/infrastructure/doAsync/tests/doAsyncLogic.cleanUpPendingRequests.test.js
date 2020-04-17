@@ -93,9 +93,15 @@ function callPendingRequestAndThen({ turnSpinnerOff }, andThen) {
 
 	expect(pendingRequests.getPendingRequest.mock.calls.length).toBe(2)
 	expect(pendingRequests.getPendingRequest.mock.calls[0][0]).toBe(expectedState)
-	expect(pendingRequests.getPendingRequest.mock.calls[0][1]).toBe(url)
+	expect(pendingRequests.getPendingRequest.mock.calls[0][1]).toEqual({
+		url,
+		httpMethod,
+	})
 	expect(pendingRequests.getPendingRequest.mock.calls[1][0]).toBe(expectedState)
-	expect(pendingRequests.getPendingRequest.mock.calls[1][1]).toBe(url)
+	expect(pendingRequests.getPendingRequest.mock.calls[1][1]).toEqual({
+		url,
+		httpMethod,
+	})
 
 	andThen(dispatch, { url, httpMethod })
 }

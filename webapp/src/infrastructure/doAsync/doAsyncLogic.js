@@ -23,11 +23,11 @@ export function cleanUpPendingRequests({
 		throw new Error('getState is required and must be a function')
 	}
 
-	if (!getPendingRequest(getState(), url, httpMethod)) {
+	if (!getPendingRequest(getState(), { url, httpMethod })) {
 		return
 	}
 
-	if (getPendingRequest(getState(), url, httpMethod).turnSpinnerOff) {
+	if (getPendingRequest(getState(), { url, httpMethod }).turnSpinnerOff) {
 		dispatch({ type: TURN_OFF_BUSY_INDICATOR_FOR_PENDING_ASYNC })
 		dispatch(busyIndicatorActions.decrementBusyIndicator(busyIndicatorName))
 	}
@@ -87,7 +87,7 @@ export function requestIsAlreadyPending({
 		throw new Error('get state is required and must be a function')
 	}
 
-	const pendingRequest = getPendingRequest(getState(), url, httpMethod)
+	const pendingRequest = getPendingRequest(getState(), { url, httpMethod })
 
 	if (pendingRequest) {
 		const currentRequestRequiresABusySpinner = !noBusySpinner
