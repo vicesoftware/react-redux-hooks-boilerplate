@@ -31,9 +31,9 @@ describe('Given we call requestIsAlreadyPending ', () => {
 		it("And there is noBusySpinner false Then we return false and don't call dispatch ", async () => {
 			expect(requestIsAlreadyPending).toBeTruthy()
 			expect(dispatch.mock).toBeTruthy()
-			expect(pendingRequestSelectors.getPendingRequest.mock).toBeTruthy()
+			expect(pendingRequestSelectors.selectPendingRequest.mock).toBeTruthy()
 
-			pendingRequestSelectors.getPendingRequest.mockReturnValue(false)
+			pendingRequestSelectors.selectPendingRequest.mockReturnValue(false)
 
 			expect(
 				requestIsAlreadyPending({
@@ -49,12 +49,12 @@ describe('Given we call requestIsAlreadyPending ', () => {
 		it("And there is noBusySpinner true Then we return false and don't call dispatch ", async () => {
 			expect(requestIsAlreadyPending).toBeTruthy()
 			expect(dispatch.mock).toBeTruthy()
-			expect(pendingRequestSelectors.getPendingRequest.mock).toBeTruthy()
+			expect(pendingRequestSelectors.selectPendingRequest.mock).toBeTruthy()
 
 			const url = 'EXPECTED_URL'
 			const httpMethod = 'EXPECTED_HTTP_METHOD'
 
-			pendingRequestSelectors.getPendingRequest.mockReturnValue(false)
+			pendingRequestSelectors.selectPendingRequest.mockReturnValue(false)
 
 			expect(
 				requestIsAlreadyPending({
@@ -124,7 +124,7 @@ describe('Given we call requestIsAlreadyPending ', () => {
 function testIt({ noBusySpinner }, andThen) {
 	expect(requestIsAlreadyPending).toBeTruthy()
 	expect(dispatch.mock).toBeTruthy()
-	expect(pendingRequestSelectors.getPendingRequest.mock).toBeTruthy()
+	expect(pendingRequestSelectors.selectPendingRequest.mock).toBeTruthy()
 
 	const actionType = {
 		REQUESTED: 'TYPE_REQUESTED',
@@ -133,7 +133,7 @@ function testIt({ noBusySpinner }, andThen) {
 	const httpMethod = 'httpMethod'
 	const httpConfig = 'httpConfig'
 
-	pendingRequestSelectors.getPendingRequest.mockReturnValue(true)
+	pendingRequestSelectors.selectPendingRequest.mockReturnValue(true)
 
 	expect(
 		requestIsAlreadyPending({

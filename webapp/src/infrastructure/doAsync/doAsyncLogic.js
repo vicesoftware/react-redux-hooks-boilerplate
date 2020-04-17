@@ -3,14 +3,16 @@ import {
 	REQUEST_ALREADY_PENDING_ASYNC,
 	TURN_OFF_BUSY_INDICATOR_FOR_PENDING_ASYNC,
 } from './doAsync.actionTypes'
-import pendingRequest from '../pendingRequest'
-import { setBusySpinner } from '../pendingRequest/pendingRequest.actions'
-import { actions as busyIndicatorActions } from '../../widgets/busyIndicator'
-
-const {
-	actions: { addPendingRequest, deletePendingRequest },
-	selectors: { getPendingRequest },
-} = pendingRequest
+import {
+	addPendingRequest,
+	deletePendingRequest,
+	setBusySpinner,
+	selectPendingRequest,
+} from '../pendingRequest'
+import {
+	decrementBusyIndicator,
+	incrementBusyIndicator,
+} from '../../widgets/busyIndicator'
 
 export function cleanUpPendingRequests({
 	url,
@@ -23,13 +25,13 @@ export function cleanUpPendingRequests({
 		throw new Error('getState is required and must be a function')
 	}
 
-	if (!getPendingRequest(getState(), { url, httpMethod })) {
+	if (!selectPendingRequest(getState(), { url, httpMethod })) {
 		return
 	}
 
-	if (getPendingRequest(getState(), { url, httpMethod }).turnSpinnerOff) {
+	if (selectPendingRequest(getState(), { url, httpMethod }).turnSpinnerOff) {
 		dispatch({ type: TURN_OFF_BUSY_INDICATOR_FOR_PENDING_ASYNC })
-		dispatch(busyIndicatorActions.decrementBusyIndicator(busyIndicatorName))
+		dispatch(decrementBusyIndicator(busyIndicatorName))
 	}
 
 	dispatch(deletePendingRequest({ url, httpMethod }))
@@ -87,17 +89,21 @@ export function requestIsAlreadyPending({
 		throw new Error('get state is required and must be a function')
 	}
 
-	const pendingRequest = getPendingRequest(getState(), { url, httpMethod })
+	const pendingRequest = selectPendingRequest(getState(), { url, httpMethod })
 
 	if (pendingRequest) {
 		const currentRequestRequiresABusySpinner = !noBusySpinner
 
 		if (!pendingRequest.turnSpinnerOff && !noBusySpinner) {
-			dispatch(busyIndicatorActions.incrementBusyIndicator(busyIndicatorName))
+			dispatch(incrementBusyIndicator(busyIndicatorName))
 		}
 
 		dispatch(
-			setBusySpinner({ url, httpMethod }, currentRequestRequiresABusySpinner)
+			setBusySpinner({
+				url,
+				httpMethod,
+				turnSpinnerOff: currentRequestRequiresABusySpinner,
+			})
 		)
 
 		dispatch({

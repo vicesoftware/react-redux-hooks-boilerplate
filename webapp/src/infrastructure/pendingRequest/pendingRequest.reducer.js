@@ -17,23 +17,6 @@ export default function reducer(state = intialState, action) {
 			return newState
 		}
 
-		// case types.CANCEL: {
-		// 	const newState = {
-		// 		...state,
-		// 	}
-
-		// 	for (const name in newState) {
-		// 		if (Object.prototype.hasOwnProperty.call(newState, name)) {
-		// 			newState[name] = {
-		// 				...newState[name],
-		// 				cancelled: true,
-		// 			}
-		// 		}
-		// 	}
-
-		// 	return newState
-		// }
-
 		case types.DELETE: {
 			const newState = {
 				...state,

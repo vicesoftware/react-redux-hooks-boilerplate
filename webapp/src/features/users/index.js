@@ -1,14 +1,11 @@
 import Users from './Users'
-import { selectAllUsers } from './users.selectors'
+import * as selectors from './users.selectors'
 import slice from './users.slice'
-import { fetchAllUsers } from './user.actions'
+import * as actions from './user.actions'
 
 export const { name, reducer } = slice
-export const actions = {
-	fetchAllUsers,
-}
-export const selectors = {
-	selectAllUsers,
-}
+
+export const { fetchAllUsers } = actions
+export const { selectAllUsers } = selectors
 
 export default Users

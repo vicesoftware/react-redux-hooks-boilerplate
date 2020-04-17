@@ -23,19 +23,19 @@ describe('Given we call cleanUpPendingRequests with an actionType and dispatch '
 		dispatch.mockReset()
 		getState.mockReset()
 
-		pendingRequests.getPendingRequest.mockReset()
+		pendingRequests.selectPendingRequest.mockReset()
 	})
 
 	describe('When there are no pending requests ', () => {
 		it('Then we return without call dispatch', () => {
-			expect(pendingRequests.getPendingRequest.mock).toBeTruthy()
+			expect(pendingRequests.selectPendingRequest.mock).toBeTruthy()
 			expect(dispatch.mock).toBeTruthy()
 			expect(cleanUpPendingRequests).toBeTruthy()
 
 			cleanUpPendingRequests({ dispatch, getState })
 
 			expect(dispatch.mock.calls.length).toBe(0)
-			expect(pendingRequests.getPendingRequest.mock.calls.length).toBe(1)
+			expect(pendingRequests.selectPendingRequest.mock.calls.length).toBe(1)
 		})
 	})
 
@@ -76,11 +76,11 @@ describe('Given we call cleanUpPendingRequests with an actionType and dispatch '
 })
 
 function callPendingRequestAndThen({ turnSpinnerOff }, andThen) {
-	expect(pendingRequests.getPendingRequest.mock).toBeTruthy()
+	expect(pendingRequests.selectPendingRequest.mock).toBeTruthy()
 	expect(dispatch.mock).toBeTruthy()
 	expect(cleanUpPendingRequests).toBeTruthy()
 
-	pendingRequests.getPendingRequest.mockReturnValue({ turnSpinnerOff })
+	pendingRequests.selectPendingRequest.mockReturnValue({ turnSpinnerOff })
 
 	const expectedState = 'expectedState'
 
@@ -91,14 +91,18 @@ function callPendingRequestAndThen({ turnSpinnerOff }, andThen) {
 
 	cleanUpPendingRequests({ url, httpMethod, dispatch, getState })
 
-	expect(pendingRequests.getPendingRequest.mock.calls.length).toBe(2)
-	expect(pendingRequests.getPendingRequest.mock.calls[0][0]).toBe(expectedState)
-	expect(pendingRequests.getPendingRequest.mock.calls[0][1]).toEqual({
+	expect(pendingRequests.selectPendingRequest.mock.calls.length).toBe(2)
+	expect(pendingRequests.selectPendingRequest.mock.calls[0][0]).toBe(
+		expectedState
+	)
+	expect(pendingRequests.selectPendingRequest.mock.calls[0][1]).toEqual({
 		url,
 		httpMethod,
 	})
-	expect(pendingRequests.getPendingRequest.mock.calls[1][0]).toBe(expectedState)
-	expect(pendingRequests.getPendingRequest.mock.calls[1][1]).toEqual({
+	expect(pendingRequests.selectPendingRequest.mock.calls[1][0]).toBe(
+		expectedState
+	)
+	expect(pendingRequests.selectPendingRequest.mock.calls[1][1]).toEqual({
 		url,
 		httpMethod,
 	})

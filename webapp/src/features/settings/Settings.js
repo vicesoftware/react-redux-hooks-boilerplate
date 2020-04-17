@@ -1,15 +1,10 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Form from 'react-bootstrap/Form'
-import { getAllSettings } from './settings.selectors'
-import slice from './settings.slice'
-
-const { actions } = slice
-
-const { setUseCaching, setNoBusySpinner } = actions
+import { selectAllSettings, setUseCaching, setNoBusySpinner } from './index'
 
 export default function Settings() {
-	const settings = useSelector(getAllSettings)
+	const settings = useSelector(selectAllSettings)
 
 	const dispatch = useDispatch()
 

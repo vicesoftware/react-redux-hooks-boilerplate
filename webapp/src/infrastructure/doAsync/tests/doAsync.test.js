@@ -83,7 +83,7 @@ describe('Given we call doAsync ', () => {
 
 			doAsyncLogic.requestIsAlreadyPending.mockReturnValue(true)
 
-			const result = await doAsync({
+			await doAsync({
 				noBusySpinner,
 				url,
 				httpMethod,

@@ -1,3 +1,7 @@
-export const selectAllUsers = (state) => state.users.allUsers
-export const getUsersById = (usersId) => (state) =>
-	state.users.allUsers.find((item) => item.id === usersId)
+import slice from './users.slice'
+
+export const selectSlice = (state) => state[slice.name]
+
+export const selectAllUsers = (state) => selectSlice(state).allUsers
+export const selectUsersById = (usersId) => (state) =>
+	selectAllUsers(state).find((item) => item.id === usersId)

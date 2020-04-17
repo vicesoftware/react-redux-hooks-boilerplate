@@ -1,7 +1,5 @@
 import { buildActionType } from '../reduxHelpers'
 
-export const CANCEL = buildActionType('pendingRequest', 'CANCEL')
-
 export const ADD = buildActionType('pendingRequest', 'ADD')
 
 export const DELETE = buildActionType('pendingRequest', 'DELETE')

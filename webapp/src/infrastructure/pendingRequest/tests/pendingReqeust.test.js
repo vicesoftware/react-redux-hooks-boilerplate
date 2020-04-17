@@ -4,7 +4,7 @@ import buildCacheKey from '../../../infrastructure/buildCacheKey'
 const {
 	reducer,
 	actions,
-	selectors: { getPendingRequest },
+	selectors: { selectPendingRequest },
 	constants: { STATE_NAME },
 } = pendingRequest
 
@@ -84,7 +84,7 @@ describe('Given we have pending requested ', () => {
 		}
 
 		expect(
-			getPendingRequest({ [STATE_NAME]: pendingRequest }, existing1)
+			selectPendingRequest({ [STATE_NAME]: pendingRequest }, existing1)
 		).toEqual({
 			turnSpinnerOff: true,
 		})
@@ -103,7 +103,7 @@ describe('Given we have pending requested ', () => {
 		}
 
 		expect(
-			getPendingRequest(
+			selectPendingRequest(
 				{ [STATE_NAME]: pendingRequest },
 				'notPendingActionType'
 			)

@@ -1,8 +1,13 @@
 import Settings from './Settings'
-import * as settingsSelectors from './settings.selectors'
+import * as selectors from './settings.selectors'
 import slice from './settings.slice'
 
-export const { name, actions, reducer } = slice
-export const selectors = settingsSelectors
+export const {
+	name,
+	actions: { setUseCaching, setNoBusySpinner },
+	reducer,
+} = slice
+
+export const { selectAllSettings } = selectors
 
 export default Settings

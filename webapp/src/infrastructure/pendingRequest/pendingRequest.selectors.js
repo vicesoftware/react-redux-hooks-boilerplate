@@ -1,5 +1,7 @@
-import { STATE_NAME } from './pendingRequest.constants'
+import slice from './pendingRequest.slice'
 import buildCacheKey from '../buildCacheKey'
 
-export const getPendingRequest = (state, { url, httpMethod }) =>
-	state[STATE_NAME][buildCacheKey({ url, httpMethod })]
+export const selectSlice = (state) => state[slice.name]
+
+export const selectPendingRequest = (state, { url, httpMethod }) =>
+	selectSlice(state)[buildCacheKey({ url, httpMethod })]

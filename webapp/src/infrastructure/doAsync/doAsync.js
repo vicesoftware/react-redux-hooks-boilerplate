@@ -9,7 +9,10 @@ import {
 	requestIsAlreadyPending,
 	validateInput,
 } from './doAsyncLogic'
-import { actions as busyIndicatorActions } from '../../widgets/busyIndicator'
+import {
+	incrementBusyIndicator,
+	decrementBusyIndicator,
+} from '../../widgets/busyIndicator'
 import { notifySuccess } from '../../infrastructure/notificationPopup/notificationPopup.actions'
 
 const {
@@ -102,7 +105,7 @@ const doAsync = ({
 		}
 
 		if (!noBusySpinner) {
-			dispatch(busyIndicatorActions.incrementBusyIndicator(busyIndicatorName))
+			dispatch(incrementBusyIndicator(busyIndicatorName))
 		}
 
 		httpConfig = {
@@ -138,9 +141,7 @@ const doAsync = ({
 					getState,
 				})
 				if (!noBusySpinner) {
-					dispatch(
-						busyIndicatorActions.decrementBusyIndicator(busyIndicatorName)
-					)
+					dispatch(decrementBusyIndicator(busyIndicatorName))
 				}
 				return response
 			})
