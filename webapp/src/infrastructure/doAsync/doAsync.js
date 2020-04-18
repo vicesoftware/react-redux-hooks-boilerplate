@@ -13,7 +13,7 @@ import {
 	incrementBusyIndicator,
 	decrementBusyIndicator,
 } from '../../widgets/busyIndicator'
-import { notifySuccess } from '../../infrastructure/notificationPopup/notificationPopup.actions'
+import { notifySuccess } from '../../infrastructure/notificationPopup'
 
 export const cacheHit = (url, method, noBusySpinner) => ({
 	type: REDUX_CACHE_HIT_RECEIVED_ASYNC,
@@ -111,7 +111,7 @@ const doAsync = ({
 		return http[httpMethod](url, httpConfig, { stubSuccess, stubError })
 			.then((body) => {
 				if (successMessage) {
-					dispatch(notifySuccess(successMessage))
+					dispatch(notifySuccess({ message: successMessage }))
 				}
 
 				return Promise.resolve(body)

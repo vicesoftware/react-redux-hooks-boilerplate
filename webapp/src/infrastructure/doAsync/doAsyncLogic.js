@@ -9,7 +9,7 @@ import {
 	setBusySpinner,
 	selectPendingRequest,
 } from '../pendingRequest'
-import { notifyError } from '../notificationPopup/notificationPopup.actions'
+import { notifyError } from '../notificationPopup'
 import {
 	decrementBusyIndicator,
 	incrementBusyIndicator,
@@ -78,7 +78,7 @@ export function logError(
 	)
 
 	if (errorMessage) {
-		dispatch(notifyError({ errorMessage, message: errorMessage }))
+		dispatch(notifyError(errorMessage))
 	}
 }
 

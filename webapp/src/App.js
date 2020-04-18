@@ -4,11 +4,7 @@ import Container from 'react-bootstrap/Container'
 import NavBar from './widgets/NavBar'
 import Routes from './Routes'
 import './app.css'
-import notificationPopup from './infrastructure/notificationPopup'
-
-const {
-	components: { NotificationPopup },
-} = notificationPopup
+import NotificationPopup from './infrastructure/notificationPopup'
 
 function App() {
 	return (
