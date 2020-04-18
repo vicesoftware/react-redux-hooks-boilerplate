@@ -8,17 +8,6 @@ export default createSlice({
 	initialState,
 	reducers: {
 		addRequestToCache(state, action) {
-			// const newState = {
-			// 	...state,
-			// }
-
-			// newState[buildCacheKey(action.payload)] = {
-			// 	...action.payload.config,
-			// 	createdAt: action.payload.createdAt,
-			// }
-
-			// return newState
-
 			state[buildCacheKey(action.payload)] = {
 				...action.payload.config,
 				createdAt: action.payload.createdAt,

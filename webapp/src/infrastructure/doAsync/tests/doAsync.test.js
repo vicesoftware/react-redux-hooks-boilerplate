@@ -4,14 +4,12 @@ import * as reactReduxMock from 'react-redux'
 import http from '../../http'
 
 import { buildHeaders } from '../doAsyncLogic'
-import * as httpCacheActions from '../../httpCache/httpCache.actions'
-import * as httpCacheSelectors from '../../httpCache/httpCache.selectors'
+import * as httpCache from '../../httpCache'
 
 jest.mock('../doAsyncLogic')
 jest.mock('react-redux')
 jest.mock('../../http')
-jest.mock('../../httpCache/httpCache.actions')
-jest.mock('../../httpCache/httpCache.selectors')
+jest.mock('../../httpCache')
 
 let dispatch
 let getState
@@ -27,8 +25,8 @@ describe('Given we call doAsync ', () => {
 		getState.mockReset()
 		doAsyncLogic.validateInput.mockReset()
 		doAsyncLogic.requestIsAlreadyPending.mockReset()
-		httpCacheActions.addRequestToCache.mockReset()
-		httpCacheSelectors.tryToFindRequestInCache.mockReset()
+		httpCache.addRequestToCache.mockReset()
+		httpCache.tryToFindRequestInCache.mockReset()
 		http.get.mockReset()
 		http.post.mockReset()
 		http.put.mockReset()
@@ -279,7 +277,7 @@ function testUseCachingWithRequestNotInCache({
 	httpMethod = 'get',
 } = {}) {
 	expect(doAsync).toBeTruthy()
-	expect(httpCacheActions.addRequestToCache.mock).toBeTruthy()
+	expect(httpCache.addRequestToCache.mock).toBeTruthy()
 
 	const url = 'url'
 	const errorMessage = 'errorMessage'
@@ -288,11 +286,9 @@ function testUseCachingWithRequestNotInCache({
 	const useCaching = true
 	const expectedAddRequestToCacheResult = 'expectedAddRequestToCacheResult'
 
-	httpCacheSelectors.tryToFindRequestInCache.mockReturnValue(false)
+	httpCache.tryToFindRequestInCache.mockReturnValue(false)
 
-	httpCacheActions.addRequestToCache.mockReturnValue(
-		expectedAddRequestToCacheResult
-	)
+	httpCache.addRequestToCache.mockReturnValue(expectedAddRequestToCacheResult)
 
 	return doAsync({
 		noBusySpinner,
@@ -333,7 +329,7 @@ function testUseCachingWithRequestNotInCache({
 
 async function testUseCachingWithRequestInCache({ httpMethod = 'get' } = {}) {
 	expect(doAsync).toBeTruthy()
-	expect(httpCacheActions.addRequestToCache.mock).toBeTruthy()
+	expect(httpCache.addRequestToCache.mock).toBeTruthy()
 
 	const url = 'url'
 	const errorMessage = 'errorMessage'
@@ -347,11 +343,9 @@ async function testUseCachingWithRequestInCache({ httpMethod = 'get' } = {}) {
 
 	http.get.mockReturnValue(Promise.resolve(expectedBody))
 
-	httpCacheSelectors.tryToFindRequestInCache.mockReturnValue(true)
+	httpCache.tryToFindRequestInCache.mockReturnValue(true)
 
-	httpCacheActions.addRequestToCache.mockReturnValue(
-		expectedAddRequestToCacheResult
-	)
+	httpCache.addRequestToCache.mockReturnValue(expectedAddRequestToCacheResult)
 
 	const result = await doAsync({
 		noBusySpinner,
