@@ -1,5 +1,5 @@
 import http from '../http'
-import httpCache from '../httpCache'
+import { addRequestToCache, tryToFindRequestInCache } from '../httpCache'
 import { REDUX_CACHE_HIT_RECEIVED_ASYNC } from './doAsync.actionTypes'
 import {
 	buildHeaders,
@@ -14,11 +14,6 @@ import {
 	decrementBusyIndicator,
 } from '../../widgets/busyIndicator'
 import { notifySuccess } from '../../infrastructure/notificationPopup/notificationPopup.actions'
-
-const {
-	actions: { addRequestToCache },
-	selectors: { tryToFindRequestInCache },
-} = httpCache
 
 export const cacheHit = (url, method, noBusySpinner) => ({
 	type: REDUX_CACHE_HIT_RECEIVED_ASYNC,

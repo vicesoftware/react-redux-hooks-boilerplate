@@ -1,13 +1,16 @@
 import isEqual from 'lodash/isEqual'
-import { CACHE_TIMEOUT, STATE_NAME } from './httpCache.constants'
+import { CACHE_TIMEOUT } from './index'
 import buildCacheKey from '../buildCacheKey'
+import slice from './httpCache.slice'
+
+export const selectSlice = (state) => state[slice.name]
 
 const isExpired = (item) => {
 	const currentTime = Date.now()
 	return currentTime - item.createdAt > CACHE_TIMEOUT
 }
 
-const getRequestCache = (state) => state[STATE_NAME]
+const getRequestCache = (state) => selectSlice(state)
 
 export const tryToFindRequestInCache = (state, url, httpMethod, body) => {
 	const cacheKey = buildCacheKey({ url, httpMethod })
