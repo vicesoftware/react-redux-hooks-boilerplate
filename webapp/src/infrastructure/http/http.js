@@ -109,7 +109,7 @@ function doFetch(url, config, { stubSuccess, stubError } = {}) {
 			// response.json().then(() => redirectToSignOut());
 		}
 
-		return response.json().then((r) => Promise.reject(r))
+		return Promise.reject(response)
 	})
 }
 

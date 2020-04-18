@@ -5,7 +5,7 @@ import {
 	deleteRequestFromCache,
 	tryToFindRequestInCache,
 	name,
-	CACHE_TIMEOUT
+	CACHE_TIMEOUT,
 } from '../index'
 
 beforeEach(() => {
@@ -189,8 +189,7 @@ describe('Given we have cached requested ', () => {
 
 		const dummy3 = getDummyCacheData(3, createdAt)
 
-		Date.now
-			.mockReturnValueOnce(createdAt + CACHE_TIMEOUT + 1000)
+		Date.now.mockReturnValueOnce(createdAt + CACHE_TIMEOUT + 1000)
 
 		cachedRequests = reducer(cachedRequests, addRequestToCache(dummy3))
 

@@ -1,30 +1,31 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import './notificationPopup.css'
+import Toast from 'react-bootstrap/Toast'
 import * as actions from '../notificationPopup.actions'
 import { getError } from '../notificationPopup.selectors'
 
 class NotificationPopupContainer extends React.Component {
 	render() {
-		const { errorMessage, closePopup } = this.props
+		const { errorMessage, successMessage, closePopup, title } = this.props
+		const message = errorMessage || successMessage
 
 		return (
-			<div>
-				{errorMessage && (
-					<div className='errorBox'>
-						<span
-							className='closebtn'
-							onClick={() => closePopup()}
-							onKeyDown={() => {}}
-							role='button'
-							tabIndex={0}
-						>
-							&times;
-						</span>
-						<p>{errorMessage}</p>
-					</div>
+			<>
+				{message && (
+					<Toast
+						show={!!message}
+						variant={`${errorMessage ? 'danger' : 'info'}`}
+						onClose={closePopup}
+					>
+						<Toast.Header>
+							<strong className='mr-auto'>
+								{title || (errorMessage ? 'Error' : 'Status')}
+							</strong>
+						</Toast.Header>
+						<Toast.Body>{message}</Toast.Body>
+					</Toast>
 				)}
-			</div>
+			</>
 		)
 	}
 }

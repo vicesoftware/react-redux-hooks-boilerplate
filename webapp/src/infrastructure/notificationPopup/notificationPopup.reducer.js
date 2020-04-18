@@ -1,14 +1,18 @@
-import { NOTIFY_SUCCESS, RESET, CLOSE } from './notificationPopup.actionTypes'
+import {
+	NOTIFY_SUCCESS,
+	RESET,
+	CLOSE,
+	NOTIFY_ERROR,
+} from './notificationPopup.actionTypes'
 
 export default function reducer(state = {}, action) {
-	if (action.type.includes('_ERROR')) {
-		return action.payload
-	}
-
 	switch (action.type) {
 		case CLOSE:
 		case RESET: {
 			return {}
+		}
+		case NOTIFY_ERROR: {
+			return action.payload
 		}
 		case NOTIFY_SUCCESS: {
 			return action.payload

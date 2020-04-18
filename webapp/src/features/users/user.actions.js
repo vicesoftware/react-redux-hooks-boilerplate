@@ -8,6 +8,8 @@ export const fetchAllUsers = createAsyncThunk(
 			url: 'users?page=1&per_page=100',
 			useCaching,
 			noBusySpinner,
+			successMessage: 'Users loaded',
+			errorMessage: 'Unable to load users. Please try again later.',
 			...thunkArgs,
 		})
 )

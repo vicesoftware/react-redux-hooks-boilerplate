@@ -9,10 +9,15 @@ import {
 	setBusySpinner,
 	selectPendingRequest,
 } from '../pendingRequest'
+import notificationPopup from '../notificationPopup'
 import {
 	decrementBusyIndicator,
 	incrementBusyIndicator,
 } from '../../widgets/busyIndicator'
+
+const {
+	actions: { notifyError },
+} = notificationPopup
 
 export function cleanUpPendingRequests({
 	url,
@@ -64,6 +69,7 @@ export function getError(httpMethod, url, httpConfig, errorMessage) {
 }
 
 export function logError(
+	dispatch,
 	httpMethod,
 	url,
 	httpConfig,
@@ -74,6 +80,10 @@ export function logError(
        Failed with error:`,
 		exception
 	)
+
+	if (errorMessage) {
+		dispatch(notifyError({ errorMessage, message: errorMessage }))
+	}
 }
 
 export function requestIsAlreadyPending({
