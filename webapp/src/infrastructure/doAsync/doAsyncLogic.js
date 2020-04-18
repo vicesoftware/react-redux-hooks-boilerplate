@@ -9,15 +9,11 @@ import {
 	setBusySpinner,
 	selectPendingRequest,
 } from '../pendingRequest'
-import notificationPopup from '../notificationPopup'
+import { notifyError } from '../notificationPopup/notificationPopup.actions'
 import {
 	decrementBusyIndicator,
 	incrementBusyIndicator,
 } from '../../widgets/busyIndicator'
-
-const {
-	actions: { notifyError },
-} = notificationPopup
 
 export function cleanUpPendingRequests({
 	url,

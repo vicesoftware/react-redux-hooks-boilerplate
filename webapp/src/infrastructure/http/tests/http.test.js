@@ -80,7 +80,7 @@ describe('When we call get on a resource with a config', () => {
 		await http
 			.get('url', { sampleConfig: 'sample' })
 			.then((r) => expect(r.result))
-			.catch((e) => expect(e.error).toBe('whoops'))
+			.catch((e) => e.json((r) => expect(r.error).toBe('whoops')))
 	})
 })
 
