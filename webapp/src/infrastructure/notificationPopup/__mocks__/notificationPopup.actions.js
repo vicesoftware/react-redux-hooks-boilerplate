@@ -1,12 +1,12 @@
 import { failTest } from '../../../test/common.utils'
 import { NOTIFY_SUCCESS, RESET } from '../notificationPopup.actionTypes'
 
-export const handleError = (
+export const notifyError = (
 	type,
 	{ errorMessage, message, stack, componentStack }
 ) => {
 	failTest(
-		`handleError was called! 
+		`notifyError was called! 
       type: ${type}
       errorMessage: ${errorMessage}
       message: ${message}

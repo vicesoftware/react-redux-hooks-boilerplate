@@ -1,13 +1,12 @@
-import pendingRequest from '../index'
-import { getCacheKey } from '../httpCache.common'
-import { CACHE_TIMEOUT } from '../httpCache.constants'
-
-const {
+import buildCacheKey from '../../buildCacheKey'
+import {
 	reducer,
-	actions: { addRequestToCache, deleteRequestFromCache },
-	selectors: { tryToFindRequestInCache },
-	constants: { STATE_NAME },
-} = pendingRequest
+	addRequestToCache,
+	deleteRequestFromCache,
+	tryToFindRequestInCache,
+	name,
+	CACHE_TIMEOUT,
+} from '../index'
 
 beforeEach(() => {
 	Date.now = jest.fn()
@@ -19,15 +18,15 @@ describe('Given we have no cached request', () => {
 	it('When we add a new request Then its added to new state', () => {
 		const expectedUrl = 'expectedUrl'
 		const expectedMethod = 'expectedMethod'
-		const expectedExpirtationTime = 'expectedExpirtationTime'
+		const createdAt = 'expectedExpirtationTime'
 
-		Date.now.mockReturnValue(expectedExpirtationTime)
+		Date.now.mockReturnValue(createdAt)
 
-		const config = { url: expectedUrl, httpMethod: expectedMethod }
+		const config = { url: expectedUrl, httpMethod: expectedMethod, createdAt }
 
-		expect(reducer(null, addRequestToCache(config))).toEqual({
-			[getCacheKey(config)]: {
-				createdAt: expectedExpirtationTime,
+		expect(reducer({}, addRequestToCache(config))).toEqual({
+			[buildCacheKey(config)]: {
+				createdAt: createdAt,
 			},
 		})
 	})
@@ -39,33 +38,33 @@ describe('Given we have cached request', () => {
 		const dummy2 = getDummyCacheData(2)
 		const expected3 = getDummyCacheData(3)
 
-		Date.now.mockReturnValue(expected3.expectedExpirtationTime)
+		Date.now.mockReturnValue(expected3.createdAt)
 
 		expect(
 			reducer(
 				{
-					[getCacheKey(dummy1)]: {
-						createdAt: dummy1.expectedExpirtationTime,
+					[buildCacheKey(dummy1)]: {
+						createdAt: dummy1.createdAt,
 						...dummy1.config,
 					},
-					[getCacheKey(dummy2)]: {
-						createdAt: dummy2.expectedExpirtationTime,
+					[buildCacheKey(dummy2)]: {
+						createdAt: dummy2.createdAt,
 						...dummy2.config,
 					},
 				},
 				addRequestToCache(expected3)
 			)
 		).toEqual({
-			[getCacheKey(dummy1)]: {
-				createdAt: dummy1.expectedExpirtationTime,
+			[buildCacheKey(dummy1)]: {
+				createdAt: dummy1.createdAt,
 				...dummy1.config,
 			},
-			[getCacheKey(dummy2)]: {
-				createdAt: dummy2.expectedExpirtationTime,
+			[buildCacheKey(dummy2)]: {
+				createdAt: dummy2.createdAt,
 				...dummy2.config,
 			},
-			[getCacheKey(expected3)]: {
-				createdAt: expected3.expectedExpirtationTime,
+			[buildCacheKey(expected3)]: {
+				createdAt: expected3.createdAt,
 				...expected3.config,
 			},
 		})
@@ -79,28 +78,28 @@ describe('Given we have cached request', () => {
 		expect(
 			reducer(
 				{
-					[getCacheKey(dummy1)]: {
-						createdAt: dummy1.expectedExpirtationTime,
+					[buildCacheKey(dummy1)]: {
+						createdAt: dummy1.createdAt,
 						...dummy1.config,
 					},
-					[getCacheKey(dummy2)]: {
-						createdAt: dummy2.expectedExpirtationTime,
+					[buildCacheKey(dummy2)]: {
+						createdAt: dummy2.createdAt,
 						...dummy2.config,
 					},
-					[getCacheKey(dummy3)]: {
-						createdAt: dummy3.expectedExpirtationTime,
+					[buildCacheKey(dummy3)]: {
+						createdAt: dummy3.createdAt,
 						...dummy3.config,
 					},
 				},
 				deleteRequestFromCache(dummy2)
 			)
 		).toEqual({
-			[getCacheKey(dummy1)]: {
-				createdAt: dummy1.expectedExpirtationTime,
+			[buildCacheKey(dummy1)]: {
+				createdAt: dummy1.createdAt,
 				...dummy1.config,
 			},
-			[getCacheKey(dummy3)]: {
-				createdAt: dummy3.expectedExpirtationTime,
+			[buildCacheKey(dummy3)]: {
+				createdAt: dummy3.createdAt,
 				...dummy3.config,
 			},
 		})
@@ -114,24 +113,24 @@ describe('Given we have cached request', () => {
 		expect(
 			reducer(
 				{
-					[getCacheKey(dummy1)]: {
-						createdAt: dummy1.expectedExpirtationTime,
+					[buildCacheKey(dummy1)]: {
+						createdAt: dummy1.createdAt,
 						...dummy1.config,
 					},
-					[getCacheKey(dummy2)]: {
-						createdAt: dummy2.expectedExpirtationTime,
+					[buildCacheKey(dummy2)]: {
+						createdAt: dummy2.createdAt,
 						...dummy2.config,
 					},
-					[getCacheKey(dummy3)]: {
-						createdAt: dummy3.expectedExpirtationTime,
+					[buildCacheKey(dummy3)]: {
+						createdAt: dummy3.createdAt,
 						...dummy3.config,
 					},
 				},
 				deleteRequestFromCache({ patterns: [/1/, /2/] })
 			)
 		).toEqual({
-			[getCacheKey(dummy3)]: {
-				createdAt: dummy3.expectedExpirtationTime,
+			[buildCacheKey(dummy3)]: {
+				createdAt: dummy3.createdAt,
 				...dummy3.config,
 			},
 		})
@@ -145,28 +144,28 @@ describe('Given we have cached requested ', () => {
 		const dummy3 = getDummyCacheData(3)
 
 		const cachedRequests = {
-			[getCacheKey(dummy1)]: {
-				createdAt: dummy1.expectedExpirtationTime,
+			[buildCacheKey(dummy1)]: {
+				createdAt: dummy1.createdAt,
 				...dummy1.config,
 			},
-			[getCacheKey(dummy2)]: {
-				createdAt: dummy2.expectedExpirtationTime,
+			[buildCacheKey(dummy2)]: {
+				createdAt: dummy2.createdAt,
 				...dummy2.config,
 			},
-			[getCacheKey(dummy3)]: {
-				createdAt: dummy3.expectedExpirtationTime,
+			[buildCacheKey(dummy3)]: {
+				createdAt: dummy3.createdAt,
 				...dummy3.config,
 			},
 		}
 
 		expect(
 			tryToFindRequestInCache(
-				{ [STATE_NAME]: cachedRequests },
+				{ [name]: cachedRequests },
 				dummy1.url,
 				dummy1.httpMethod
 			)
 		).toEqual({
-			createdAt: dummy1.expectedExpirtationTime,
+			createdAt: dummy1.createdAt,
 			...dummy1.config,
 		})
 	})
@@ -176,29 +175,27 @@ describe('Given we have cached requested ', () => {
 		const dummy2 = getDummyCacheData(2)
 
 		let cachedRequests = {
-			[getCacheKey(dummy1)]: {
-				createdAt: dummy1.expectedExpirtationTime,
+			[buildCacheKey(dummy1)]: {
+				createdAt: dummy1.createdAt,
 				...dummy1.config,
 			},
-			[getCacheKey(dummy2)]: {
-				createdAt: dummy2.expectedExpirtationTime,
+			[buildCacheKey(dummy2)]: {
+				createdAt: dummy2.createdAt,
 				...dummy2.config,
 			},
 		}
 
-		const expirationTime = 1532009640017
+		const createdAt = 1532009640017
 
-		const dummy3 = getDummyCacheData(3)
+		const dummy3 = getDummyCacheData(3, createdAt)
 
-		Date.now
-			.mockReturnValueOnce(expirationTime)
-			.mockReturnValueOnce(expirationTime + CACHE_TIMEOUT + 1000)
+		Date.now.mockReturnValueOnce(createdAt + CACHE_TIMEOUT + 1000)
 
 		cachedRequests = reducer(cachedRequests, addRequestToCache(dummy3))
 
 		expect(
 			tryToFindRequestInCache(
-				{ [STATE_NAME]: cachedRequests },
+				{ [name]: cachedRequests },
 				dummy3.url,
 				dummy3.httpMethod
 			)
@@ -211,22 +208,22 @@ describe('Given we have cached requested ', () => {
 			const dummy2 = getDummyCacheData(2)
 
 			let cachedRequests = {
-				[getCacheKey(dummy1)]: {
-					createdAt: dummy1.expectedExpirtationTime,
+				[buildCacheKey(dummy1)]: {
+					createdAt: dummy1.createdAt,
 					...dummy1.config,
 				},
-				[getCacheKey(dummy2)]: {
-					createdAt: dummy2.expectedExpirtationTime,
+				[buildCacheKey(dummy2)]: {
+					createdAt: dummy2.createdAt,
 					...dummy2.config,
 				},
 			}
 
-			Date.now.mockReturnValue(dummy.expectedExpirtationTime)
+			Date.now.mockReturnValue(dummy.createdAt)
 
 			cachedRequests = reducer(cachedRequests, addRequestToCache(dummy))
 
 			return tryToFindRequestInCache(
-				{ [STATE_NAME]: cachedRequests },
+				{ [name]: cachedRequests },
 				dummy.url,
 				dummy.httpMethod,
 				body || dummy.config.body
@@ -241,7 +238,7 @@ describe('Given we have cached requested ', () => {
 			}
 
 			expect(tryAndGetPostOrPutFromCache(dummy)).toEqual({
-				createdAt: dummy.expectedExpirtationTime,
+				createdAt: dummy.createdAt,
 				...dummy.config,
 			})
 		})
@@ -254,7 +251,7 @@ describe('Given we have cached requested ', () => {
 			}
 
 			expect(tryAndGetPostOrPutFromCache(dummy)).toEqual({
-				createdAt: dummy.expectedExpirtationTime,
+				createdAt: dummy.createdAt,
 				...dummy.config,
 			})
 		})
@@ -294,23 +291,23 @@ describe('Given we have cached requested ', () => {
 		const dummy3 = getDummyCacheData(3)
 
 		const cachedRequests = {
-			[getCacheKey(dummy1)]: {
-				createdAt: dummy1.expectedExpirtationTime,
+			[buildCacheKey(dummy1)]: {
+				createdAt: dummy1.createdAt,
 				...dummy1.config,
 			},
-			[getCacheKey(dummy2)]: {
-				createdAt: dummy2.expectedExpirtationTime,
+			[buildCacheKey(dummy2)]: {
+				createdAt: dummy2.createdAt,
 				...dummy2.config,
 			},
-			[getCacheKey(dummy3)]: {
-				createdAt: dummy3.expectedExpirtationTime,
+			[buildCacheKey(dummy3)]: {
+				createdAt: dummy3.createdAt,
 				...dummy3.config,
 			},
 		}
 
 		expect(
 			tryToFindRequestInCache(
-				{ [STATE_NAME]: cachedRequests },
+				{ [name]: cachedRequests },
 				'notInCacheUrl',
 				'notInCacheMethod'
 			)
@@ -318,10 +315,10 @@ describe('Given we have cached requested ', () => {
 	})
 })
 
-function getDummyCacheData(index) {
+function getDummyCacheData(index, createdAt) {
 	const expectedUrl = 'expectedUrl' + index
 	const expectedMethod = 'expectedMethod' + index
-	const expectedExpirtationTime = 'expectedExpirtationTime' + index
+	createdAt = createdAt || 'expectedExpirtationTime' + index
 	const config = {
 		foo: 'foo' + index,
 	}
@@ -329,7 +326,7 @@ function getDummyCacheData(index) {
 	return {
 		url: expectedUrl,
 		httpMethod: expectedMethod,
-		expectedExpirtationTime,
+		createdAt,
 		config,
 	}
 }

@@ -1,4 +1,5 @@
 import * as types from './pendingRequest.actionTypes'
+import buildCacheKey from '../buildCacheKey'
 
 const intialState = {}
 
@@ -9,25 +10,8 @@ export default function reducer(state = intialState, action) {
 				...state,
 			}
 
-			newState[action.payload.requestedActionType] = {
+			newState[buildCacheKey(action.payload)] = {
 				turnSpinnerOff: false,
-			}
-
-			return newState
-		}
-
-		case types.CANCEL: {
-			const newState = {
-				...state,
-			}
-
-			for (const name in newState) {
-				if (Object.prototype.hasOwnProperty.call(newState, name)) {
-					newState[name] = {
-						...newState[name],
-						cancelled: true,
-					}
-				}
 			}
 
 			return newState
@@ -38,7 +22,7 @@ export default function reducer(state = intialState, action) {
 				...state,
 			}
 
-			delete newState[action.payload.requestedActionType]
+			delete newState[buildCacheKey(action.payload)]
 
 			return newState
 		}
@@ -49,8 +33,8 @@ export default function reducer(state = intialState, action) {
 				...state,
 			}
 
-			newState[action.payload.requestedActionType] = {
-				...newState[action.payload.requestedActionType],
+			newState[buildCacheKey(action.payload)] = {
+				...newState[buildCacheKey(action.payload)],
 				turnSpinnerOff,
 			}
 

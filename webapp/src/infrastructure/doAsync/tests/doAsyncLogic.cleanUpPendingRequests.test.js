@@ -2,7 +2,8 @@ import { cleanUpPendingRequests } from '../doAsyncLogic'
 import * as reactReduxMock from 'react-redux'
 import * as pendingRequests from '../../pendingRequest/pendingRequest.selectors'
 import { TURN_OFF_BUSY_INDICATOR_FOR_PENDING_ASYNC } from '../doAsync.actionTypes'
-import { deletePendingRequest } from '../../pendingRequest/pendingRequest.actions'
+import { deletePendingRequest } from '../../pendingRequest'
+import { decrementBusyIndicator } from '../../../widgets/busyIndicator'
 
 jest.mock('react-redux')
 jest.mock('../../pendingRequest/pendingRequest.selectors')
@@ -20,19 +21,19 @@ describe('Given we call cleanUpPendingRequests with an actionType and dispatch '
 		dispatch.mockReset()
 		getState.mockReset()
 
-		pendingRequests.getPendingRequest.mockReset()
+		pendingRequests.selectPendingRequest.mockReset()
 	})
 
 	describe('When there are no pending requests ', () => {
 		it('Then we return without call dispatch', () => {
-			expect(pendingRequests.getPendingRequest.mock).toBeTruthy()
+			expect(pendingRequests.selectPendingRequest.mock).toBeTruthy()
 			expect(dispatch.mock).toBeTruthy()
 			expect(cleanUpPendingRequests).toBeTruthy()
 
-			cleanUpPendingRequests({}, dispatch, getState)
+			cleanUpPendingRequests({ dispatch, getState })
 
 			expect(dispatch.mock.calls.length).toBe(0)
-			expect(pendingRequests.getPendingRequest.mock.calls.length).toBe(1)
+			expect(pendingRequests.selectPendingRequest.mock.calls.length).toBe(1)
 		})
 	})
 
@@ -40,13 +41,17 @@ describe('Given we call cleanUpPendingRequests with an actionType and dispatch '
 		it('Then pending request is called twice and we dispatch TURN_OFF_BUSY_INDICATOR_FOR_PENDING_ASYNC and deletePendingReqeust', () => {
 			callPendingRequestAndThen(
 				{ turnSpinnerOff: true },
-				(dispatchMock, expectedActionType) => {
-					expect(dispatchMock.mock.calls.length).toBe(2)
+				(dispatchMock, { url, httpMethod }) => {
+					expect(dispatchMock.mock.calls.length).toBe(3)
 					expect(dispatchMock.mock.calls[0][0]).toEqual({
 						type: TURN_OFF_BUSY_INDICATOR_FOR_PENDING_ASYNC,
 					})
 					expect(dispatchMock.mock.calls[1][0]).toEqual(
-						deletePendingRequest(expectedActionType.REQUESTED)
+						decrementBusyIndicator()
+					)
+
+					expect(dispatchMock.mock.calls[2][0]).toEqual(
+						deletePendingRequest({ url, httpMethod })
 					)
 				}
 			)
@@ -57,10 +62,10 @@ describe('Given we call cleanUpPendingRequests with an actionType and dispatch '
 		it('Then pending request is called twice and we dispatch ONLY deletePendingReqeust', () => {
 			callPendingRequestAndThen(
 				{ turnSpinnerOff: false },
-				(dispatchMock, expectedActionType) => {
+				(dispatchMock, { url, httpMethod }) => {
 					expect(dispatchMock.mock.calls.length).toBe(1)
 					expect(dispatchMock.mock.calls[0][0]).toEqual(
-						deletePendingRequest(expectedActionType.REQUESTED)
+						deletePendingRequest({ url, httpMethod })
 					)
 				}
 			)
@@ -69,31 +74,36 @@ describe('Given we call cleanUpPendingRequests with an actionType and dispatch '
 })
 
 function callPendingRequestAndThen({ turnSpinnerOff }, andThen) {
-	expect(pendingRequests.getPendingRequest.mock).toBeTruthy()
+	expect(pendingRequests.selectPendingRequest.mock).toBeTruthy()
 	expect(dispatch.mock).toBeTruthy()
 	expect(cleanUpPendingRequests).toBeTruthy()
 
-	pendingRequests.getPendingRequest.mockReturnValue({ turnSpinnerOff })
+	pendingRequests.selectPendingRequest.mockReturnValue({ turnSpinnerOff })
 
 	const expectedState = 'expectedState'
 
 	getState.mockReturnValue(expectedState)
 
-	const expectedActionType = {
-		REQUESTED: 'foo',
-	}
+	const url = 'expectedUrl'
+	const httpMethod = 'expectedMethod'
 
-	cleanUpPendingRequests(expectedActionType, dispatch, getState)
+	cleanUpPendingRequests({ url, httpMethod, dispatch, getState })
 
-	expect(pendingRequests.getPendingRequest.mock.calls.length).toBe(2)
-	expect(pendingRequests.getPendingRequest.mock.calls[0][0]).toBe(expectedState)
-	expect(pendingRequests.getPendingRequest.mock.calls[0][1]).toBe(
-		expectedActionType.REQUESTED
+	expect(pendingRequests.selectPendingRequest.mock.calls.length).toBe(2)
+	expect(pendingRequests.selectPendingRequest.mock.calls[0][0]).toBe(
+		expectedState
 	)
-	expect(pendingRequests.getPendingRequest.mock.calls[1][0]).toBe(expectedState)
-	expect(pendingRequests.getPendingRequest.mock.calls[1][1]).toBe(
-		expectedActionType.REQUESTED
+	expect(pendingRequests.selectPendingRequest.mock.calls[0][1]).toEqual({
+		url,
+		httpMethod,
+	})
+	expect(pendingRequests.selectPendingRequest.mock.calls[1][0]).toBe(
+		expectedState
 	)
+	expect(pendingRequests.selectPendingRequest.mock.calls[1][1]).toEqual({
+		url,
+		httpMethod,
+	})
 
-	andThen(dispatch, expectedActionType)
+	andThen(dispatch, { url, httpMethod })
 }

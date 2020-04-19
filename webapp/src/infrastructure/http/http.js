@@ -1,5 +1,5 @@
 import localStorage from 'localStorage'
-import { API_URL } from './http.constants'
+import { API_URL_PREFIX } from './http.constants'
 // import { getJwtToken } from "../../modules/userContext/userContext.selectors";
 // import { getState } from "../store";
 // import * as actionTypes from "../userContext/userContext.actionTypes";
@@ -12,7 +12,7 @@ export default {
 	delete: callDelete,
 }
 
-const ASYNC_DELAY = 1000
+const ASYNC_DELAY = 2000
 
 function get(url, config, { stubSuccess, stubError } = {}) {
 	return doFetch(url, config, { stubSuccess, stubError })
@@ -92,7 +92,11 @@ function doFetch(url, config, { stubSuccess, stubError } = {}) {
 		}
 
 		if (response.ok) {
-			if (response.headers.map['content-type'].includes('stream')) {
+			if (
+				response.headers &&
+				response.headers.map &&
+				response.headers.map['content-type'].includes('stream')
+			) {
 				return response
 			}
 			return response.json()
@@ -105,12 +109,12 @@ function doFetch(url, config, { stubSuccess, stubError } = {}) {
 			// response.json().then(() => redirectToSignOut());
 		}
 
-		return response.json().then((r) => Promise.reject(r))
+		return Promise.reject(response)
 	})
 }
 
 function buildUrl(url) {
-	return `${API_URL}/${url}`
+	return API_URL_PREFIX ? `${API_URL_PREFIX}/${url}` : url
 }
 
 function addJwtToken(config) {

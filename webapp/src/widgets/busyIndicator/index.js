@@ -1,10 +1,16 @@
-import components from './components'
-import * as constants from './busyIndicator.constants'
-import * as selectors from './busyIndicator.selectors'
-import reducer from './busyIndicator.reducer'
-import BusyIndicator from './components/BusyIndicator'
+import * as busyIndicatorSelectors from './busyIndicator.selectors'
+import BusyIndicator from './BusyIndicator'
+import slice from './busyIndicator.slice'
 
-export default { components, constants, selectors, reducer }
+export const {
+	name,
+	actions: { incrementBusyIndicator, decrementBusyIndicator },
+	reducer,
+} = slice
 
-// Added as a convenience so you can import { BusyIndiator } from `./busyIndicator`
-export { BusyIndicator }
+export const {
+	getGlobalBusyIndicator,
+	getNamedBusyIndicator,
+} = busyIndicatorSelectors
+
+export default BusyIndicator

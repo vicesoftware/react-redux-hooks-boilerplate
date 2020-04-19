@@ -1,39 +1,47 @@
-import * as notificationActions from '../notificationPopup/notificationPopup.actions'
 import http from '../http'
 import {
 	REQUEST_ALREADY_PENDING_ASYNC,
 	TURN_OFF_BUSY_INDICATOR_FOR_PENDING_ASYNC,
 } from './doAsync.actionTypes'
-import pendingRequest from '../pendingRequest'
-import { tryToFindRequestInCache } from '../httpCache/httpCache.selectors'
-import { setBusySpinner } from '../pendingRequest/pendingRequest.actions'
+import {
+	addPendingRequest,
+	deletePendingRequest,
+	setBusySpinner,
+	selectPendingRequest,
+} from '../pendingRequest'
+import { notifyError } from '../notificationPopup'
+import {
+	decrementBusyIndicator,
+	incrementBusyIndicator,
+} from '../../widgets/busyIndicator'
 
-const {
-	actions: { addPendingRequest, deletePendingRequest },
-	selectors: { getPendingRequest },
-} = pendingRequest
-
-export function cleanUpPendingRequests(actionType, dispatch, getState) {
+export function cleanUpPendingRequests({
+	url,
+	httpMethod,
+	busyIndicatorName,
+	dispatch,
+	getState,
+}) {
 	if (!getState || typeof getState !== 'function') {
 		throw new Error('getState is required and must be a function')
 	}
 
-	if (!getPendingRequest(getState(), actionType.REQUESTED)) {
+	if (!selectPendingRequest(getState(), { url, httpMethod })) {
 		return
 	}
 
-	if (getPendingRequest(getState(), actionType.REQUESTED).turnSpinnerOff) {
+	if (selectPendingRequest(getState(), { url, httpMethod }).turnSpinnerOff) {
 		dispatch({ type: TURN_OFF_BUSY_INDICATOR_FOR_PENDING_ASYNC })
+		dispatch(decrementBusyIndicator(busyIndicatorName))
 	}
 
-	dispatch(deletePendingRequest(actionType.REQUESTED))
+	dispatch(deletePendingRequest({ url, httpMethod }))
 }
 
 export function handleError(
 	exception,
 	onError,
 	dispatch,
-	actionType,
 	httpMethod,
 	url,
 	httpConfig,
@@ -42,7 +50,7 @@ export function handleError(
 	if (onError) {
 		onError(exception)
 	} else {
-		logError(dispatch, actionType, httpMethod, url, httpConfig, {
+		logError(dispatch, httpMethod, url, httpConfig, {
 			exception,
 			errorMessage: `${errorMessage}.
       An error occurred when trying to dispatch results of ajax call to Redux.`,
@@ -58,7 +66,6 @@ export function getError(httpMethod, url, httpConfig, errorMessage) {
 
 export function logError(
 	dispatch,
-	actionType,
 	httpMethod,
 	url,
 	httpConfig,
@@ -70,79 +77,17 @@ export function logError(
 		exception
 	)
 
-	const { message, stack } = exception
-	dispatch(
-		notificationActions.handleError(actionType.ERROR, {
-			errorMessage,
-			message,
-			stack,
-		})
-	)
-}
-
-export function processHttpResult({
-	body,
-	dispatch,
-	mapResponseToPayload,
-	successMessage,
-	noBusySpinner,
-	actionType,
-	httpMethod,
-	url,
-	httpConfig,
-	errorMessage,
-	getState,
-} = {}) {
-	if (!getState || typeof getState !== 'function') {
-		throw new Error('getState is required and must be a function')
+	if (errorMessage) {
+		dispatch(notifyError(errorMessage))
 	}
-
-	const cachedRequest = tryToFindRequestInCache(
-		getState(),
-		url,
-		httpMethod,
-		body
-	)
-	if (cachedRequest && cachedRequest.cancelled) {
-		return Promise.resolve()
-	}
-
-	if (successMessage) {
-		dispatch(notificationActions.notifySuccess(successMessage))
-	}
-
-	const payload = mapResponseToPayload ? mapResponseToPayload(body) : body
-
-	if (noBusySpinner) {
-		payload.noBusySpinner = noBusySpinner
-	}
-
-	if (body && !payload) {
-		throw new Error(
-			getError(
-				httpMethod,
-				url,
-				httpConfig,
-				errorMessage,
-				"doAsync was not able to map ajax call's body to a response payload."
-			)
-		)
-	}
-
-	dispatch({
-		type: actionType.RECEIVED,
-		payload,
-	})
-
-	return Promise.resolve()
 }
 
 export function requestIsAlreadyPending({
-	actionType,
 	noBusySpinner,
 	url,
 	httpMethod,
 	httpConfig,
+	busyIndicatorName,
 	dispatch,
 	getState,
 } = {}) {
@@ -150,16 +95,21 @@ export function requestIsAlreadyPending({
 		throw new Error('get state is required and must be a function')
 	}
 
-	const thereIsAPendingRequest = getPendingRequest(
-		getState(),
-		actionType.REQUESTED
-	)
+	const pendingRequest = selectPendingRequest(getState(), { url, httpMethod })
 
-	if (thereIsAPendingRequest) {
+	if (pendingRequest) {
 		const currentRequestRequiresABusySpinner = !noBusySpinner
 
+		if (!pendingRequest.turnSpinnerOff && !noBusySpinner) {
+			dispatch(incrementBusyIndicator(busyIndicatorName))
+		}
+
 		dispatch(
-			setBusySpinner(actionType.REQUESTED, currentRequestRequiresABusySpinner)
+			setBusySpinner({
+				url,
+				httpMethod,
+				turnSpinnerOff: currentRequestRequiresABusySpinner,
+			})
 		)
 
 		dispatch({
@@ -168,7 +118,6 @@ export function requestIsAlreadyPending({
 				url,
 				httpMethod,
 				httpConfig,
-				actionType,
 				noBusySpinner,
 			},
 		})
@@ -180,7 +129,7 @@ export function requestIsAlreadyPending({
 	// need to add it to the list of pending requests so
 	// future request will know this request is pending
 	if (noBusySpinner) {
-		dispatch(addPendingRequest(actionType.REQUESTED))
+		dispatch(addPendingRequest({ url, httpMethod }))
 	}
 
 	return false
@@ -204,18 +153,7 @@ export function buildHeaders(url, httpConfig) {
 		: defaultHeadersObj
 }
 
-export function validateInput(actionType, url, httpMethod, errorMessage) {
-	if (!actionType) {
-		throw new Error('actionType is required')
-	}
-
-	if (!actionType.REQUESTED || !actionType.RECEIVED || !actionType.ERROR) {
-		throw new Error(
-			'actionType must implement the tripples pattern. ' +
-				'Note you can use buildAsyncActionType() to easily generate the need action types.'
-		)
-	}
-
+export function validateInput(url, httpMethod) {
 	if (!url) {
 		throw new Error('url is required.')
 	}

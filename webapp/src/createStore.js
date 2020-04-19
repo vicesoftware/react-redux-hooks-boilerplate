@@ -1,10 +1,8 @@
-import { createStore } from 'redux'
 import rootReducer from './rootReducer'
+import { configureStore } from '@reduxjs/toolkit'
 
-export default () => {
-	const store = createStore(
-		rootReducer /* preloadedState, */,
-		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-	)
-	return store
-}
+const store = configureStore({
+	reducer: rootReducer,
+})
+
+export default () => store

@@ -1,20 +1,27 @@
-import pendingRequest from '../../../infrastructure/pendingRequest'
-
-const {
+import {
 	reducer,
-	actions,
-	selectors: { getPendingRequest },
-	constants: { STATE_NAME },
-} = pendingRequest
+	selectPendingRequest,
+	addPendingRequest,
+	deletePendingRequest,
+	name,
+} from '../../../infrastructure/pendingRequest'
+import buildCacheKey from '../../../infrastructure/buildCacheKey'
+
+const buildDummnyCacheKey = (name = '') => {
+	const url = `expectedUrl${name}`
+	const httpMethod = `expectedMethod${name}`
+	return {
+		url,
+		httpMethod,
+		key: buildCacheKey({ url, httpMethod }),
+	}
+}
 
 describe('Given we have no pending request', () => {
 	it('When we add a new pending request Then its added to new state', () => {
-		const expectedActionType = 'expectedActionType'
-
-		expect(
-			reducer(null, actions.addPendingRequest(expectedActionType))
-		).toEqual({
-			[expectedActionType]: {
+		const cacheKey = buildDummnyCacheKey()
+		expect(reducer({}, addPendingRequest(cacheKey))).toEqual({
+			[cacheKey.key]: {
 				turnSpinnerOff: false,
 			},
 		})
@@ -23,110 +30,79 @@ describe('Given we have no pending request', () => {
 
 describe('Given we have pending request', () => {
 	it('When we add a new pending request Then its added to new state', () => {
-		const expectedActionType = 'expectedActionType'
-		const existingActionType = 'existingActionType'
+		const expected = buildDummnyCacheKey('expected')
+		const existing = buildDummnyCacheKey('existing')
 
 		expect(
 			reducer(
 				{
-					[existingActionType]: {
+					[existing.key]: {
 						turnSpinnerOff: false,
 					},
 				},
-				actions.addPendingRequest(expectedActionType)
+				addPendingRequest(expected)
 			)
 		).toEqual({
-			[existingActionType]: {
+			[existing.key]: {
 				turnSpinnerOff: false,
 			},
-			[expectedActionType]: {
+			[expected.key]: {
 				turnSpinnerOff: false,
 			},
 		})
 	})
 
 	it('When we delete an existing pending request Then its removed from new state', () => {
-		const existingActionType = 'existingActionType'
+		const existing = buildDummnyCacheKey('existing')
 
 		expect(
 			reducer(
 				{
-					[existingActionType]: {
+					[existing.key]: {
 						turnSpinnerOff: false,
 					},
 				},
-				actions.deletePendingRequest(existingActionType)
+				deletePendingRequest(existing)
 			)
 		).toEqual({})
-	})
-
-	it('When we cancel existing pending request Then its removed from new state', () => {
-		const existingActionType = 'existingActionType'
-
-		expect(
-			reducer(
-				{
-					[existingActionType + '1']: {
-						turnSpinnerOff: true,
-					},
-					[existingActionType + '2']: {
-						turnSpinnerOff: false,
-					},
-				},
-				actions.cancelPendingRequest(existingActionType)
-			)
-		).toEqual({
-			[existingActionType + '1']: {
-				turnSpinnerOff: true,
-				cancelled: true,
-			},
-			[existingActionType + '2']: {
-				turnSpinnerOff: false,
-				cancelled: true,
-			},
-		})
 	})
 })
 
 describe('Given we have pending requested ', () => {
 	it('Then calling getRequest with an actionType that is pending returns the correct request', () => {
-		const existingActionType = 'existingActionType'
+		const existing1 = buildDummnyCacheKey('1')
+		const existing2 = buildDummnyCacheKey('2')
 
 		const pendingRequest = {
-			[existingActionType + '1']: {
+			[existing1.key]: {
 				turnSpinnerOff: true,
 			},
-			[existingActionType + '2']: {
+			[existing2.key]: {
 				turnSpinnerOff: false,
 			},
 		}
 
-		expect(
-			getPendingRequest(
-				{ [STATE_NAME]: pendingRequest },
-				existingActionType + '1'
-			)
-		).toEqual({
-			turnSpinnerOff: true,
-		})
+		expect(selectPendingRequest({ [name]: pendingRequest }, existing1)).toEqual(
+			{
+				turnSpinnerOff: true,
+			}
+		)
 	})
 	it('Then calling getRequest with an actionType that is not pending returns undefined', () => {
-		const existingActionType = 'existingActionType'
+		const existing1 = buildDummnyCacheKey('1')
+		const existing2 = buildDummnyCacheKey('2')
 
 		const pendingRequest = {
-			[existingActionType + '1']: {
+			[existing1.key]: {
 				turnSpinnerOff: true,
 			},
-			[existingActionType + '2']: {
+			[existing2.key]: {
 				turnSpinnerOff: false,
 			},
 		}
 
 		expect(
-			getPendingRequest(
-				{ [STATE_NAME]: pendingRequest },
-				'notPendingActionType'
-			)
+			selectPendingRequest({ [name]: pendingRequest }, 'notPendingActionType')
 		).toBe(undefined)
 	})
 })

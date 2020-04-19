@@ -1,11 +1,10 @@
-import * as constants from './pendingRequest.constants'
-import reducer from './pendingRequest.reducer'
-import * as selectors from './pendingRequest.selectors'
-import * as actions from './pendingRequest.actions'
+import * as pendingRequestSelectors from './pendingRequest.selectors'
+import slice from './pendingRequest.slice'
 
-export default {
-	actions,
-	constants,
+export const {
+	name,
+	actions: { addPendingRequest, setBusySpinner, deletePendingRequest },
 	reducer,
-	selectors,
-}
+} = slice
+
+export const { selectPendingRequest } = pendingRequestSelectors

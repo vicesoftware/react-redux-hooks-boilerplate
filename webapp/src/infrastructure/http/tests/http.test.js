@@ -2,8 +2,6 @@ import * as reactReduxMock from 'react-redux'
 import http from '../http'
 import mockFetch from '../../../infrastructure/test/mockFetch'
 
-const expectedHostName = 'expectedHostName'
-
 jest.mock('react-redux')
 jest.mock('../http.constants', () => ({
 	API_URL: 'http://expectedHostName/api',
@@ -51,9 +49,7 @@ describe('When we call get on a resource with a config', () => {
 				p.then((r) => {
 					expect(calls.length).toBe(1)
 
-					expect(calls[0].url).toEqual(
-						`http://${expectedHostName}/api/${expectedUrl}`
-					)
+					expect(calls[0].url).toEqual(`${expectedUrl}`)
 
 					expect(calls[0].config).toEqual(expectedConfig)
 
@@ -71,7 +67,7 @@ describe('When we call get on a resource with a config', () => {
 		fetch.mockImplementation(
 			mockFetch([
 				{
-					url: '/url',
+					url: 'url',
 					errorResponse: true,
 					response: () => ({ error: 'whoops' }),
 				},
@@ -84,7 +80,7 @@ describe('When we call get on a resource with a config', () => {
 		await http
 			.get('url', { sampleConfig: 'sample' })
 			.then((r) => expect(r.result))
-			.catch((e) => expect(e.error).toBe('whoops'))
+			.catch((e) => e.json((r) => expect(r.error).toBe('whoops')))
 	})
 })
 
@@ -131,9 +127,7 @@ function callApiAndExpect(httpMethod, done) {
 			p.then((r) => {
 				expect(calls.length).toBe(1)
 
-				expect(calls[0].url).toEqual(
-					`http://${expectedHostName}/api/${expectedUrl}`
-				)
+				expect(calls[0].url).toEqual(`${expectedUrl}`)
 
 				expect(calls[0].config).toEqual({
 					...expectedConfig,

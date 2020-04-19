@@ -1,44 +1,44 @@
 import http from '../http'
-import httpCache from '../httpCache'
+import { addRequestToCache, tryToFindRequestInCache } from '../httpCache'
 import { REDUX_CACHE_HIT_RECEIVED_ASYNC } from './doAsync.actionTypes'
 import {
 	buildHeaders,
 	cleanUpPendingRequests,
 	handleError,
 	logError,
-	processHttpResult,
 	requestIsAlreadyPending,
 	validateInput,
 } from './doAsyncLogic'
+import {
+	incrementBusyIndicator,
+	decrementBusyIndicator,
+} from '../../widgets/busyIndicator'
+import { notifySuccess } from '../../infrastructure/notificationPopup'
 
-const {
-	actions: { addRequestToCache },
-	selectors: { tryToFindRequestInCache },
-} = httpCache
-
-export const cacheHit = (cachedReceivedAction, noBusySpinner) => ({
+export const cacheHit = (url, method, noBusySpinner) => ({
 	type: REDUX_CACHE_HIT_RECEIVED_ASYNC,
 	payload: {
-		cachedReceivedAction,
+		url,
+		method,
 		noBusySpinner,
 	},
 })
 
 const doAsync = ({
-	actionType,
 	url,
 	httpMethod = 'get',
-	mapResponseToPayload,
 	errorMessage = 'Unable to process request. Please try again later.',
 	httpConfig,
 	onError,
 	successMessage,
 	noBusySpinner,
+	busyIndicatorName,
 	useCaching = false,
 	stubSuccess,
 	stubError,
 	dispatch,
 	getState,
+	rejectWithValue,
 } = {}) => {
 	if (!getState || typeof getState !== 'function') {
 		throw new Error(
@@ -51,25 +51,20 @@ const doAsync = ({
 	}
 
 	try {
-		validateInput(actionType, url, httpMethod)
-
-		dispatch({
-			type: actionType.REQUESTED,
-			payload: { noBusySpinner, useCaching },
-		})
+		validateInput(url, httpMethod)
 
 		if (
 			requestIsAlreadyPending({
-				actionType,
 				noBusySpinner,
 				url,
 				httpMethod,
 				httpConfig,
+				busyIndicatorName,
 				dispatch,
 				getState,
 			})
 		) {
-			return Promise.resolve()
+			return rejectWithValue('Request is already pending.')
 		}
 
 		if (useCaching) {
@@ -81,9 +76,15 @@ const doAsync = ({
 					httpConfig && httpConfig.body
 				)
 			) {
-				dispatch(cacheHit(actionType.RECEIVED, noBusySpinner))
-				cleanUpPendingRequests(actionType, dispatch, getState)
-				return Promise.resolve()
+				dispatch(cacheHit(url, httpMethod, noBusySpinner))
+				cleanUpPendingRequests({
+					url,
+					httpMethod,
+					busyIndicatorName,
+					dispatch,
+					getState,
+				})
+				return rejectWithValue('Request found in cache.')
 			}
 
 			const requestConfig = {}
@@ -98,44 +99,51 @@ const doAsync = ({
 			dispatch(addRequestToCache({ url, httpMethod, config: requestConfig }))
 		}
 
+		if (!noBusySpinner) {
+			dispatch(incrementBusyIndicator(busyIndicatorName))
+		}
+
 		httpConfig = {
 			...httpConfig,
 			...buildHeaders(url, httpConfig),
 		}
 
 		return http[httpMethod](url, httpConfig, { stubSuccess, stubError })
-			.then((body) =>
-				processHttpResult({
-					body,
-					dispatch,
-					mapResponseToPayload,
-					successMessage,
-					noBusySpinner,
-					actionType,
-					httpMethod,
-					url,
-					httpConfig,
-					errorMessage,
-					getState,
-				})
-			)
+			.then((body) => {
+				if (successMessage) {
+					dispatch(notifySuccess(successMessage))
+				}
+
+				return Promise.resolve(body)
+			})
 			.catch((exception) => {
 				handleError(
 					exception,
 					onError,
 					dispatch,
-					actionType,
 					httpMethod,
 					url,
 					httpConfig,
 					errorMessage
 				)
 			})
-			.then(() => {
-				cleanUpPendingRequests(actionType, dispatch, getState)
+			.then((response) => {
+				cleanUpPendingRequests({
+					url,
+					httpMethod,
+					busyIndicatorName,
+					dispatch,
+					getState,
+				})
+				if (!noBusySpinner) {
+					dispatch(decrementBusyIndicator(busyIndicatorName))
+				}
+				return response
 			})
 	} catch (exception) {
-		logError(dispatch, actionType, httpMethod, url, httpConfig, { exception })
+		logError(dispatch, httpMethod, url, httpConfig, {
+			exception,
+		})
 		throw exception
 	}
 }

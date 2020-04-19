@@ -76,6 +76,7 @@ export default function useAsync({
 		// this comment or change the commented out stubSucces and stubError without discussing with Ryan first
 		// stubSuccess,
 		// stubError,
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		...dependencies,
 	])
 }

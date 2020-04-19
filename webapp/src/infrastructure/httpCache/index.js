@@ -1,11 +1,12 @@
-import * as constants from './httpCache.constants'
-import reducer from './httpCache.reducer'
 import * as selectors from './httpCache.selectors'
-import * as actions from './httpCache.actions'
+import slice from './httpCache.slice'
 
-export default {
-	actions,
-	constants,
+export const {
+	name,
+	actions: { addRequestToCache, deleteRequestFromCache },
 	reducer,
-	selectors,
-}
+} = slice
+
+export const { isExpired, getRequestCache, tryToFindRequestInCache } = selectors
+
+export const CACHE_TIMEOUT = 900000

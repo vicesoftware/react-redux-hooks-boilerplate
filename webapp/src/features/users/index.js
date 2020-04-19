@@ -1,15 +1,11 @@
-import components from './components'
-import * as constants from './user.constants'
-import * as actionTypes from './user.actionsTypes'
-import * as effects from './user.effects'
-import * as selectors from './user.selectors'
-import reducer from './users.reducer'
+import Users from './Users'
+import * as selectors from './users.selectors'
+import slice from './users.slice'
+import * as actions from './user.actions'
 
-export default {
-	components,
-	constants,
-	actionTypes,
-	effects,
-	selectors,
-	reducer,
-}
+export const { name, reducer } = slice
+
+export const { fetchAllUsers } = actions
+export const { selectAllUsers } = selectors
+
+export default Users

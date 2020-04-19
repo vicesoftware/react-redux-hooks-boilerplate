@@ -2,10 +2,8 @@ import { requestIsAlreadyPending } from '../doAsyncLogic'
 import * as pendingRequestSelectors from '../../pendingRequest/pendingRequest.selectors'
 import * as reactReduxMock from 'react-redux'
 import { REQUEST_ALREADY_PENDING_ASYNC } from '../doAsync.actionTypes'
-import {
-	addPendingRequest,
-	setBusySpinner,
-} from '../../pendingRequest/pendingRequest.actions'
+import { incrementBusyIndicator } from '../../../widgets/busyIndicator'
+import { addPendingRequest, setBusySpinner } from '../../pendingRequest'
 
 jest.mock('react-redux')
 jest.mock('../../pendingRequest/pendingRequest.selectors')
@@ -28,9 +26,9 @@ describe('Given we call requestIsAlreadyPending ', () => {
 		it("And there is noBusySpinner false Then we return false and don't call dispatch ", async () => {
 			expect(requestIsAlreadyPending).toBeTruthy()
 			expect(dispatch.mock).toBeTruthy()
-			expect(pendingRequestSelectors.getPendingRequest.mock).toBeTruthy()
+			expect(pendingRequestSelectors.selectPendingRequest.mock).toBeTruthy()
 
-			pendingRequestSelectors.getPendingRequest.mockReturnValue(false)
+			pendingRequestSelectors.selectPendingRequest.mockReturnValue(false)
 
 			expect(
 				requestIsAlreadyPending({
@@ -46,15 +44,17 @@ describe('Given we call requestIsAlreadyPending ', () => {
 		it("And there is noBusySpinner true Then we return false and don't call dispatch ", async () => {
 			expect(requestIsAlreadyPending).toBeTruthy()
 			expect(dispatch.mock).toBeTruthy()
-			expect(pendingRequestSelectors.getPendingRequest.mock).toBeTruthy()
+			expect(pendingRequestSelectors.selectPendingRequest.mock).toBeTruthy()
 
-			const actionType = { REQUESTED: 'TYPE_REQUESTED' }
+			const url = 'EXPECTED_URL'
+			const httpMethod = 'EXPECTED_HTTP_METHOD'
 
-			pendingRequestSelectors.getPendingRequest.mockReturnValue(false)
+			pendingRequestSelectors.selectPendingRequest.mockReturnValue(false)
 
 			expect(
 				requestIsAlreadyPending({
-					actionType,
+					url,
+					httpMethod,
 					noBusySpinner: true,
 					dispatch,
 					getState,
@@ -63,27 +63,27 @@ describe('Given we call requestIsAlreadyPending ', () => {
 
 			expect(dispatch.mock.calls.length).toBe(1)
 			expect(dispatch.mock.calls[0][0]).toEqual(
-				addPendingRequest(actionType.REQUESTED)
+				addPendingRequest({ url, httpMethod })
 			)
 		})
 	})
 
 	describe('When a request is pending but noBusySpinner is passed in ', () => {
-		it('Then we dispatch setBusySpinner with busy spinner true and we dispatch REQUEST_ALREADY_PENDING_ASYNC and we return true  ', async () => {
+		it('Then we dispatch incrementBusyIndicator, dispatch setBusySpinner with busy spinner true and we dispatch REQUEST_ALREADY_PENDING_ASYNC and we return true  ', async () => {
 			testIt(
 				{ noBusySpinner: false },
-				({ store, actionType, noBusySpinner, url, httpMethod, httpConfig }) => {
-					expect(dispatch.mock.calls.length).toBe(2)
-					expect(dispatch.mock.calls[0][0]).toEqual(
-						setBusySpinner(actionType.REQUESTED, !noBusySpinner)
+				({ noBusySpinner, url, httpMethod, httpConfig }) => {
+					expect(dispatch.mock.calls.length).toBe(3)
+					expect(dispatch.mock.calls[0][0]).toEqual(incrementBusyIndicator())
+					expect(dispatch.mock.calls[1][0]).toEqual(
+						setBusySpinner({ url, httpMethod, turnSpinnerOff: !noBusySpinner })
 					)
-					expect(dispatch.mock.calls[1][0]).toEqual({
+					expect(dispatch.mock.calls[2][0]).toEqual({
 						type: REQUEST_ALREADY_PENDING_ASYNC,
 						payload: {
 							url,
 							httpMethod,
 							httpConfig,
-							actionType,
 							noBusySpinner,
 						},
 					})
@@ -96,10 +96,10 @@ describe('Given we call requestIsAlreadyPending ', () => {
 		it('Then we dispatch setBusySpinner with busy spinner true and we dispatch REQUEST_ALREADY_PENDING_ASYNC and we return true  ', async () => {
 			testIt(
 				{ noBusySpinner: true },
-				({ store, actionType, noBusySpinner, url, httpMethod, httpConfig }) => {
+				({ actionType, noBusySpinner, url, httpMethod, httpConfig }) => {
 					expect(dispatch.mock.calls.length).toBe(2)
 					expect(dispatch.mock.calls[0][0]).toEqual(
-						setBusySpinner(actionType.REQUESTED, !noBusySpinner)
+						setBusySpinner({ url, httpMethod, turnSpinnerOff: !noBusySpinner })
 					)
 					expect(dispatch.mock.calls[1][0]).toEqual({
 						type: REQUEST_ALREADY_PENDING_ASYNC,
@@ -107,7 +107,6 @@ describe('Given we call requestIsAlreadyPending ', () => {
 							url,
 							httpMethod,
 							httpConfig,
-							actionType,
 							noBusySpinner,
 						},
 					})
@@ -120,7 +119,7 @@ describe('Given we call requestIsAlreadyPending ', () => {
 function testIt({ noBusySpinner }, andThen) {
 	expect(requestIsAlreadyPending).toBeTruthy()
 	expect(dispatch.mock).toBeTruthy()
-	expect(pendingRequestSelectors.getPendingRequest.mock).toBeTruthy()
+	expect(pendingRequestSelectors.selectPendingRequest.mock).toBeTruthy()
 
 	const actionType = {
 		REQUESTED: 'TYPE_REQUESTED',
@@ -129,7 +128,7 @@ function testIt({ noBusySpinner }, andThen) {
 	const httpMethod = 'httpMethod'
 	const httpConfig = 'httpConfig'
 
-	pendingRequestSelectors.getPendingRequest.mockReturnValue(true)
+	pendingRequestSelectors.selectPendingRequest.mockReturnValue(true)
 
 	expect(
 		requestIsAlreadyPending({

@@ -1,11 +1,13 @@
-import components from './components'
-import reducer from './notificationPopup.reducer'
-import * as constants from './notificationPopup.constants'
-import * as actions from './notificationPopup.actions'
+import NotificationPopup from './NotificationPopup'
+import * as notificationPopupSelectors from './notificationPopup.selectors'
+import slice from './notificationPopup.slice'
 
-export default {
-	actions,
-	components,
-	constants,
+export const {
+	name,
+	actions: { notifyError, notifySuccess, resetError, closePopup },
 	reducer,
-}
+} = slice
+
+export const { getNotification } = notificationPopupSelectors
+
+export default NotificationPopup
