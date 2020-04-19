@@ -111,7 +111,7 @@ const doAsync = ({
 		return http[httpMethod](url, httpConfig, { stubSuccess, stubError })
 			.then((body) => {
 				if (successMessage) {
-					dispatch(notifySuccess({ message: successMessage }))
+					dispatch(notifySuccess(successMessage))
 				}
 
 				return Promise.resolve(body)

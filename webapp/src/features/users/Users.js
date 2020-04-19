@@ -64,49 +64,93 @@ export default function Users() {
 							</Container>
 						</Card.Body>
 					</Card>
-					<Card>
-						<Card.Body>
-							<Card.Title>About</Card.Title>
-							<Card.Text>
-								This app allow demonstrating a few features of the boilerplate.
-								Things to try.
-							</Card.Text>
-							<ol
-								style={{
-									maxHeight: '400px',
-									overflowY: 'auto',
-								}}
-							>
-								<li>
-									Go to settings page and turn on useCaching setting to doAsync.
-									After you come back to users the server will be called again
-									and you will see a busy indicator but if you navigate away
-									from users again and come back then you won&apos;t see a busy
-									indicator as the users will now be in the redux cache
-								</li>
-								<li>
-									Go to settings page, refresh the settings page and after it
-									reloads turn on noBusySpinner setting to doAsync. Next
-									navigate back to this page and you will not see a busy
-									indicator but if you look at the network tab you will see that
-									the data is being fetched. If you click the &quot;Reload with
-									Busy Spinner&quot; button then a second call will be made to
-									get users. Under the hood doAsync will not make this call as
-									one is already being made but it will turn on the busy
-									indicator. This is useful when you want to load data ahead of
-									time that a user might want, say in a details pane. You can
-									start loading the data in the background with noBusySpinner
-									set to true.
-								</li>
-								<li>
-									Disconnect from the internet (turn off your wifi) and reload
-									to see errors
-								</li>
-							</ol>
-						</Card.Body>
-					</Card>
+					<Help />
 				</Col>
 			</Row>
 		</div>
+	)
+}
+
+function Help() {
+	return (
+		<Card>
+			<Card.Body>
+				<Card.Title>About</Card.Title>
+				<Card.Text>
+					This app demonstrates three features of the boilerplate:
+				</Card.Text>
+				<div
+					style={{
+						maxHeight: '400px',
+						overflowY: 'auto',
+						paddingTop: '5px',
+					}}
+				>
+					<Card.Subtitle className='mb-2 text-muted'>useCaching</Card.Subtitle>
+					<span>
+						doAsync takes a useCaching argument which will avoid trips to the
+						API for data that is already in Redux. To see this
+						<ol>
+							<li>go to settings page and turn on useCaching</li>
+							<li>
+								navigate back to the users page and the API will be called again
+								but the call will be recorded by the httpCache module (you can
+								see all this happen in Redux DevTools)
+							</li>
+							<li>
+								{' '}
+								navigate away from users and come back and then you won&apos;t
+								see a busy indicator as the users will now be in the redux cache
+							</li>
+						</ol>
+					</span>
+					<Card.Subtitle className='mb-2 text-muted'>
+						nBusySpinner
+					</Card.Subtitle>
+					<span>
+						doAsync takes a noBusySpinner argument which will avoid trips to the
+						API for data that is already in Redux. To see this
+						<ol>
+							<li>navigate to settings page</li>
+							<li>refresh the browser on the settings page</li>
+							<li>
+								after the settings page reloads turn check the noBusySpinner
+								option
+							</li>
+							<li>
+								{' '}
+								navigate back to users page and you won&apos;t see a busy
+								indicator while the data is loading
+							</li>
+							<li>
+								repeate these steps and then quickly click the &quot;Reload with
+								Busy Spinner&quot; which will call doAsync again but with the
+								noBusySpinner option set to true. This will
+								<ol>
+									<li>
+										determine there is already a request in progress so it
+										won&apos;t call the API again
+									</li>
+									<li>
+										determine that the busyIndicator isn&apos;t being showed but
+										should be so will turn the busy indicator on
+									</li>
+								</ol>
+							</li>
+						</ol>
+					</span>
+					<Card.Subtitle className='mb-2 text-muted'>
+						NotificationPopups integration with doAsync
+					</Card.Subtitle>
+					<p>
+						This page is configured with both a success message and an
+						errorMessage when it calls doAsync. The successMessages causes a
+						popup notification to be shown with &quot;Users loaded&quot; in it
+						after the users load. If you want to see the errorMessage,
+						disconnect from the internet and refresh the page. You will see that
+					</p>
+				</div>
+			</Card.Body>
+		</Card>
 	)
 }

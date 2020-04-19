@@ -1,4 +1,5 @@
-import get from 'lodash/get'
-import { STATE_NAME } from './notificationPopup.constants'
+import slice from './notificationPopup.slice'
 
-export const getError = (state) => get(state, STATE_NAME)
+export const selectSlice = (state) => state[slice.name]
+
+export const getNotification = (state) => selectSlice(state)

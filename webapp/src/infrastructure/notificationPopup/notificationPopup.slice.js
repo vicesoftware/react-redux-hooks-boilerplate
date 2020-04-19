@@ -10,8 +10,7 @@ export default createSlice({
 			state.errorMessage = action.payload
 		},
 		notifySuccess(state, action) {
-			console.log(action)
-			state.successMessage = action.payload.message
+			state.successMessage = action.payload
 		},
 		resetError(state) {
 			state.errorMessage = undefined
