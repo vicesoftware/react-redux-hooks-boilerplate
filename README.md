@@ -26,7 +26,7 @@ This is a React boilerplate focused on enabling high developer velocity while im
 ## Overview Video
 Here's a video that walks through some of the major features of this boilerplate.
 
-[![Boilerplate Overview Video](https://j.gifs.com/3QGLZR.gif)](https://www.youtube.com/watch?v=hH1XUfmlcJ8)
+Coming soon. Have to update based on refactoring to use [Redux Toolkit](https://redux-toolkit.js.org/)
 
 # Installation and Running
 
