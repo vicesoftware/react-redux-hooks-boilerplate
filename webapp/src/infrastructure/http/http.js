@@ -12,7 +12,7 @@ export default {
 	delete: callDelete,
 }
 
-const ASYNC_DELAY = 1000
+const ASYNC_DELAY = 2000
 
 function get(url, config, { stubSuccess, stubError } = {}) {
 	return doFetch(url, config, { stubSuccess, stubError })
