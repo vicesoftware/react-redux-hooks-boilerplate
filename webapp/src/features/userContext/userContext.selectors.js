@@ -5,7 +5,8 @@ export const selectSlice = (state) => state[slice.name]
 
 export const selectUserContext = (state) => selectSlice(state)
 
-export const isAuthenticated = (state) => !isEmpty(selectUserContext(state))
+export const selectIsAuthenticated = (state) =>
+	!isEmpty(selectUserContext(state))
 
 export const selectCurrentUserHasPermissions = (permissions) => (state) =>
 	userHasPermissions(permissions, state)

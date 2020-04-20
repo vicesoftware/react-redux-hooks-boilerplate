@@ -1,10 +1,7 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Redirect } from 'react-router-dom'
-import {
-	selectIsAuthenticated,
-	selectCurrentUserHasPermissions,
-} from '../index'
+import { useSelector } from 'react-redux'
+import { Redirect, useLocation } from 'react-router-dom'
+import { selectIsAuthenticated, selectCurrentUserHasPermissions } from './index'
 
 const WithRestrictedAccess = (WrappedComponent, requiredPermissions = []) => {
 	const curriedCurrentUserHasPermissions = selectCurrentUserHasPermissions.bind(
@@ -12,18 +9,22 @@ const WithRestrictedAccess = (WrappedComponent, requiredPermissions = []) => {
 		requiredPermissions
 	)
 
-	const ProtectedContainer = ({ location }) => {
+	const ProtectedRoute = () => {
+		const isAuthenticated = !!useSelector(selectIsAuthenticated)
+		const hasPermissions = useSelector(curriedCurrentUserHasPermissions)
+		const location = useLocation()
+
 		return (
 			<div>
-				{selectIsAuthenticated && hasPermissions ? (
+				{isAuthenticated && hasPermissions ? (
 					<WrappedComponent />
 				) : // Authenticated so show content
-				!selectIsAuthenticated ? (
+				!isAuthenticated ? (
 					<Redirect
 						to={{
 							// Not authenticated so redirect to /sign-in
 							pathname: '/sign-in',
-							state: { from: location },
+							state: { from: location.pathname },
 						}}
 					/>
 				) : (
@@ -33,18 +34,7 @@ const WithRestrictedAccess = (WrappedComponent, requiredPermissions = []) => {
 		)
 	}
 
-	ProtectedContainer.propTypes = {
-		isAuthenticated: PropTypes.bool.isRequired,
-		location: PropTypes.object.isRequired,
-		hasPermissions: PropTypes.bool.isRequired,
-	}
-
-	const mapStateToProps = (state) => ({
-		isAuthenticated: !!isAuthenticated(state),
-		hasPermissions: curriedCurrentUserHasPermissions(state),
-	})
-
-	return connect(mapStateToProps)(ProtectedContainer)
+	return ProtectedRoute
 }
 
 export default WithRestrictedAccess
