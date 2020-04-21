@@ -2,11 +2,13 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { 
 	selectAll{{pascalCase name}}, 
-	fetchAll{{pascalCase name}}, 
 	select{{pascalCase name}}Filter,
-	updateFilter
- } from './index'
+ } from './{{camelCase name}}.selectors'
+import { actions } from './{{camelCase name}}.slice'
+import { fetchAll{{pascalCase name}} } from './{{camelCase name}}.asyncActions'
 import BusyIndicator from '../../widgets/busyIndicator'
+
+const {	updateFilter } = actions
 
 export default function {{pascalCase name}}() {
 	const {{camelCase name}} = useSelector(selectAll{{pascalCase name}})
@@ -20,7 +22,7 @@ export default function {{pascalCase name}}() {
 
 	return (
 		<div>
-			<h1>{{pascalCase name}}</h1>
+			<h2>{{pascalCase name}}</h2>
 			<input
 				type='text'
 				value={filter}

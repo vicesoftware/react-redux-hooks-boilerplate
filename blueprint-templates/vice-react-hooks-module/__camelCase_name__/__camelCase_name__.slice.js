@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
-import * as actions from './{{camelCase name}}.actions'
+import * as asyncActions from './{{camelCase name}}.asyncActions'
 
 const initialState = {
 	all{{pascalCase name}}: [],
 	filter: '',
 }
 
-export default createSlice({
+const slice = createSlice({
 	name: '{{camelCase name}}',
     initialState,
     reducers: { // synchronous actions
@@ -15,8 +15,12 @@ export default createSlice({
 		},
 	},
 	extraReducers: { // asynchronous actions
-		[actions.fetchAll{{pascalCase name}}.fulfilled]: (state, action) => {
+		[asyncActions.fetchAll{{pascalCase name}}.fulfilled]: (state, action) => {
 			state.all{{pascalCase name}} = action.payload
 		},
 	},
 })
+
+export default slice
+
+export const { name, actions, reducer } = slice

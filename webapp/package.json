@@ -11,6 +11,7 @@
     "classnames": "^2.2.6",
     "formik": "^2.1.4",
     "localStorage": "^1.0.4",
+    "lodash": "^4.17.15",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.0",
     "react-dom": "^16.13.1",
@@ -23,9 +24,9 @@
   },
   "scripts": {
     "start": "npm run pretty && npm run eslint && npm run start-watch",
-    "start-watch": "concurrently --kill-others \"npm run prettier-watch\" \"npm run eslint-watch\" \"react-scripts start --no-cache\"",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start-watch": "concurrently --kill-others \"npm run prettier-watch\" \"npm run eslint-watch\" \"react-app-rewired start --no-cache\"",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "pretty": "npx prettier --write \"src/**/*.js\" \"src/**/*.css\"",
     "prettier-watch": "onchange \"src/**/*.js\" \"src/**/*.css\" -- npx prettier --write {{changed}}",
@@ -48,7 +49,9 @@
     ]
   },
   "devDependencies": {
+    "circular-dependency-plugin": "^5.2.0",
     "concurrently": "^5.1.0",
+    "customize-cra": "^0.9.1",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-config-standard": "^14.1.1",
@@ -60,7 +63,8 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-standard": "^4.0.1",
     "onchange": "^6.1.0",
-    "prettier": "^2.0.2"
+    "prettier": "^2.0.2",
+    "react-app-rewired": "^2.1.5"
   },
   "babel": {
     "presets": [

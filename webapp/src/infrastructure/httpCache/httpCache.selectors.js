@@ -1,9 +1,10 @@
 import isEqual from 'lodash/isEqual'
-import { CACHE_TIMEOUT } from './index'
 import buildCacheKey from '../buildCacheKey'
 import slice from './httpCache.slice'
 
 export const selectSlice = (state) => state[slice.name]
+
+export const CACHE_TIMEOUT = 900000
 
 const isExpired = (item) => {
 	const currentTime = Date.now()

@@ -7,6 +7,9 @@ export const {
 	reducer,
 } = slice
 
-export const { isExpired, getRequestCache, tryToFindRequestInCache } = selectors
-
-export const CACHE_TIMEOUT = 900000
+export const {
+	isExpired,
+	getRequestCache,
+	tryToFindRequestInCache,
+	CACHE_TIMEOUT,
+} = selectors
