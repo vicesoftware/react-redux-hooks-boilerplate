@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {}
 
-export default createSlice({
+const slice = createSlice({
 	name: 'notificationPopup',
 	initialState,
 	reducers: {
@@ -22,3 +22,7 @@ export default createSlice({
 		},
 	},
 })
+
+export default slice
+
+export const { name, actions, reducer } = slice

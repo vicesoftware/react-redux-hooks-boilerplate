@@ -15,6 +15,16 @@ export default function NavBar() {
 				</LinkContainer>
 			</Nav>
 			<Nav>
+				<LinkContainer to='/authenticated'>
+					<Nav.Link>Authenticated</Nav.Link>
+				</LinkContainer>
+			</Nav>
+			<Nav>
+				<LinkContainer to='/authorized'>
+					<Nav.Link>Authorized</Nav.Link>
+				</LinkContainer>
+			</Nav>
+			<Nav>
 				<LinkContainer to='/settings'>
 					<Nav.Link>Settings</Nav.Link>
 				</LinkContainer>

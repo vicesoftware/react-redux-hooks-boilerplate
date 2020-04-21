@@ -4,6 +4,7 @@ import Page from './widgets/Page/Page'
 import About from './features/About'
 import Home from './features/Home'
 import Authenticated from './features/Authenticated'
+import Authorized from './features/Authorized'
 import Users from './features/users'
 import Settings from './features/settings'
 import SignIn from './features/SignIn'
@@ -22,6 +23,9 @@ export default function Routes() {
 			</PageRoute>
 			<PageRoute path='/authenticated'>
 				<Authenticated />
+			</PageRoute>
+			<PageRoute path='/authorized'>
+				<Authorized />
 			</PageRoute>
 			<PageRoute path='/sign-in'>
 				<SignIn />

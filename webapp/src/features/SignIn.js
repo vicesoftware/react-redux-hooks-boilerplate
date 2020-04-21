@@ -9,9 +9,6 @@ import { selectIsAuthenticated, signIn } from './userContext'
 
 const SignIn = () => {
 	const location = useLocation()
-
-	console.log(location)
-
 	const isAuthenticated = useSelector(selectIsAuthenticated)
 	const dispatch = useDispatch()
 

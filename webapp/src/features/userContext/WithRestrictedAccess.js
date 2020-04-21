@@ -1,7 +1,10 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Redirect, useLocation } from 'react-router-dom'
-import { selectIsAuthenticated, selectCurrentUserHasPermissions } from './index'
+import {
+	selectIsAuthenticated,
+	selectCurrentUserHasPermissions,
+} from './userContext.selectors'
 
 const WithRestrictedAccess = (WrappedComponent, requiredPermissions = []) => {
 	const curriedCurrentUserHasPermissions = selectCurrentUserHasPermissions.bind(

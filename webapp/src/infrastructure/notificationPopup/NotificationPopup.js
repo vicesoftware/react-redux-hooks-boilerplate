@@ -1,10 +1,15 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Toast from 'react-bootstrap/Toast'
-import { getNotification, closePopup } from './index'
+import { actions } from './notificationPopup.slice'
+import { selectNotification } from './notificationPopup.selectors'
+
+const { closePopup } = actions
 
 export default function NotificationPopupContainer() {
-	const { errorMessage, successMessage, title } = useSelector(getNotification)
+	const { errorMessage, successMessage, title } = useSelector(
+		selectNotification
+	)
 	const dispatch = useDispatch()
 	const message = errorMessage || successMessage
 

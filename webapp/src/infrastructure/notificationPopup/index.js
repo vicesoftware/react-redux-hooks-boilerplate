@@ -8,6 +8,8 @@ export const {
 	reducer,
 } = slice
 
-export const { getNotification } = notificationPopupSelectors
+export const {
+	selectNotification: getNotification,
+} = notificationPopupSelectors
 
 export default NotificationPopup

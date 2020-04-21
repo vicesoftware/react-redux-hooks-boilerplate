@@ -1,7 +1,10 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Form from 'react-bootstrap/Form'
-import { selectAllSettings, setUseCaching, setNoBusySpinner } from './index'
+import { actions } from './settings.slice'
+import { selectAllSettings } from './settings.selectors'
+
+const { setUseCaching, setNoBusySpinner } = actions
 
 export default function Settings() {
 	const settings = useSelector(selectAllSettings)

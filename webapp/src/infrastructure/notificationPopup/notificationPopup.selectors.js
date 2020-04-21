@@ -2,4 +2,4 @@ import slice from './notificationPopup.slice'
 
 export const selectSlice = (state) => state[slice.name]
 
-export const getNotification = (state) => selectSlice(state)
+export const selectNotification = (state) => selectSlice(state)

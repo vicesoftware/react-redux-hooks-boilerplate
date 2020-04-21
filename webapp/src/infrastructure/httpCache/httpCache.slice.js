@@ -3,7 +3,7 @@ import buildCacheKey from '../buildCacheKey'
 
 const initialState = {}
 
-export default createSlice({
+const slice = createSlice({
 	name: 'httpCache',
 	initialState,
 	reducers: {
@@ -36,3 +36,7 @@ export default createSlice({
 		},
 	},
 })
+
+export default slice
+
+export const { name, actions, reducer } = slice
