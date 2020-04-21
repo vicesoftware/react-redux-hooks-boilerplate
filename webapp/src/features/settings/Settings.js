@@ -13,7 +13,7 @@ export default function Settings() {
 
 	return (
 		<div>
-			<h1>Settings</h1>
+			<h2>Settings</h2>
 			<Form.Group controlId='useCaching'>
 				<Form.Check
 					onChange={() => dispatch(setUseCaching(!settings.useCaching))}

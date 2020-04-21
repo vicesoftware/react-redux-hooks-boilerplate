@@ -1,12 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
-import * as actions from './userContext.actions'
+import * as asyncActions from './userContext.asynActions'
 
 const initialState = {}
 
 export default createSlice({
 	name: 'userContext',
 	initialState,
+	reducers: {
+		logout(state, action) {
+			return {}
+		},
+	},
 	extraReducers: {
-		[actions.signIn.fulfilled]: (_, action) => action.payload,
+		[asyncActions.signIn.fulfilled]: (_, action) => action.payload,
 	},
 })

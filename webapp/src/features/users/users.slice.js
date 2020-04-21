@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import * as actions from './user.actions'
+import * as asyncActions from './user.asyncActions'
 
 const initialState = {
 	allUsers: [],
@@ -9,7 +9,7 @@ export default createSlice({
 	name: 'users',
 	initialState,
 	extraReducers: {
-		[actions.fetchAllUsers.fulfilled]: (state, action) => {
+		[asyncActions.fetchAllUsers.fulfilled]: (state, action) => {
 			state.allUsers = action.payload
 		},
 	},

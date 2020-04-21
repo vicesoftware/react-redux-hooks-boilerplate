@@ -1,5 +1,6 @@
 import React from 'react'
 import { Redirect, useLocation } from 'react-router-dom'
+import get from 'lodash/get'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { Formik } from 'formik'
@@ -12,10 +13,12 @@ const SignIn = () => {
 	const isAuthenticated = useSelector(selectIsAuthenticated)
 	const dispatch = useDispatch()
 
+	const to = get(location, 'state.from') || 'home'
+
 	return (
 		<>
 			{isAuthenticated ? (
-				<Redirect to={location.state.from} />
+				<Redirect to={to} />
 			) : (
 				<BusyIndicator>
 					<Formik

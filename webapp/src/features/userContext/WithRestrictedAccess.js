@@ -7,14 +7,11 @@ import {
 } from './userContext.selectors'
 
 const WithRestrictedAccess = (WrappedComponent, requiredPermissions = []) => {
-	const curriedCurrentUserHasPermissions = selectCurrentUserHasPermissions.bind(
-		null,
-		requiredPermissions
-	)
-
 	const ProtectedRoute = () => {
 		const isAuthenticated = !!useSelector(selectIsAuthenticated)
-		const hasPermissions = useSelector(curriedCurrentUserHasPermissions)
+		const hasPermissions = useSelector(
+			selectCurrentUserHasPermissions(requiredPermissions)
+		)
 		const location = useLocation()
 
 		return (

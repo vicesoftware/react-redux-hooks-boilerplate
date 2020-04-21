@@ -1,7 +1,6 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import Page from './widgets/Page/Page'
-import About from './features/About'
 import Home from './features/Home'
 import Authenticated from './features/Authenticated'
 import Authorized from './features/Authorized'
@@ -12,9 +11,6 @@ import SignIn from './features/SignIn'
 export default function Routes() {
 	return (
 		<Switch>
-			<PageRoute path='/about'>
-				<About />
-			</PageRoute>
 			<PageRoute path='/users'>
 				<Users />
 			</PageRoute>

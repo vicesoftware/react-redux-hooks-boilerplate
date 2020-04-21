@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Container from 'react-bootstrap/Container'
-import { fetchAllUsers } from './user.actions'
+import { fetchAllUsers } from './user.asyncActions'
 import { selectAllUsers } from './users.selectors'
 import BusyIndicator from '../../widgets/busyIndicator'
 import { selectAllSettings, setNoBusySpinner } from '../settings'
@@ -30,7 +30,7 @@ export default function Users() {
 		<div>
 			<Row>
 				<Col>
-					<h1>Users</h1>
+					<h2>Users</h2>
 				</Col>
 			</Row>
 			<Row>

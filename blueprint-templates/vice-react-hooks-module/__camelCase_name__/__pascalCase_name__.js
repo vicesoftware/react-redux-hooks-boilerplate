@@ -5,7 +5,7 @@ import {
 	select{{pascalCase name}}Filter,
  } from './{{camelCase name}}.selectors'
 import { actions } from './{{camelCase name}}.slice'
-import { fetchAll{{pascalCase name}} } from './{{camelCase name}}.actions'
+import { fetchAll{{pascalCase name}} } from './{{camelCase name}}.asyncActions'
 import BusyIndicator from '../../widgets/busyIndicator'
 
 const {	updateFilter } = actions
@@ -22,7 +22,7 @@ export default function {{pascalCase name}}() {
 
 	return (
 		<div>
-			<h1>{{pascalCase name}}</h1>
+			<h2>{{pascalCase name}}</h2>
 			<input
 				type='text'
 				value={filter}
