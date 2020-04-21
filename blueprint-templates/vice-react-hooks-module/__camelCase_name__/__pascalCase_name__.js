@@ -2,11 +2,13 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { 
 	selectAll{{pascalCase name}}, 
-	fetchAll{{pascalCase name}}, 
 	select{{pascalCase name}}Filter,
-	updateFilter
- } from './index'
+ } from './{{camelCase name}}.selectors'
+import { actions } from './{{camelCase name}}.slice'
+import { fetchAll{{pascalCase name}} } from './{{camelCase name}}.actions'
 import BusyIndicator from '../../widgets/busyIndicator'
+
+const {	updateFilter } = actions
 
 export default function {{pascalCase name}}() {
 	const {{camelCase name}} = useSelector(selectAll{{pascalCase name}})
