@@ -1,9 +1,6 @@
 const CircularDependencyPlugin = require('circular-dependency-plugin')
 
 module.exports = function override(config, env) {
-    console.warn('Rewiring webpack config. Note that this is considered dangerous and breaks CRAs guarantee to work.')
-
-    console.warn('Adding circular-dependency-plugin', config.plugins)
     config.plugins.push(    
         new CircularDependencyPlugin({
             // exclude detection of files based on a RegExp

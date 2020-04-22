@@ -8,6 +8,21 @@
         - [`npm test`](#npm-test)
         - [`npm run build`](#npm-run-build)
         - [`npm run eject`](#npm-run-eject)
+- [Goals](#goals)
+    - [Good Starting Point](#good-starting-point)
+    - [High Developer Ergonomics](#high-developer-ergonomics)
+        - [Create Software with High Asset Value](#create-software-with-high-asset-value)
+    - [Maximize the Value of the Tools we are Using](#maximize-the-value-of-the-tools-we-are-using)
+    - [Scale Well in Complex Apps](#scale-well-in-complex-apps)
+- [Features](#features)
+    - [Authentication Flow with Redux](#authentication-flow-with-redux)
+    - [Permission Based Authorization with Redux](#permission-based-authorization-with-redux)
+    - [Redux Caching](#redux-caching)
+    - [Background Loading with Redux](#background-loading-with-redux)
+    - [Background Loading](#background-loading)
+    - [Automatic Linting and Code Beutification](#automatic-linting-and-code-beutification)
+    - [Circular Dependency Detection](#circular-dependency-detection)
+    - [Feature Module Generation in VS Code](#feature-module-generation-in-vs-code)
 - [Configuration](#configuration)
     - [API Proxy](#api-proxy)
 - [Learn More](#learn-more)
@@ -76,6 +91,61 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+# Goals
+These are the goals of this boilerplate
+
+## Good Starting Point
+We don't want to waste time or our clients budgets rewriting the same code over and over for things every web app needs like 
+
+- authentication
+- authorization
+- popups (errors, notifications)
+- busy indicators
+- caching
+- forms and validations
+- ect...
+
+## High Developer Ergonomics
+We want to make sure that  
+- developers are able to do the 80% they need to do most often easily without a lot of boilerplate
+- new developers on the project can get up and running quickly and modify the code confidently
+
+### Create Software with High Asset Value
+It's much easier to create software that is a liability, that offers little value to the sponsors without the team that wrote it. We want the systems built with this boilerplate to be easy to transfer from one team to another. We often help clients to build apps that their own teams will take over one day and want that transfer to be as easy as possible.
+
+## Maximize the Value of the Tools we are Using
+We don't want to include libraries because they are popular, we want to include them because they add value that we want to take advantage of. So for example if we are using Redux then we want to take advantage of the valuable features it provide (dev tooling, serializable state, etc...).
+
+## Scale Well in Complex Apps
+We want to make sure that if the projects that use this boilerplate become successful and complex overtime that they won't outgrow the patterns, infrastructure and best practices.
+
+# Features
+Below are some of the features that we've added to this boilerplate
+
+## Authentication Flow with Redux
+We provide a login flow that you can plug in Auth0 or whatever IDP you like to use. Our authentication flow will allow you to call your IDP and handles redirecting from protected routes to Sign In page for you as well as redirecting back to the calling page after successful sign in. The user profile returned from your IDP will be put into redux and available on the `state.userContext` slice.
+
+## Permission Based Authorization with Redux
+We have added `withRestrictedAccess(component, permissions)` HOC which takes `permissions` array that will be cross referenced with `state.userContext.permissions` automatically and prevent access for users without the configured permissions.
+
+## Redux Caching
+Via the `doAsync` module that can be easily used with `createAsyncThunk` from `redux-toolkit` we support redux caching. Passing `useCaching: true` to `doAsync({url, useCaching: true})` will not go to the server if the data has already been fetched and is in redux. 
+
+## Background Loading with Redux
+The `busyIndicator` module allows for redux based busy indicator management. Our `doAsync` module will automoatically turn on and off the busy indicator for you as you call the API. You can also manually turn on and off the busy indicator and there is support for named busy indicators allowing for creating regional busy indicators. 
+
+## Background Loading
+Via the `doAsync` module that can be easily used with `createAsyncThunk` from `redux-toolkit` we support background loading of data via API calls. Passing `noBusySpinner: true` to `doAsync({url, noBusySpinner: true})` will start a call to the API but not turn on the busy indicator. Note that if a call comes through for the same url before the first background call returns then the busy spinner will be turned on and the API will not be called and the current request will not be sent to the API.
+
+## Automatic Linting and Code Beutification
+Every time a file is saved when the app is running in dev via `npm start` that file will be beautified via prettier and the prettier rules have been configured to match the eslint rules.
+
+## Circular Dependency Detection
+If you introduce a circular dependency in your `import` statements the build will fail and you will be forced to fix it by refactoring your code. If circular references aren't fixed you will eventually get a very hard to fix `object null` null type of exception. This usually happens after there are a lot of circular references in the code making cleaning all up difficult and expensive.
+
+## Feature Module Generation in VS Code
+Our architecture uses a pattern we call `feature module` and we have added a blueprint template that will allow generating a working `feature module` from the context menu. 
 
 # Configuration
 Below are configurations supported in this boilerplate.
