@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import * as asyncActions from './user.asyncActions'
+import * as asyncActions from './users.asyncActions'
 
 const initialState = {
 	allUsers: [],
