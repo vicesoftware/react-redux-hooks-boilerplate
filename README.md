@@ -11,7 +11,7 @@
 - [Goals](#goals)
     - [Good Starting Point](#good-starting-point)
     - [High Developer Ergonomics](#high-developer-ergonomics)
-        - [Create Software with High Asset Value](#create-software-with-high-asset-value)
+    - [Create Software with High Asset Value](#create-software-with-high-asset-value)
     - [Maximize the Value of the Tools we are Using](#maximize-the-value-of-the-tools-we-are-using)
     - [Scale Well in Complex Apps](#scale-well-in-complex-apps)
 - [Features](#features)
@@ -111,7 +111,7 @@ We want to make sure that
 - developers are able to do the 80% they need to do most often easily without a lot of boilerplate
 - new developers on the project can get up and running quickly and modify the code confidently
 
-### Create Software with High Asset Value
+## Create Software with High Asset Value
 It's much easier to create software that is a liability, that offers little value to the sponsors without the team that wrote it. We want the systems built with this boilerplate to be easy to transfer from one team to another. We often help clients to build apps that their own teams will take over one day and want that transfer to be as easy as possible.
 
 ## Maximize the Value of the Tools we are Using
