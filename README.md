@@ -41,7 +41,7 @@ This is a React boilerplate focused on enabling high developer velocity while im
 ## Overview Video
 Here's a video that walks through some of the major features of this boilerplate.
 
-Coming soon. Have to update based on refactoring to use [Redux Toolkit](https://redux-toolkit.js.org/)
+[![Overview](_docs/boilerplateOverivew.gif)](https://www.youtube.com/watch?v=4l9KUffb9cc)
 
 # Installation and Running
 
@@ -145,7 +145,9 @@ Every time a file is saved when the app is running in dev via `npm start` that f
 If you introduce a circular dependency in your `import` statements the build will fail and you will be forced to fix it by refactoring your code. If circular references aren't fixed you will eventually get a very hard to fix `object null` null type of exception. This usually happens after there are a lot of circular references in the code making cleaning all up difficult and expensive.
 
 ## Feature Module Generation in VS Code
-Our architecture uses a pattern we call `feature module` and we have added a blueprint template that will allow generating a working `feature module` from the context menu. 
+Our architecture uses a pattern we call `feature module` and we have added a blueprint template that will allow generating a working `feature module` from the context menu. The video below walks through quickly creating a feature using this approach.
+
+[![Generating Feature Modules](_docs/featureModule.gif)](https://www.youtube.com/watch?v=Aoz6VPHQr-4&t=6s)
 
 # Configuration
 Below are configurations supported in this boilerplate.
