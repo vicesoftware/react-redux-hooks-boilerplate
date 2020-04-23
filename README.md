@@ -77,14 +77,12 @@ In the project directory, you can run:
 - Launches the test runner in the interactive watch mode.
 - See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
----
-**NOTE**
+> **_NOTE_** 
+>
+> You must place `node-module` mocks in the `webapp/src/__mocks__` director because `create-react-app` reset Jest's `roots` config for performance reasons. I lost half a day on figuring this out so figured I'd share. The PR is below.
+>
+> https://github.com/facebook/create-react-app/pull/7480/files
 
-Note that you must place `node-module` mocks in the `webapp/src/__mocks__` director because `create-react-app` reset Jest's `roots` config for performance reasons. I lost half a day on figuring this out so figured I'd share. The PR is below.
-
-https://github.com/facebook/create-react-app/pull/7480/files
-
----
 
 ### `npm run build`
 
@@ -96,7 +94,9 @@ https://github.com/facebook/create-react-app/pull/7480/files
 
 ### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+> **_NOTE_** 
+>
+> This is a one-way operation. Once you `eject`, you can’t go back!**
 
 If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
@@ -143,11 +143,16 @@ Our architecture uses a pattern we call `feature module` and we have added a blu
 To take advanatage of this feature you need to use Visual Studio Code with the [Blueprint Templates](https://marketplace.visualstudio.com/items?itemName=teamchilla.blueprint) plugin. Once you have Blueprint installed then you can simply:
 
 1. Right click on a folder
-![](_docs/featureModuleRightClick.png)
+
+    ![](_docs/featureModuleRightClick.png)
+
 1. Select the `Feature Module` tenplate
-![](_docs/selectFeatureModule.png)
+
+    ![](_docs/selectFeatureModule.png)
+
 1. Enter the name of your new feature
-![](_docs/enterModuleName.png)
+
+    ![](_docs/enterModuleName.png)
 
 Now you will have a new feature module created like the one showed below.
 
@@ -194,22 +199,18 @@ A feature module is designed to be contained using the module approach found in 
 -- Demo.js
 ```
 
----
-**NOTE**
+> **_NOTE_** 
+>
+> Not all files are required in all cases
 
-Not all files are required in all cases
-
----
 
 #### index.js
 This file defines the public interface of the module and allows us to be explicity about how it should be used. 
 
----
-**NOTE**
+> **_NOTE_** 
+>
+> In Javascript it's possible for anyone to `import` any file so the goal here is to express intent not to prevent misuse.
 
-In Javascript it's possible for anyone to `import` any file so the goal here is to express intent not to prevent misuse.
-
----
 
 Every `export` in this file is something that you can easily import else where in the system. The structure of this file is
 
@@ -234,12 +235,9 @@ export const { selectAllDemo, selectDemoFilter } = selectors
 export default Demo
 ```
 
----
-**NOTE**
-
-We are using `redux-toolkit` and they recommend following an approach called `dux` where you put all your actions and selectors and other data flow code in a a single file. We are not following that here. Instead we have put `./module-name.selectors.js` and `./module-name.asyncActions.js` in seperate files and this is because we find these get large over time in complex systems. `redux-toolkit` is being responsive to it's users complaints about having to modify too many files when they make changes but we feel that the benifits in a large system out weigh this concern.
-
----
+> **_NOTE_** 
+>
+> We are using `redux-toolkit` and they recommend following an approach called `dux` where you put all your actions and selectors and other data flow code in a a single file. We are not following that here. Instead we have put `./module-name.selectors.js` and `./module-name.asyncActions.js` in seperate files and this is because we find these get large over time in complex systems. `redux-toolkit` is being responsive to it's users complaints about having to modify too many files when they make changes but we feel that the benifits in a large system out weigh this concern.
 
 **Exports**
 
@@ -252,23 +250,16 @@ This is available to consumers and should be used as the name of the slice on th
 ![](_docs/rooReducerName.png)
 
 ---
-**NOTE**
-
-The name is part of the slice created by `redux-toolkit`'s `createSlice()` builder function.
-
----
+> **_NOTE_** 
+>
+> The name is part of the slice created by `redux-toolkit`'s `createSlice()` builder function.
 
 ##### reducer
 This is available to consumers and should be used as the reducer for this module and mounted to the root reducer:
 
 ![](_docs/rootReducerAddReducer.png)
 
----
-**NOTE**
-
-The name is part of the slice created by `redux-toolkit`'s `createSlice()` builder function.
-
----
+> **_NOTE:_** The name is part of the slice created by `redux-toolkit`'s `createSlice()` builder function.
 
 ##### actions
 Here we destructure each action that we wanted exported from the colloction of actions that will be created for us by `redux-toolkit`'s `createSlice()` builder function.
@@ -323,12 +314,10 @@ In the above example when we declare `reducders` as an object with a `updateFilt
 
 As part of the feature module pattern when we add a new action/reducer function to our slice's reducer section we need to also export it from our `index.js` file if it's meant to be available to other modules in the system.
 
----
-**NOTE**
+> **_NOTE_** 
+>
+>It is possible that you would want to have actions that are only used internal to your module.
 
-It is possible that you would want to have actions that are only used internal to your module.
-
----
 
 ##### asyncActions
 We destructure each of our asyncActions that we want available externally.
@@ -362,12 +351,10 @@ export const { selectAllDemo, selectDemoFilter } = selectors
 // removed for clarity
 ```
 
----
-**NOTE**
+> **_NOTE_** 
+>
+>See the [Only access redux state in selectors](#only-access-redux-state-in-selectors) and [Always collocate selectors with reducers](always-collocate-selectors-with-reducers) best practices.
 
-See the [Only access redux state in selectors](#only-access-redux-state-in-selectors) and [Always collocate selectors with reducers](always-collocate-selectors-with-reducers) best practices.
-
----
 
 # Best Practices
 Below are best practices we recommend following.
