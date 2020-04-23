@@ -27,7 +27,9 @@
     - [Feature Module Pattern](#feature-module-pattern)
         - [Module Structure](#module-structure)
             - [index.js](#indexjs)
-                - [Exports](#exports)
+                - [name](#name)
+                - [reducer](#reducer)
+                - [actions](#actions)
 - [Configuration](#configuration)
     - [API Proxy](#api-proxy)
 - [Learn More](#learn-more)
@@ -234,10 +236,11 @@ We are using `redux-toolkit` and they recommend following an approach called `du
 
 ---
 
-##### Exports
+**Exports**
+
 What we are exporting is:
 
-**name**
+##### name
 
 This is available to consumers and should be used as the name of the slice on the root reducer as shown below:
 
@@ -250,7 +253,7 @@ The name is part of the slice created by `redux-toolkit`'s `createSlice()` build
 
 ---
 
-**reducer**
+##### reducer
 This is available to consumers and should be used as the reducer for this module and mounted to the root reducer:
 
 ![](_docs/rootReducerAddReducer.png)
@@ -262,7 +265,7 @@ The name is part of the slice created by `redux-toolkit`'s `createSlice()` build
 
 ---
 
-**actions**
+##### actions
 Here we destructure each action that we wanted exported from the colloction of actions that will be created for us by `redux-toolkit`'s `createSlice()` builder function.
 
 ```javascript
