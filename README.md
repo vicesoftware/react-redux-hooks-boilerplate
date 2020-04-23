@@ -23,13 +23,18 @@
     - [Background Loading](#background-loading)
     - [Automatic Linting and Code Beutification](#automatic-linting-and-code-beutification)
     - [Circular Dependency Detection](#circular-dependency-detection)
-- [Patterns and Best Practices](#patterns-and-best-practices)
+- [Patterns](#patterns)
     - [Feature Module Pattern](#feature-module-pattern)
         - [Module Structure](#module-structure)
             - [index.js](#indexjs)
                 - [name](#name)
                 - [reducer](#reducer)
                 - [actions](#actions)
+                - [asyncActions](#asyncactions)
+                - [selectors](#selectors)
+- [Best Practices](#best-practices)
+    - [Only access redux state in selectors](#only-access-redux-state-in-selectors)
+    - [Always collocate selectors with reducers](#always-collocate-selectors-with-reducers)
 - [Configuration](#configuration)
     - [API Proxy](#api-proxy)
 - [Learn More](#learn-more)
@@ -171,7 +176,7 @@ Every time a file is saved when the app is running in dev via `npm start` that f
 ## Circular Dependency Detection
 If you introduce a circular dependency in your `import` statements the build will fail and you will be forced to fix it by refactoring your code. If circular references aren't fixed you will eventually get a very hard to fix `object null` null type of exception. This usually happens after there are a lot of circular references in the code making cleaning all up difficult and expensive.
 
-# Patterns and Best Practices
+# Patterns
 Below are patterns we use and best practices we recommend.
 
 ## Feature Module Pattern
@@ -324,6 +329,54 @@ As part of the feature module pattern when we add a new action/reducer function 
 It is possible that you would want to have actions that are only used internal to your module.
 
 ---
+
+##### asyncActions
+We destructure each of our asyncActions that we want available externally.
+
+```javascript
+// removed for clarity
+
+import * as asyncActions from './demo.asyncActions'
+
+// removed for clarity
+
+export const { fetchAllDemo } = asyncActions
+
+// removed for clarity
+```
+
+
+##### selectors
+We destructure each of our asyncActions that we want available externally.
+
+```javascript
+// removed for clarity
+
+import * as selectors from './demo.selectors'
+
+// removed for clarity
+
+// we prefix all selectors with the the "select" prefix
+export const { selectAllDemo, selectDemoFilter } = selectors
+
+// removed for clarity
+```
+
+---
+**NOTE**
+
+See the [Only access redux state in selectors](#only-access-redux-state-in-selectors) and [Always collocate selectors with reducers](always-collocate-selectors-with-reducers) best practices.
+
+---
+
+# Best Practices
+Below are best practices we recommend following.
+
+## Only access redux state in selectors
+coming soon...
+
+## Always collocate selectors with reducers
+coming soon...
 
 # Configuration
 Below are configurations supported in this boilerplate.
