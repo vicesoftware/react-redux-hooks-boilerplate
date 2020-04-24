@@ -1,7 +1,22 @@
+# Overview
+This is a React boilerplate focused on enabling high developer velocity while implementing idiomatic Redux Hooks and React Hooks.
+
+## Overview Video
+Here's a video that walks through some of the major features of this boilerplate.
+
+[![Overview](_docs/boilerplateOverivew.gif)](https://www.youtube.com/watch?v=4l9KUffb9cc)
+
+> **_Note_**
+>
+> If you are wanting to just get an idea of the features the boilerplate offers you should also checkout in the [Feature Module Generation in VS Code](#feature-module-generation-in-vs-code) section of this readme
+
+# Table of Contents
+
 <!-- TOC -->
 
 - [Overview](#overview)
     - [Overview Video](#overview-video)
+- [Table of Contents](#table-of-contents)
 - [Installation and Running](#installation-and-running)
     - [Available Scripts](#available-scripts)
         - [`npm start`](#npm-start)
@@ -56,18 +71,6 @@
     - [`npm run build` fails to minify](#npm-run-build-fails-to-minify)
 
 <!-- /TOC -->
-
-# Overview
-This is a React boilerplate focused on enabling high developer velocity while implementing idiomatic Redux Hooks and React Hooks.
-
-## Overview Video
-Here's a video that walks through some of the major features of this boilerplate.
-
-[![Overview](_docs/boilerplateOverivew.gif)](https://www.youtube.com/watch?v=4l9KUffb9cc)
-
-> **_Note_**
->
-> If you are wanting to just get an idea of the features the boilerplate offers you should also checkout in the [Feature Module Generation in VS Code](#feature-module-generation-in-vs-code) section of this readme
 
 # Installation and Running
 
