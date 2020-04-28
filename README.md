@@ -570,7 +570,7 @@ We recommend **only accessing state from selectors** and not directly in compone
 const foo = useSelector(selectFoo) // loosely coupled
 ```
 
-**Good**
+**Bad**
 ```javascript
 // Foo.js
 
