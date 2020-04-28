@@ -563,6 +563,7 @@ Below are best practices we recommend following.
 We recommend **only accessing state from selectors** and not directly in components. 
 
 **Good**
+
 ```javascript
 // Foo.js
 
@@ -571,6 +572,7 @@ const foo = useSelector(selectFoo) // loosely coupled
 ```
 
 **Bad**
+
 ```javascript
 // Foo.js
 
