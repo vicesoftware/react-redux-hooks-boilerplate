@@ -16,6 +16,7 @@ function reducer(state, action) {
 	return state
   }
 
+  // can't get this working. opened issue in github: https://github.com/testing-library/react-testing-library/issues/660
 it('renders welcome message', () => {
 	const store = createStore(combineReducers({ foos: reducer }))
 
