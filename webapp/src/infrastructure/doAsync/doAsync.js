@@ -1,5 +1,9 @@
 import http from '../http'
-import { addRequestToCache, tryToFindRequestInCache } from '../httpCache'
+import {
+	addRequestToCache,
+	deleteRequestFromCache,
+	tryToFindRequestInCache,
+} from '../httpCache'
 import { REDUX_CACHE_HIT_RECEIVED_ASYNC } from './doAsync.actionTypes'
 import {
 	buildHeaders,
@@ -96,7 +100,14 @@ const doAsync = ({
 				requestConfig.body = httpConfig.body
 			}
 
-			dispatch(addRequestToCache({ url, httpMethod, config: requestConfig }))
+			dispatch(
+				addRequestToCache({
+					url,
+					httpMethod,
+					config: requestConfig,
+					createdAt: Date.now(),
+				})
+			)
 		}
 
 		if (!noBusySpinner) {
@@ -117,6 +128,12 @@ const doAsync = ({
 				return Promise.resolve(body)
 			})
 			.catch((exception) => {
+				// A failed request has no result to reuse, so leave the cache
+				// open for a retry instead of serving cache hits for it.
+				if (useCaching) {
+					dispatch(deleteRequestFromCache({ url, httpMethod }))
+				}
+
 				handleError(
 					exception,
 					onError,

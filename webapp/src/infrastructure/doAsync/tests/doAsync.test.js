@@ -25,7 +25,9 @@ describe('Given we call doAsync ', () => {
 		getState.mockReset()
 		doAsyncLogic.validateInput.mockReset()
 		doAsyncLogic.requestIsAlreadyPending.mockReset()
+		doAsyncLogic.handleError.mockReset()
 		httpCache.addRequestToCache.mockReset()
+		httpCache.deleteRequestFromCache.mockReset()
 		httpCache.tryToFindRequestInCache.mockReset()
 		http.get.mockReset()
 		http.post.mockReset()
@@ -134,6 +136,7 @@ describe('Given we call doAsync ', () => {
 						expect(doAsyncLogic.handleError.mock.calls[0][6]).toEqual(
 							errorMessage
 						)
+						expect(httpCache.deleteRequestFromCache.mock.calls.length).toBe(0)
 
 						done()
 					})
@@ -234,6 +237,52 @@ describe('Given we call doAsync ', () => {
 							expect(http.put.mock.calls[0][1]).toEqual(httpConfig)
 						})
 					})
+				})
+				describe('and the request is added to the cache ', () => {
+					it('Then the cache entry is stamped with createdAt ', async () => {
+						const now = 1588000000000
+						jest.spyOn(Date, 'now').mockReturnValue(now)
+						http.get.mockReturnValue(Promise.resolve('expectedBody'))
+
+						try {
+							await testUseCachingWithRequestNotInCache()
+						} finally {
+							Date.now.mockRestore()
+						}
+
+						expect(httpCache.addRequestToCache.mock.calls[0][0]).toEqual({
+							url: 'url',
+							httpMethod: 'get',
+							config: {},
+							createdAt: now,
+						})
+					})
+				})
+			})
+
+			describe('and the http returns rejected promise ', () => {
+				it('Then the request is removed from the cache so it can be retried ', async () => {
+					const expectedDeleteResult = 'expectedDeleteResult'
+					http.get.mockImplementation(() =>
+						Promise.reject(new Error('expectedError'))
+					)
+					httpCache.tryToFindRequestInCache.mockReturnValue(false)
+					httpCache.deleteRequestFromCache.mockReturnValue(expectedDeleteResult)
+
+					await doAsync({
+						url: 'url',
+						httpMethod: 'get',
+						useCaching: true,
+						noBusySpinner: true,
+						dispatch,
+						getState,
+					})
+
+					expect(httpCache.deleteRequestFromCache.mock.calls).toEqual([
+						[{ url: 'url', httpMethod: 'get' }],
+					])
+					expect(dispatch).toHaveBeenCalledWith(expectedDeleteResult)
+					expect(doAsyncLogic.handleError.mock.calls.length).toBe(1)
 				})
 			})
 
